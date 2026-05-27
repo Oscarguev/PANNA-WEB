@@ -18,12 +18,12 @@ export default function Home() {
       <Story />
       <ExperienceCards />
       <Gallery />
-      <Suspense fallback={<SectionSkeleton cards={1} />}>
-        <CustomerReviews />
-      </Suspense>
       <HorizontalShowcase />
       <Suspense fallback={<SectionSkeleton cards={2} />}>
         <ChefCTA />
+      </Suspense>
+      <Suspense fallback={<SectionSkeleton cards={1} />}>
+        <CustomerReviews />
       </Suspense>
     </main>
   )
