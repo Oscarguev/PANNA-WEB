@@ -16,6 +16,7 @@ export default function ChefCTA() {
     guests: '2',
     date: '',
     time: '',
+    zona: 'salon',
     notes: ''
   });
   const [submitted, setSubmitted] = useState(false)
@@ -45,6 +46,7 @@ export default function ChefCTA() {
       comensales: parseInt(formData.guests, 10),
       fecha:      formData.date,
       hora:       formData.time,
+      zona:       formData.zona,
       notas:      formData.notes || null,
       cliente_id: userSession?.id || null,
     });
@@ -73,6 +75,7 @@ export default function ChefCTA() {
         guests: '2',
         date: '',
         time: '',
+        zona: 'salon',
         notes: ''
       });
     }, 5000);
@@ -188,7 +191,7 @@ export default function ChefCTA() {
                   Solicitud Enviada
                 </h3>
                 <p className="font-body text-xs text-brand-textMuted max-w-sm mx-auto leading-relaxed">
-                  Gracias, <strong>{formData.name}</strong>. Hemos recibido tu solicitud para <strong>{formData.guests} personas</strong> el <strong>{formData.date}</strong> a las <strong>{formData.time}</strong>. Te confirmaremos vía telefónica en breve.
+                  Gracias, <strong>{formData.name}</strong>. Hemos recibido tu solicitud para <strong>{formData.guests} personas</strong> el <strong>{formData.date}</strong> a las <strong>{formData.time}</strong> en <strong>{formData.zona === 'exterior' ? 'Zona Exterior' : 'Salón Interno'}</strong>. Te confirmaremos vía telefónica en breve.
                 </p>
                 {userSession?.loggedIn && (
                   <div className="inline-flex items-center gap-2 bg-brand-primary/10 border border-brand-primary/25 px-5 py-2.5 rounded-full">
@@ -284,6 +287,32 @@ export default function ChefCTA() {
                       onChange={(e) => setFormData({ ...formData, time: e.target.value })}
                       className="w-full bg-transparent border-b border-white/10 hover:border-brand-primary/50 focus:border-brand-primary text-brand-textMain font-body text-xs py-2 px-1 focus:outline-none transition-colors duration-500 font-light"
                     />
+                  </div>
+                </div>
+
+                {/* Zona */}
+                <div className="space-y-2">
+                  <label className="block font-body text-[11px] tracking-[0.2em] uppercase font-bold text-brand-textMain">
+                    Preferencia de Zona
+                  </label>
+                  <div className="flex gap-3 pt-1">
+                    {[
+                      { value: 'salon', label: 'Salón Interno' },
+                      { value: 'exterior', label: 'Zona Exterior' },
+                    ].map(({ value, label }) => (
+                      <button
+                        key={value}
+                        type="button"
+                        onClick={() => setFormData({ ...formData, zona: value })}
+                        className={`flex-1 py-2 font-body text-[11px] tracking-[0.2em] uppercase font-bold border transition-all duration-300 rounded-full ${
+                          formData.zona === value
+                            ? 'border-brand-primary bg-brand-primary/10 text-brand-primary'
+                            : 'border-white/10 text-brand-textMuted hover:border-brand-primary/40'
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
