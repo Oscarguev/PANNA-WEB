@@ -4,10 +4,11 @@ import { supabase } from '../lib/supabase'
 const STATUS_LABELS = {
   pendiente:  { label: 'Pendiente',  color: 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20' },
   confirmada: { label: 'Confirmada', color: 'text-green-400 bg-green-400/10 border-green-400/20' },
+  finalizada: { label: 'Finalizada', color: 'text-indigo-400 bg-indigo-400/10 border-indigo-400/20' },
   cancelada:  { label: 'Cancelada',  color: 'text-red-400 bg-red-400/10 border-red-400/20' },
 }
 
-const STATUS_NEXT = { pendiente: 'confirmada', confirmada: 'cancelada', cancelada: 'pendiente' }
+const STATUS_NEXT = { pendiente: 'confirmada', confirmada: 'finalizada', finalizada: 'cancelada', cancelada: 'pendiente' }
 
 function StatusBadge({ status, onChange, loading }) {
   const s = STATUS_LABELS[status] || STATUS_LABELS.pendiente
