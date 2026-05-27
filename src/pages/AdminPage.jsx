@@ -207,7 +207,7 @@ export default function AdminPage() {
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-white/[0.04] bg-white/[0.02]">
-                  {['Fecha', 'Hora', 'Nombre', 'Comensales', 'Notas', 'Recibida', 'Estado'].map(h => (
+                  {['Fecha', 'Hora', 'Nombre', 'Teléfono', 'Zona', 'Comensales', 'Notas', 'Recibida', 'Estado'].map(h => (
                     <th key={h} className="px-4 py-3 font-body text-[11px] tracking-[0.25em] uppercase text-brand-textMuted/60 font-semibold whitespace-nowrap">
                       {h}
                     </th>
@@ -228,6 +228,14 @@ export default function AdminPage() {
                     </td>
                     <td className="px-4 py-3.5 font-body text-xs text-brand-textMain">
                       {r.nombre}
+                    </td>
+                    <td className="px-4 py-3.5 font-body text-xs text-brand-textMain whitespace-nowrap">
+                      {r.telefono
+                        ? <a href={`https://wa.me/503${r.telefono.replace(/\D/g,'')}`} target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 transition-colors">{r.telefono}</a>
+                        : '—'}
+                    </td>
+                    <td className="px-4 py-3.5 font-body text-[11px] text-brand-textMuted uppercase tracking-wider whitespace-nowrap">
+                      {r.zona === 'exterior' ? 'Exterior' : 'Salón'}
                     </td>
                     <td className="px-4 py-3.5 font-body text-xs text-brand-textMain text-center">
                       {r.comensales}

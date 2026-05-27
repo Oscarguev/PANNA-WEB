@@ -13,6 +13,7 @@ export default function ChefCTA() {
   const sumarPuntos    = useSessionStore((state) => state.sumarPuntos);
   const [formData, setFormData] = useState({
     name: '',
+    phone: '',
     guests: '2',
     date: '',
     time: '',
@@ -33,8 +34,8 @@ export default function ChefCTA() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.date || !formData.time) {
-      setSubmitError('Por favor complete nombre, fecha y hora para su reserva.');
+    if (!formData.name || !formData.phone || !formData.date || !formData.time) {
+      setSubmitError('Por favor complete nombre, teléfono, fecha y hora para su reserva.');
       return;
     }
 
@@ -43,6 +44,7 @@ export default function ChefCTA() {
 
     const { error } = await supabase.from('reservaciones').insert({
       nombre:     formData.name,
+      telefono:   formData.phone,
       comensales: parseInt(formData.guests, 10),
       fecha:      formData.date,
       hora:       formData.time,
@@ -72,6 +74,7 @@ export default function ChefCTA() {
       setSubmitted(false);
       setFormData({
         name: userSession?.loggedIn ? userSession.name : '',
+        phone: '',
         guests: '2',
         date: '',
         time: '',
@@ -221,20 +224,36 @@ export default function ChefCTA() {
                   </div>
                 )}
 
-                {/* Line Input 1: Name */}
-                <div className="space-y-2">
-                  <label htmlFor="name" className="block font-body text-[11px] tracking-[0.2em] uppercase font-bold text-brand-textMain">
-                    Nombre Completo *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    required
-                    placeholder="Ej. Alejandro Valenzuela"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-transparent border-b border-white/10 hover:border-brand-primary/50 focus:border-brand-primary text-brand-textMain font-body text-xs py-2 px-1 focus:outline-none transition-colors duration-500 font-light placeholder-white/20"
-                  />
+                {/* Line Input 1: Name + Phone */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label htmlFor="name" className="block font-body text-[11px] tracking-[0.2em] uppercase font-bold text-brand-textMain">
+                      Nombre Completo *
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      required
+                      placeholder="Ej. Alejandro Valenzuela"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full bg-transparent border-b border-white/10 hover:border-brand-primary/50 focus:border-brand-primary text-brand-textMain font-body text-xs py-2 px-1 focus:outline-none transition-colors duration-500 font-light placeholder-white/20"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label htmlFor="phone" className="block font-body text-[11px] tracking-[0.2em] uppercase font-bold text-brand-textMain">
+                      Teléfono *
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      required
+                      placeholder="Ej. 7123-4567"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full bg-transparent border-b border-white/10 hover:border-brand-primary/50 focus:border-brand-primary text-brand-textMain font-body text-xs py-2 px-1 focus:outline-none transition-colors duration-500 font-light placeholder-white/20"
+                    />
+                  </div>
                 </div>
 
                 {/* Row Grid: Guests, Date, Time */}
