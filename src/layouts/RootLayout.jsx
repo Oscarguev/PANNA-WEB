@@ -9,7 +9,6 @@ import CartDrawer from '../components/CartDrawer'
 import CustomerPortal from '../components/CustomerPortal'
 import CartToast from '../components/CartToast'
 import WhatsAppButton from '../components/WhatsAppButton'
-import CustomCursor from '../components/CustomCursor'
 import LuxuryMotionConfig from '../motion/MotionConfig'
 import AmbientLayer from '../motion/AmbientLayer'
 import { supabase } from '../lib/supabase'
@@ -93,7 +92,6 @@ export default function RootLayout() {
       <CustomerPortal />
       <CartToast />
       <WhatsAppButton />
-      <CustomCursor />
       {pathname === '/' && <Suspense fallback={null}><Newsletter /></Suspense>}
     </LuxuryMotionConfig>
   )
