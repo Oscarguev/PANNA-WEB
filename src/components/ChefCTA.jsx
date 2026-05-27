@@ -63,6 +63,21 @@ export default function ChefCTA() {
     setSubmitted(true);
     addReservation(formData);
     sumarPuntos(100); // 100 puntos por reservación
+
+    // Notificar al restaurante vía WhatsApp
+    const zonaLabel = formData.zona === 'exterior' ? 'Zona Exterior' : 'Salón Interno';
+    const msg = encodeURIComponent(
+      `🍝 *Nueva Reserva — Panna & Pomodoro*\n\n` +
+      `👤 *Nombre:* ${formData.name}\n` +
+      `📞 *Teléfono:* ${formData.phone}\n` +
+      `📅 *Fecha:* ${formData.date}\n` +
+      `🕐 *Hora:* ${formData.time}\n` +
+      `👥 *Comensales:* ${formData.guests}\n` +
+      `📍 *Zona:* ${zonaLabel}` +
+      (formData.notes ? `\n📝 *Notas:* ${formData.notes}` : '')
+    );
+    window.open(`https://wa.me/50377947885?text=${msg}`, '_blank', 'noopener');
+
     track(EVENTS.RESERVATION_SUBMIT, {
       guests: formData.guests,
       date:   formData.date,
