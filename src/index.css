@@ -1,0 +1,288 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  :root {
+    /* Brand Serif Font families custom mappings */
+    --font-family-display: 'Cormorant Garamond', 'Georgia', serif;
+    --font-family-brand: 'Gilda Display', 'Georgia', serif;
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      /* Mobile legibility: swap elegant didone-style serifs for highly legible contemporary Lora */
+      --font-family-display: 'Lora', 'Georgia', serif;
+      --font-family-brand: 'Lora', 'Georgia', serif;
+    }
+  }
+
+  /* =========================================
+     COMPORTAMIENTO BASE PARA LECTURA
+     ========================================= */
+  html {
+    scroll-behavior: smooth;
+    background-color: #050505;
+  }
+  
+  body {
+    @apply font-body text-body-mobile md:text-body-desktop font-light text-brand-textMain bg-brand-background antialiased;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  p {
+    @apply max-w-reading mb-4; /* Limita el ancho a 68 caracteres automáticamente */
+  }
+
+  /* =========================================
+     JERARQUÍA DE TÍTULOS (ESTRUCTURA)
+     ========================================= */
+  h1 {
+    @apply font-brand text-hero-mobile md:text-hero-desktop font-light tracking-tight mb-6;
+  }
+
+  h2 {
+    @apply font-display text-h2-mobile md:text-h2-desktop font-light mb-4;
+  }
+
+  h3 {
+    @apply font-display text-h3-mobile md:text-h3-desktop font-medium mb-3;
+  }
+
+  /* =========================================
+     MICRO-TIPOGRAFÍA Y UI
+     ========================================= */
+  small {
+    @apply font-body text-small font-light text-brand-textMuted;
+  }
+
+  /* La Ceja (Eyebrow) para introducir secciones */
+  .eyebrow {
+    @apply font-body text-eyebrow-mobile md:text-eyebrow-desktop font-semibold uppercase text-brand-primary block mb-2;
+  }
+
+  /* Botones, precios, cantidades, horarios (Elementos técnicos) */
+  .text-ui {
+    @apply font-body tracking-wide;
+  }
+  
+  button, .btn {
+    @apply font-body font-medium uppercase tracking-wider text-sm;
+  }
+
+  /* Precios en el menú */
+  .price {
+    @apply font-body text-lg font-medium text-brand-primary;
+  }
+
+  /* Custom Selection styling */
+  ::selection {
+    background-color: rgba(197, 168, 128, 0.15);
+    color: #c5a880;
+  }
+
+  /* Custom premium scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #050505;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #141414;
+    border-radius: 3px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #c5a880;
+  }
+}
+
+/* Custom cursor — only on pointer:fine devices */
+@media (pointer: fine) {
+  html.custom-cursor,
+  html.custom-cursor * {
+    cursor: none !important;
+  }
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom premium hover and animation effects */
+.luxury-underline {
+  position: relative;
+}
+
+.luxury-underline::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 1px;
+  bottom: -4px;
+  left: 0;
+  background-color: #c5a880;
+  transform-origin: bottom right;
+  transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.luxury-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+/* Glassmorphism card utility */
+.glass-card {
+  @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-[2px];
+}
+
+/* Fade-in up animation */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Button hover scale */
+.button-scale {
+  @apply transition-transform duration-300 ease-out;
+}
+.button-scale:hover {
+  transform: scale(1.05);
+}
+
+
+/* Lenis smooth scroll specific styles */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Smooth zoom transition */
+.image-zoom-slow {
+  transition: transform 2.5s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.image-zoom-slow:hover {
+  transform: scale(1.04);
+}
+
+/* --- Premium Typography inherited globally via @layer base mappings --- */
+
+/* ─── Luxury Motion System ─────────────────────────────────────────────────── */
+
+/* GPU compositing hint for animated elements */
+.motion-gpu {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Film grain CSS-only fallback (used by AmbientLayer SVG) */
+@keyframes grainShift {
+  0%,  100% { transform: translate(0,    0);    }
+  10%        { transform: translate(-2%, -3%);   }
+  20%        { transform: translate(3%,   2%);   }
+  30%        { transform: translate(-1%,  4%);   }
+  40%        { transform: translate(4%,  -2%);   }
+  50%        { transform: translate(-3%,  1%);   }
+  60%        { transform: translate(2%,   3%);   }
+  70%        { transform: translate(-4%, -1%);   }
+  80%        { transform: translate(1%,  -4%);   }
+  90%        { transform: translate(-2%,  2%);   }
+}
+
+/* Ambient glow breathing (CSS fallback for non-JS) */
+@keyframes ambientGlow {
+  0%, 100% { opacity: 0.03; transform: scale(1);    }
+  50%       { opacity: 0.055; transform: scale(1.08); }
+}
+
+/* Ambient orb drift — slow organic float for background atmosphere */
+@keyframes orbDrift1 {
+  0%   { transform: translate(0px,    0px)   scale(1);    }
+  20%  { transform: translate(120px, -90px)  scale(1.08); }
+  45%  { transform: translate(60px,  110px)  scale(0.94); }
+  70%  { transform: translate(-90px,  50px)  scale(1.06); }
+  100% { transform: translate(0px,    0px)   scale(1);    }
+}
+@keyframes orbDrift2 {
+  0%   { transform: translate(0px,    0px)   scale(1);    }
+  30%  { transform: translate(-110px, 80px)  scale(1.07); }
+  60%  { transform: translate(80px,  -70px)  scale(0.95); }
+  100% { transform: translate(0px,    0px)   scale(1);    }
+}
+@keyframes orbDrift3 {
+  0%   { transform: translate(0px,   0px)   scale(1);    }
+  40%  { transform: translate(70px, 100px)  scale(1.10); }
+  80%  { transform: translate(-80px,-50px)  scale(0.93); }
+  100% { transform: translate(0px,   0px)   scale(1);    }
+}
+
+/* Cinematic page entrance — used on route change */
+@keyframes cinematicEnter {
+  0%   { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0);    }
+}
+
+.cinematic-enter {
+  animation: cinematicEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── Reduced Motion Overrides ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-fade-in-up,
+  .cinematic-enter,
+  .image-zoom-slow {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* --- Transparent sections and main to reveal fixed AmbientLayer orbs --- */
+section,
+main {
+  background-color: transparent !important;
+}
+
