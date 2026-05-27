@@ -39,7 +39,7 @@ export default function Newsletter() {
     <AnimatePresence>
       {visible && !dismissed && (
         <m.div
-          className="fixed bottom-6 right-6 z-40 w-80 bg-brand-surface border border-white/[0.08] rounded-[4px] shadow-2xl overflow-hidden"
+          className="fixed bottom-[5.5rem] right-6 z-40 w-80 bg-brand-surface border border-white/[0.08] rounded-[4px] shadow-2xl overflow-hidden"
           initial={{ opacity: 0, y: 24, scale: 0.97 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 16, scale: 0.97 }}

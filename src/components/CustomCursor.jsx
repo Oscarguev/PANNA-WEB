@@ -13,15 +13,17 @@ export default function CustomCursor() {
     const ring = ringRef.current;
     if (!dot || !ring) return;
 
+    let isHovered = false;
+
     const onMove = (e) => {
-      const t = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
-      dot.style.transform  = t;
-      ring.style.transform = t;
+      const base = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+      dot.style.transform  = base;
+      ring.style.transform = isHovered ? `${base} scale(1.7)` : base;
     };
 
     const onOver = (e) => {
       if (e.target.closest('a, button, [role="button"], label, select')) {
-        ring.style.transform = ring.style.transform.replace(')', '') + ' scale(1.7)';
+        isHovered = true;
         ring.style.borderColor = 'rgba(197,168,128,0.8)';
         ring.style.opacity = '0.9';
         dot.style.opacity  = '0';
@@ -30,6 +32,7 @@ export default function CustomCursor() {
 
     const onOut = (e) => {
       if (e.target.closest('a, button, [role="button"], label, select')) {
+        isHovered = false;
         ring.style.borderColor = 'rgba(197,168,128,0.3)';
         ring.style.opacity = '0.55';
         dot.style.opacity  = '1';
