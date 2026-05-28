@@ -141,7 +141,7 @@ export default function Navbar() {
 
             <button
               onClick={() => { openCart(); track(EVENTS.DRAWER_OPEN, { drawer: 'cart' }); }}
-              className={`w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-brand-textMain bg-brand-surface/40 backdrop-blur-sm relative transition-all duration-500 ${pulse
+              className={`w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-brand-textMain bg-brand-surface/50 relative transition-all duration-500 ${pulse
                 ? 'border-brand-primary/85 scale-110 shadow-lg shadow-brand-primary/10 text-brand-primary'
                 : 'hover:border-brand-primary/45 hover:scale-105 hover:text-brand-primary'
                 }`}
@@ -157,7 +157,7 @@ export default function Navbar() {
 
             <button
               onClick={() => { openPortal(); track(EVENTS.DRAWER_OPEN, { drawer: 'portal' }); }}
-              className="w-10 h-10 rounded-full border border-white/10 hover:border-brand-primary/45 flex items-center justify-center text-brand-textMain hover:text-brand-primary transition-all duration-300 bg-brand-surface/40 backdrop-blur-sm relative"
+              className="w-10 h-10 rounded-full border border-white/10 hover:border-brand-primary/45 flex items-center justify-center text-brand-textMain hover:text-brand-primary transition-all duration-300 bg-brand-surface/50 relative"
               aria-label="Mi Cuenta"
             >
               <UserIcon size={16} />

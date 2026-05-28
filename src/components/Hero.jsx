@@ -1,12 +1,13 @@
 import React, { useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { m, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { m, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import heroBackground from '../assets/bulldog.webp';
 import logo from '../assets/logo.png';
 import { ArrowRightIcon } from './Icons';
 import { kenBurns, EASE } from '../motion/variants';
 
 export default function Hero() {
+  const [hoursOpen, setHoursOpen] = React.useState(false);
   const workingHours = [
     { day: "Domingo", time: "7:00 - 21:00" },
     { day: "Lunes", time: "7:00 - 21:00" },
@@ -55,7 +56,7 @@ export default function Hero() {
       ref={sectionRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full min-h-screen bg-brand-background flex flex-col justify-between items-center pt-32 md:pt-40 pb-12 px-6 md:px-16 overflow-hidden"
+      className="relative w-full min-h-screen bg-brand-background flex flex-col justify-between items-center py-12 md:pt-40 md:pb-12 px-6 md:px-16 overflow-hidden"
     >
 
       {/* ── Cinematic Background — Ken Burns + mouse parallax ── */}
@@ -64,7 +65,7 @@ export default function Hero() {
         <m.img
           src={heroBackground}
           alt="Panna & Pomodoro Cozy Dining Room"
-          className="absolute object-cover filter brightness-[0.7] contrast-[1.05]"
+          className="absolute object-cover filter brightness-[0.8] contrast-[1.05] object-center max-w-none"
           fetchPriority="high"
           style={{
             inset: '-30px',
@@ -77,13 +78,13 @@ export default function Hero() {
           initial="hidden"
           animate="visible"
         />
-        <div className="absolute inset-0 bg-radial-vignette from-transparent via-black/50 to-brand-background" />
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-background/90 via-transparent to-brand-background" />
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-radial-vignette from-transparent via-black/35 to-brand-background" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-background/60 via-transparent to-brand-background" />
+        <div className="absolute inset-0 bg-black/25" />
       </div>
 
       {/* ── Center Block ── */}
-      <div className="relative z-10 my-auto text-center space-y-6 max-w-6xl pt-6">
+      <div className="relative z-10 my-auto text-center space-y-4 md:space-y-6 max-w-6xl pt-4 md:pt-6">
 
         {/* Logo — deepest parallax layer */}
         <m.div
@@ -116,7 +117,7 @@ export default function Hero() {
         {/* ── Main Title — mid layer ── */}
         <div className="space-y-1 select-none">
           <m.h1
-            className="font-brand text-[2.75rem] sm:text-7xl md:text-[6.5rem] lg:text-[8rem] text-brand-textMain font-light leading-none uppercase tracking-tight"
+            className="font-brand text-[2.25rem] sm:text-7xl md:text-[6.5rem] lg:text-[8rem] text-brand-textMain font-light leading-none uppercase tracking-tight"
             style={{ x: titleX, y: titleY }}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -132,7 +133,7 @@ export default function Hero() {
 
         {/* ── CTAs — shallowest parallax layer ── */}
         <m.div
-          className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-10"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 pt-6 md:pt-10"
           style={{ x: ctaX, y: ctaY }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -157,7 +158,7 @@ export default function Hero() {
       </div>
 
       {/* ── Bottom Block: Hours Grid — static, anchors the composition ── */}
-      <div className="relative z-10 w-full max-w-6xl text-center space-y-6 pt-12">
+      <div className="relative z-10 w-full max-w-6xl text-center space-y-6 pt-8 md:pt-12">
         <m.div
           className="space-y-1"
           initial={{ opacity: 0 }}
@@ -170,8 +171,48 @@ export default function Hero() {
           <div className="w-12 h-[1px] bg-brand-primary/20 mx-auto mt-1" />
         </m.div>
 
+        {/* Mobile hours dropdown */}
+        <div className="block md:hidden">
+          <m.button
+            onClick={() => setHoursOpen(!hoursOpen)}
+            className="inline-flex items-center justify-center space-x-2 border border-brand-primary/30 rounded-full px-6 py-2.5 text-[11px] tracking-[0.2em] uppercase text-brand-primary hover:bg-brand-primary/10 transition-all duration-300 transform active:scale-95"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 1.0 }}
+          >
+            <span>{hoursOpen ? 'Ocultar Horarios' : 'Ver Horarios'}</span>
+            <span className={`transform transition-transform duration-500 text-[10px] ${hoursOpen ? 'rotate-180' : ''}`}>
+              &darr;
+            </span>
+          </m.button>
+
+          <AnimatePresence>
+            {hoursOpen && (
+              <m.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.4, ease: EASE.silk }}
+                className="overflow-hidden mt-4 w-full max-w-xs mx-auto bg-brand-surfaceMuted/80 backdrop-blur-md rounded-[2px] border border-white/[0.04] p-4 space-y-2.5 text-left"
+              >
+                {workingHours.map((item, idx) => (
+                  <div key={idx} className="flex justify-between border-b border-white/[0.02] last:border-0 pb-1.5 last:pb-0">
+                    <span className="font-body text-[11px] text-brand-textMuted tracking-[0.15em] uppercase font-semibold">
+                      {item.day}
+                    </span>
+                    <span className="font-body text-[11px] text-brand-textMain font-light tracking-wider">
+                      {item.time}
+                    </span>
+                  </div>
+                ))}
+              </m.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Desktop hours grid */}
         <m.div
-          className="flex overflow-x-auto gap-5 sm:grid sm:grid-cols-4 lg:grid-cols-7 sm:overflow-visible sm:gap-4 lg:gap-2 px-4 max-w-5xl mx-auto pt-1"
+          className="hidden md:flex md:justify-center overflow-x-auto gap-5 sm:grid sm:grid-cols-4 lg:grid-cols-7 sm:overflow-visible sm:gap-4 lg:gap-2 px-4 max-w-5xl mx-auto pt-1"
           style={{ scrollbarWidth: 'none' }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -180,7 +221,7 @@ export default function Hero() {
           {workingHours.map((item, idx) => (
             <div
               key={idx}
-              className="min-w-[76px] shrink-0 sm:min-w-0 sm:shrink space-y-1.5 border-r border-white/[0.04] last:border-r-0 px-2 group"
+              className="min-w-[76px] shrink-0 sm:min-w-0 sm:shrink space-y-1.5 border-r border-white/[0.04] last:border-r-0 px-2 group text-center tabular-nums"
             >
               <p className="font-body text-[12px] text-brand-textMuted tracking-[0.2em] uppercase font-semibold group-hover:text-brand-primary transition-colors duration-300">
                 {item.day}

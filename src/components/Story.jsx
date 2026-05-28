@@ -37,8 +37,6 @@ export default function Story() {
       id="story"
       className="relative bg-brand-background py-14 md:py-20 px-6 md:px-16 overflow-hidden border-t border-white/[0.02]"
     >
-      <div className="absolute top-1/4 left-0 w-96 h-96 bg-brand-primary/5 rounded-full blur-[150px] pointer-events-none select-none" />
-      <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-brand-accent/5 rounded-full blur-[150px] pointer-events-none select-none" />
 
       <BrandWatermark className="right-6 top-1/2 -translate-y-1/2" opacity={0.035} />
 

@@ -39,7 +39,6 @@ export default function ExperienceCards() {
       id="experiences"
       className="bg-brand-background py-14 md:py-20 px-6 md:px-16 relative overflow-hidden border-t border-white/[0.02]"
     >
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-primary/3 rounded-full blur-[180px] pointer-events-none select-none" />
 
       <div className="max-w-7xl mx-auto space-y-16">
 
