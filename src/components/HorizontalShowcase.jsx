@@ -9,13 +9,17 @@ import sourdoughPizza  from '../assets/sourdough_pizza.webp';
 import coffeePour      from '../assets/coffee_pour.webp';
 import menuDish        from '../assets/menu_dish.webp';
 
+// ── EDITABLE: Selección del día (carrusel horizontal) ────────────────────
+// Estos ítems también son agregables al carrito. Mantén el mismo `id` si
+// el ítem ya existe en MenuGrid para que el carrito no duplique productos.
+// Para cambiar imagen: importa el archivo arriba (líneas 4-9) y úsalo aquí.
 const ITEMS = [
-  { id: 'hs-1', tag: 'Firma',      title: 'Tostada Dulce de Masa Madre',   price: 12.00, image: sourdoughToast },
-  { id: 'hs-2', tag: 'Anaeróbico', title: 'Bourbon Naranja — Finca El Ángel', price: 6.50, image: coffeeBourbon  },
-  { id: 'hs-3', tag: 'Especial',   title: 'Pizza Pesto & Camarón',         price: 18.50, image: sourdoughPizza  },
-  { id: 'hs-4', tag: 'Horneado',   title: 'Rol de Canela Artesanal',       price: 5.50,  image: cinnamonRoll   },
-  { id: 'hs-5', tag: 'Premium',    title: 'Heirloom — Finca La Fany',      price: 6.00,  image: coffeePour     },
-  { id: 'hs-6', tag: 'Vegetal',    title: 'Pizza Vegetariana',             price: 16.00, image: menuDish       },
+  { id: 'hs-1', tag: 'Firma',      title: 'Tostada Dulce de Masa Madre',      price: 12.00, image: sourdoughToast }, // ✏️ tag · title · price · image
+  { id: 'hs-2', tag: 'Anaeróbico', title: 'Bourbon Naranja — Finca El Ángel', price: 6.50,  image: coffeeBourbon  },
+  { id: 'hs-3', tag: 'Especial',   title: 'Pizza Pesto & Camarón',            price: 18.50, image: sourdoughPizza  },
+  { id: 'hs-4', tag: 'Horneado',   title: 'Rol de Canela Artesanal',          price: 5.50,  image: cinnamonRoll   },
+  { id: 'hs-5', tag: 'Premium',    title: 'Heirloom — Finca La Fany',         price: 6.00,  image: coffeePour     },
+  { id: 'hs-6', tag: 'Vegetal',    title: 'Pizza Vegetariana',                price: 16.00, image: menuDish       },
 ];
 
 export default function HorizontalShowcase() {

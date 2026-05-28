@@ -6,14 +6,17 @@ import menuDish from '../assets/menu_dish.webp';
 import spaghettiImage from '../assets/spaghetti.webp';
 import { reveal } from '../motion/variants';
 
+// ── EDITABLE: Tarjetas de experiencias ───────────────────────────────────
+// Cada objeto es una tarjeta. Puedes cambiar título, descripción, imagen y tag.
+// Para cambiar la imagen: importa el archivo arriba (líneas 3-8) y úsalo aquí.
 const EXPERIENCES = [
   {
     id: 1,
-    title: "Un Brunch para Disfrutar",
-    subtitle: "Menu de la casa",
-    description: "Un brunch diseñado para deleitar tus sentidos. Servido directamente en nuestra barra privada con explicaciones sensoriales y maridajes de fermentos de autor en cada creación.",
-    image: menuDish,
-    tag: "Todo el dia, Todos los dias",
+    title: "Un Brunch para Disfrutar",           // ✏️ título de la tarjeta
+    subtitle: "Menu de la casa",                  // ✏️ subtítulo dorado
+    description: "Un brunch diseñado para deleitar tus sentidos. Servido directamente en nuestra barra privada con explicaciones sensoriales y maridajes de fermentos de autor en cada creación.", // ✏️ descripción
+    image: menuDish,                              // ✏️ imagen (importar arriba)
+    tag: "Todo el dia, Todos los dias",           // ✏️ etiqueta sobre la imagen
   },
   {
     id: 2,

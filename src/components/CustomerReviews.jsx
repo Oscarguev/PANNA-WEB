@@ -6,17 +6,21 @@ import { useSessionStore } from '../stores/useSessionStore';
 import { track, EVENTS } from '../analytics';
 import { revealFade, EASE } from '../motion/variants';
 
+// ✏️ EDITABLE: puntos que gana el cliente por dejar una reseña
 const PUNTOS_RESEÑA = 50;
 
+// ── EDITABLE: Reseñas iniciales que aparecen antes de que lleguen las reales ─
+// Estas reseñas se guardan en localStorage del usuario. Puedes cambiarlas,
+// agregar más o dejar solo 1-2 para que el resto sea genuino de clientes.
 const INITIAL_CUSTOMER_REVIEWS = [
   {
     id: 101,
-    name: "Carlos Mendoza",
-    rating: 5,
-    comment: "La pizza de masa madre con pesto y camarones tiene una elasticidad y alvéolos que solo se ven en Nápoles. El maridaje sugerido por el sommelier fue perfecto. Se nota el respeto al tiempo de fermentación.",
-    date: "2026-05-24",
-    isMember: true,
-    level: "Forest"
+    name: "Carlos Mendoza",      // ✏️ nombre
+    rating: 5,                   // ✏️ estrellas (1-5)
+    comment: "La pizza de masa madre con pesto y camarones tiene una elasticidad y alvéolos que solo se ven en Nápoles. El maridaje sugerido por el sommelier fue perfecto. Se nota el respeto al tiempo de fermentación.", // ✏️ comentario
+    date: "2026-05-24",          // ✏️ fecha (YYYY-MM-DD)
+    isMember: true,              // ✏️ true = muestra badge del club
+    level: "Forest"              // ✏️ nivel del club (Seed / Sprout / Forest)
   },
   {
     id: 102,

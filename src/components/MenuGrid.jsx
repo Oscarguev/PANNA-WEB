@@ -8,17 +8,24 @@ import menuDish from '../assets/menu_dish.webp';
 import { useCartStore } from '../stores/useCartStore';
 import { track, EVENTS } from '../analytics';
 
+// ── EDITABLE: Menú completo ───────────────────────────────────────────────
+// Cada objeto en `items` es un plato. Puedes:
+//   · Cambiar precios: campo `price` (número, sin $)
+//   · Cambiar imagen:  importa el archivo arriba y úsalo en `image`
+//   · Agregar platos:  copia un objeto y agrega con un `id` nuevo (ej: 'menu-7')
+//   · Agregar categoría: copia un bloque { category, items: [...] } al final
+//   · Cambiar orden:   mueve los objetos de posición
 const CATEGORIZED_MENU = [
   {
-    category: "Brunch & Masa Madre",
+    category: "Brunch & Masa Madre",  // ✏️ nombre de la categoría
     items: [
       {
-        id: 'menu-1',
-        title: "Tostada Dulce de Masa Madre",
-        description: "La hogaza del día cortada gruesa, cubierta sin miedo. Cacahuate natural, fresas, plátano, frutos rojos confitados y granola que suena. El desayuno que realmente llena.",
-        price: 12.00,
-        tag: "Firma",
-        image: sourdoughToast,
+        id: 'menu-1',                 // ⚠️ no cambiar el id si ya está en el carrito
+        title: "Tostada Dulce de Masa Madre",  // ✏️ nombre del plato
+        description: "La hogaza del día cortada gruesa, cubierta sin miedo. Cacahuate natural, fresas, plátano, frutos rojos confitados y granola que suena. El desayuno que realmente llena.", // ✏️ descripción
+        price: 12.00,                 // ✏️ precio en dólares
+        tag: "Firma",                 // ✏️ etiqueta (Firma / Nuevo / Especial / etc.)
+        image: sourdoughToast,        // ✏️ imagen (importar arriba)
       },
       {
         id: 'menu-4',

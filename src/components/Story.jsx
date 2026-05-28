@@ -13,11 +13,13 @@ export default function Story() {
   })
   const panY      = useTransform(scrollYProgress, [0, 1], ['6%', '-6%'])
   const baguetteY = useTransform(scrollYProgress, [0, 1], ['10%', '-10%'])
+  // ── EDITABLE: Los tres pilares de la sección Historia ───────────────────
+  // Cambia num, title y body de cada pilar. Se muestran bajo el titular principal.
   const pillars = [
     {
       num: 'I.',
-      title: 'Panadería & Fermentación Lenta',
-      body: 'Nuestra masa madre pasa 48 horas fermentando antes de entrar al horno. Es un proceso lento, pero es el único que produce la textura y el sabor que buscamos. La diferencia se escucha al partir el pan.',
+      title: 'Panadería & Fermentación Lenta',         // ✏️ título del pilar
+      body: 'Nuestra masa madre pasa 48 horas fermentando antes de entrar al horno. Es un proceso lento, pero es el único que produce la textura y el sabor que buscamos. La diferencia se escucha al partir el pan.',  // ✏️ descripción
     },
     {
       num: 'II.',
@@ -87,11 +89,12 @@ export default function Story() {
             {/* Signature */}
             <div className="pt-6 flex items-center space-x-6">
               <div className="text-left pl-6">
-                <span className="font-brand text-3xl text-brand-primary block">
+                {/* ✏️ EDITABLE: firma al pie de la sección */}
+              <span className="font-brand text-3xl text-brand-primary block">
                   Panna
                 </span>
                 <span className="font-body text-[11px] tracking-[0.25em] text-brand-textMuted/60 uppercase block pt-1">
-                  Artesanal y Fresco · Sonsonate
+                  Artesanal y Fresco · Sonsonate  {/* ✏️ ciudad / tagline */}
                 </span>
               </div>
             </div>

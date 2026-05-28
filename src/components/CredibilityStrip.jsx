@@ -1,10 +1,12 @@
 import logo from '../assets/logo.png';
 
+// ── EDITABLE: Textos del banner deslizante (credibility strip) ───────────
+// Agrega, elimina o cambia cualquier texto. Aparece en bucle bajo el hero.
 const ITEMS = [
-  'Est. 2018 — Sonsonate, El Salvador',
+  'Est. 2018 — Sonsonate, El Salvador',       // ✏️ año de fundación / ciudad
   'Masa Madre Fermentada 48 Horas',
   'Café de Especialidad — Proceso Natural Anaeróbico',
-  'Finca El Ángel · Rafael Silva · Chalchuapa',
+  'Finca El Ángel · Rafael Silva · Chalchuapa', // ✏️ nombre de finca y productor
   'Horneado Artesanal Diariamente',
   'Finca La Fany · Bicafe · El Salvador',
   'Pizza Napolitana a la Piedra',

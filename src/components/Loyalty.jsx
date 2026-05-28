@@ -18,14 +18,18 @@ export default function Loyalty() {
     loggedIn: false
   };
 
+  // ── EDITABLE: Niveles del Club PANNA y sus beneficios ────────────────────
+  // Cambia los beneficios (perks), rangos de puntos y nombres de los niveles.
+  // ⚠️ Si cambias los umbrales de puntos, actualiza también la función
+  //    getProgressWidth() más abajo para que la barra de progreso sea correcta.
   const tiers = {
     seed: {
-      name: "Seed (Semilla)",
-      range: "0 &mdash; 499 Puntos",
+      name: "Seed (Semilla)",              // ✏️ nombre del nivel
+      range: "0 &mdash; 499 Puntos",      // ✏️ rango de puntos (solo visual)
       perks: [
-        "Café espresso gratis en tu cumpleaños.",
-        "Prioridad de reserva en nuestra terraza íntima.",
-        "Acceso preferente a catas secretas."
+        "Café espresso gratis en tu cumpleaños.",         // ✏️ beneficio 1
+        "Prioridad de reserva en nuestra terraza íntima.", // ✏️ beneficio 2
+        "Acceso preferente a catas secretas."              // ✏️ beneficio 3
       ]
     },
     sprout: {

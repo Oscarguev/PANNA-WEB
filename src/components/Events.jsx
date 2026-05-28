@@ -7,17 +7,21 @@ import chefPlating from '../assets/chef_plating.webp';
 import coffeePour from '../assets/coffee_pour.webp';
 import spaghettiImage from '../assets/spaghetti.webp';
 
+// ── EDITABLE: Eventos y talleres ─────────────────────────────────────────
+// Cada objeto es una tarjeta de evento. Puedes cambiar fecha, precio, cupos
+// y descripción. Para agregar un evento: copia un objeto con un `id` nuevo.
+// ⚠️ `spotsLeft` es solo visual — no descuenta automáticamente al comprar.
 const EVENTS_DATA = [
   {
     id: 'e1',
-    title: "Coffee Cupping & Tasting Masterclass",
-    date: "14 de Junio, 2026",
-    time: "10:00 AM &mdash; 12:30 PM",
-    price: 25.00,
-    image: coffeePour,
-    category: "Workshop Barismo",
-    description: "Aprende el arte de la catación profesional. Analizaremos fragancias, aromas, acidez y cuerpo de 4 orígenes únicos de café de especialidad.",
-    spotsLeft: 4
+    title: "Coffee Cupping & Tasting Masterclass",  // ✏️ nombre del evento
+    date: "14 de Junio, 2026",                       // ✏️ fecha (texto libre)
+    time: "10:00 AM &mdash; 12:30 PM",               // ✏️ horario
+    price: 25.00,                                    // ✏️ precio del ticket
+    image: coffeePour,                               // ✏️ imagen (importar arriba)
+    category: "Workshop Barismo",                    // ✏️ etiqueta de categoría
+    description: "Aprende el arte de la catación profesional. Analizaremos fragancias, aromas, acidez y cuerpo de 4 orígenes únicos de café de especialidad.", // ✏️ descripción
+    spotsLeft: 4                                     // ✏️ cupos disponibles (solo visual)
   },
   {
     id: 'e2',

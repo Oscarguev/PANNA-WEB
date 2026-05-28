@@ -8,14 +8,16 @@ import { kenBurns, EASE } from '../motion/variants';
 
 export default function Hero() {
   const [hoursOpen, setHoursOpen] = React.useState(false);
+  // ── EDITABLE: Horarios del salón ─────────────────────────────────────────
+  // Cambia los días y horas aquí. Se muestran en el hero y en ChefCTA.jsx.
   const workingHours = [
-    { day: "Domingo", time: "7:00 - 21:00" },
-    { day: "Lunes", time: "7:00 - 21:00" },
-    { day: "Martes", time: "7:00 - 21:00" },
+    { day: "Domingo",   time: "7:00 - 21:00" }, // ✏️ hora de cierre
+    { day: "Lunes",     time: "7:00 - 21:00" },
+    { day: "Martes",    time: "7:00 - 21:00" },
     { day: "Miércoles", time: "7:00 - 21:00" },
-    { day: "Jueves", time: "7:00 - 21:00" },
-    { day: "Viernes", time: "7:00 - 22:00" },
-    { day: "Sábado", time: "7:00 - 22:00" },
+    { day: "Jueves",    time: "7:00 - 21:00" },
+    { day: "Viernes",   time: "7:00 - 22:00" },
+    { day: "Sábado",    time: "7:00 - 22:00" },
   ];
 
   // ── Mouse parallax setup ──────────────────────────────────────────────────
@@ -111,6 +113,7 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.4, ease: EASE.editorial }}
         >
+          {/* ✏️ EDITABLE: tagline debajo del logo */}
           Una Verdadera Experiencia Artesanal
         </m.span>
 

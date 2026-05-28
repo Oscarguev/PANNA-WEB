@@ -139,12 +139,14 @@ export default function ChefCTA() {
               </div>
               <div className="text-left space-y-1">
                 <span className="text-brand-textMain font-semibold block text-[11px] tracking-widest">DIRECCIÓN</span>
+                {/* ✏️ EDITABLE: link de Google Maps — reemplaza con el del local */}
                 <a
                   href="https://www.google.com/maps/place/Panna+%26+Pomodoro/@13.7229219,-89.7212373,17z/data=!4m14!1m7!3m6!1s0x8f62b7f35601a705:0x2652f9f63206f77b!2sPanna+%26+Pomodoro!8m2!3d13.7229193!4d-89.7190504!16s%2Fg%2F11f4105vb3!3m5!1s0x8f62b7f35601a705:0x2652f9f63206f77b!8m2!3d13.7229193!4d-89.7190504!16s%2Fg%2F11f4105vb3?entry=ttu&g_ep=EgoyMDI2MDUyMC4wIKXMDSoASAFQAw%3D%3D"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-brand-primary transition-colors duration-300 normal-case not-italic leading-relaxed block text-[14px] font-body text-brand-textMuted font-light"
                 >
+                  {/* ✏️ EDITABLE: dirección física */}
                   Blvd Las Palmeras, CC El Arco<br />Sonsonate, El Salvador
                 </a>
               </div>
@@ -156,6 +158,7 @@ export default function ChefCTA() {
               </div>
               <div className="text-left space-y-1">
                 <span className="text-brand-textMain font-semibold block text-[11px] tracking-widest">TELÉFONO</span>
+                {/* ✏️ EDITABLE: teléfono (formato +503XXXXXXXX) — cambia también en Footer.jsx */}
                 <a
                   href="tel:+50324511000"
                   className="hover:text-brand-primary transition-colors duration-300 leading-relaxed block font-light text-[14px] tracking-wider text-brand-textMuted"
@@ -172,6 +175,7 @@ export default function ChefCTA() {
               <div className="text-left space-y-1">
                 <span className="text-brand-textMain font-semibold block text-[11px] tracking-widest">SERVICIO</span>
                 <p className="normal-case leading-relaxed font-light text-[14px] tracking-wider text-brand-textMuted">
+                  {/* ✏️ EDITABLE: horarios del salón (también en Hero.jsx) */}
                   Dom &mdash; Jue: 7:00 &mdash; 21:00<br />
                   Vie &mdash; Sáb: 7:00 &mdash; 22:00
                 </p>

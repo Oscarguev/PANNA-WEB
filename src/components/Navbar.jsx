@@ -95,6 +95,7 @@ export default function Navbar() {
           </Link>
 
           {/* ── Center: Nav Links (Desktop) ── */}
+          {/* ✏️ EDITABLE: links del menú de navegación — cambia el label o el href */}
           <div className="hidden lg:flex items-center space-x-10 text-[11px] font-body tracking-[0.25em] uppercase text-brand-textMuted">
             <a href="/#story" className="luxury-underline hover:text-brand-textMain transition-colors duration-500">
               Historia

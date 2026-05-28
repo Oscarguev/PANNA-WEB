@@ -9,14 +9,19 @@ import sourdoughToast from '../assets/sourdough_toast.webp';
 import sourdoughPizza from '../assets/sourdough_pizza.webp';
 import imagePan from '../assets/pan.webp';
 
+// ── EDITABLE: Galería de fotos ────────────────────────────────────────────
+// Cada objeto es una foto en la grilla. Puedes cambiar imagen, categoría,
+// título y descripción del lightbox. El campo `aspect` controla el tamaño
+// de la celda — no lo cambies a menos que quieras rediseñar la grilla.
+// Para agregar una imagen: ponla en src/assets/, impórtala arriba y úsala aquí.
 const GALLERY_ITEMS = [
   {
     id: 1,
-    image: sourdoughToast,
-    category: "Brunch",
-    title: "Tostada Dulce de Masa Madre",
-    aspect: "col-span-12 md:col-span-8 aspect-[16/9] md:aspect-[16/10]",
-    desc: "Rebanada gruesa de nuestra hogaza artesana, crema de cacahuate natural, fresas frescas, plátano laminado, frutos rojos confitados y granola crujiente."
+    image: sourdoughToast,    // ✏️ imagen (importar arriba)
+    category: "Brunch",       // ✏️ categoría en hover
+    title: "Tostada Dulce de Masa Madre",           // ✏️ título en hover y lightbox
+    aspect: "col-span-12 md:col-span-8 aspect-[16/9] md:aspect-[16/10]", // tamaño celda
+    desc: "Rebanada gruesa de nuestra hogaza artesana, crema de cacahuate natural, fresas frescas, plátano laminado, frutos rojos confitados y granola crujiente." // ✏️ descripción lightbox
   },
   {
     id: 2,

@@ -42,6 +42,7 @@ export default function Footer() {
             </p>
             <div className="flex items-center space-x-3 pt-2">
               {/* TODO: actualizar con handle real */}
+              {/* ✏️ EDITABLE: redes sociales — cambia el href con tu handle real */}
               <a href="https://instagram.com/pannapomodoro.sv" target="_blank" rel="noopener noreferrer"
                 className="w-8 h-8 rounded-full border border-white/5 hover:border-brand-primary flex items-center justify-center text-brand-textMuted hover:text-brand-primary bg-brand-surface/40 transition-all duration-300"
                 aria-label="Instagram">
@@ -81,12 +82,14 @@ export default function Footer() {
                   className="hover:text-brand-primary transition-all duration-300 flex items-start gap-2 text-[14px] font-body text-brand-textMuted leading-relaxed font-light"
                 >
                   <MapPinIcon size={14} className="mt-1 shrink-0 text-brand-primary/60" />
+                  {/* ✏️ EDITABLE: dirección (también en ChefCTA.jsx) */}
                   <span>Blvd Las Palmeras, CC El Arco<br />Sonsonate, El Salvador</span>
                 </a>
               </div>
 
               <div className="space-y-1">
                 <span className="font-body text-brand-textMain font-medium block text-[11px] tracking-wider uppercase">TELÉFONO</span>
+                {/* ✏️ EDITABLE: teléfono — cambia también en ChefCTA.jsx */}
                 <a
                   href="tel:+50324511000"
                   className="hover:text-brand-primary transition-all duration-300 text-[14px] font-body text-brand-textMuted leading-relaxed font-light tracking-wider"
@@ -105,6 +108,7 @@ export default function Footer() {
             <div className="space-y-4 text-small font-body text-brand-textMuted leading-relaxed font-light">
               <div className="space-y-1">
                 <span className="font-body text-brand-textMain font-medium block text-[11px] tracking-wider uppercase">SALÓN PRINCIPAL</span>
+                {/* ✏️ EDITABLE: horarios (también en Hero.jsx y ChefCTA.jsx) */}
                 <p>Dom &mdash; Jue: 7:00 &mdash; 21:00</p>
                 <p>Vie &mdash; Sáb: 7:00 &mdash; 22:00</p>
               </div>
@@ -123,6 +127,7 @@ export default function Footer() {
         {/* Lower copyright bar */}
         <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 text-[12px] font-body tracking-[0.2em] uppercase text-brand-textMuted/45">
           <div className="text-center md:text-left">
+            {/* ✏️ EDITABLE: año de copyright */}
             Panna &amp; Pomodoro Group &copy; 2026. Todos los derechos reservados.
           </div>
 
