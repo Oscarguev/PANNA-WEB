@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { m, AnimatePresence } from 'framer-motion';
-import { PhoneIcon, MapPinIcon, MenuIcon, CloseIcon, CartIcon, UserIcon } from './Icons';
+import { PhoneIcon, MapPinIcon, MenuIcon, CloseIcon } from './Icons';
 import { track, EVENTS } from '../analytics';
 import logo from '../assets/logo.png';
 import { useCartStore, selectCartCount } from '../stores/useCartStore';
 import { useUIStore } from '../stores/useUIStore';
 import { useSessionStore } from '../stores/useSessionStore';
-import { useBrandTransform } from '../motion/useBrandTransform';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import { EASE } from '../motion/variants';
 
 export default function Navbar() {
@@ -20,11 +20,34 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [pulse, setPulse] = useState(false);
+  const [cartaOpen, setCartaOpen] = useState(false);
+  const mobileMenuRef = useRef(null);
+  const cartaTriggerRef = useRef(null);
+  const cartaPanelRef = useRef(null);
 
-  const { navBrandOpacity } = useBrandTransform();
+  useFocusTrap(mobileMenuOpen, () => setMobileMenuOpen(false), mobileMenuRef);
 
+  // Cerrar dropdown Carta: click fuera, tecla Esc
+  useEffect(() => {
+    if (!cartaOpen) return;
+    const onClick = (e) => {
+      if (cartaTriggerRef.current?.contains(e.target)) return;
+      if (cartaPanelRef.current?.contains(e.target)) return;
+      setCartaOpen(false);
+    };
+    const onKey = (e) => { if (e.key === 'Escape') setCartaOpen(false); };
+    document.addEventListener('mousedown', onClick);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onClick);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [cartaOpen]);
+
+  // Pulso visual cuando cambia el contador del carrito
   useEffect(() => {
     if (cartCount > 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPulse(true);
       const timer = setTimeout(() => setPulse(false), 500);
       return () => clearTimeout(timer);
@@ -39,177 +62,203 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(() => { setMobileMenuOpen(false); }, [pathname]);
+
+  const cartaSubcats = [
+    { label: 'Entrantes', cat: 'entrantes' },
+    { label: 'Pasta',     cat: 'pasta' },
+    { label: 'Pizza',     cat: 'pizza' },
+    { label: 'Postre',    cat: 'postre' },
+  ];
+
+  // Reorden por prioridad visual (P7):
+  // Primarios: Carta, Reservar, Ubicación, Nosotros
+  // Secundarios: Café, Club, Bolsa, Entrar (en actions)
+  const navLinks = [
+    { label: 'Carta',     to: '/menu',      hasDropdown: true,  primary: true },
+    { label: 'Ubicación', to: '/#location', hasDropdown: false, primary: true, anchor: true },
+    { label: 'Nosotros',  to: '/#story',    hasDropdown: false, primary: true, anchor: true },
+    { label: 'Café',      to: '/market',    hasDropdown: false, primary: false },
+    { label: 'Club',      to: '/club',      hasDropdown: false, primary: false },
+  ];
+
   return (
     <>
-      <m.nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 py-6 px-6 md:px-16 ${
-          isScrolled
-            ? 'bg-brand-background/80 backdrop-blur-xl border-b border-white/[0.03] py-4 shadow-2xl'
-            : 'bg-transparent'
-        }`}
-        style={{ opacity: navBrandOpacity }}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] focus:bg-brand-textMain focus:text-brand-background focus:px-4 focus:py-2 focus:text-xs focus:uppercase focus:font-bold focus:rounded-full"
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        Saltar al contenido principal
+      </a>
 
-          {/* ── Left: Brand Logo ── */}
-          <Link to="/" className="group flex items-center relative z-50">
+      {/*
+        Header siempre opaco: fondo crema + texto carbón.
+        Sin estado transparente: integra visualmente con el hero fotografico
+        (que ahora tambien usa el hero del sitio, sin marco rojo).
+      */}
+      <m.nav
+        aria-label="Navegación principal"
+        className="fixed top-0 left-0 right-0 z-50 bg-brand-background border-b border-brand-border transition-shadow duration-300"
+        style={{
+          paddingTop: 'calc(1rem + env(safe-area-inset-top))',
+          paddingBottom: '1rem',
+          paddingLeft: 'clamp(1.5rem, 5vw, 4rem)',
+          paddingRight: 'clamp(1.5rem, 5vw, 4rem)',
+          boxShadow: isScrolled ? '0 2px 24px rgba(0,0,0,0.04)' : 'none',
+        }}
+      >
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-8">
 
-            {/* Logo — height transitions between full/compact states */}
-            <m.img
+          {/* Brand */}
+          <Link to="/" className="flex items-center gap-3 relative z-50">
+            <img
               src={logo}
               fetchPriority="high"
-              alt="Panna & Pomodoro Logo"
-              className="object-contain mr-3 mix-blend-screen"
-              animate={isScrolled
-                ? { height: '1.75rem' }
-                : { height: '2rem' }
-              }
-              initial={{ filter: 'brightness(1.1)' }}
-              whileHover={{ rotate: 15, scale: 1.08, filter: 'brightness(1.8) drop-shadow(0 0 10px rgba(255,220,50,0.9))' }}
-              whileTap={{ scale: 0.95, filter: 'brightness(2.2) drop-shadow(0 0 18px rgba(255,220,50,1))' }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-              style={{ width: 'auto' }}
+              alt=""
+              width={40}
+              height={40}
+              className="object-contain h-9 md:h-10 w-auto"
+              style={{ width: 'auto', filter: 'brightness(0) saturate(100%)', opacity: 0.95 }}
             />
-
-            <div className="flex flex-col items-start">
-              {/* Brand name — static, no letter-spacing animation */}
-              <span className="font-brand text-[13px] md:text-[14px] uppercase text-brand-textMain font-normal tracking-[0.08em] transition-colors duration-500 group-hover:text-brand-primary">
-                PANNA &amp; POMODORO
-              </span>
-
-              {/* Tagline — opacity only toggle */}
-              <AnimatePresence>
-                {!isScrolled && (
-                  <m.span
-                    className="font-body text-[11px] tracking-[0.35em] text-brand-primary uppercase font-bold block pt-0.5"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.15, ease: 'easeOut' }}
-                  >
-                    ARTESANAL Y FRESCO
-                  </m.span>
-                )}
-              </AnimatePresence>
-            </div>
+            <span className="sr-only">Panna &amp; Pomodoro — Inicio</span>
+            <span aria-hidden="true" className="hidden sm:inline font-wordmark uppercase text-[13px] leading-none tracking-[0.02em] text-brand-textMain whitespace-nowrap">
+              Panna &amp; Pomodoro
+            </span>
           </Link>
 
-          {/* ── Center: Nav Links (Desktop) ── */}
-          {/* ✏️ EDITABLE: links del menú de navegación — cambia el label o el href */}
-          <div className="hidden lg:flex items-center space-x-10 text-[11px] font-body tracking-[0.25em] uppercase text-brand-textMuted">
-            <a href="/#story" className="luxury-underline hover:text-brand-textMain transition-colors duration-500">
-              Historia
-            </a>
-            <a href="/#experiences" className="luxury-underline hover:text-brand-textMain transition-colors duration-500">
-              Experiencias
-            </a>
-            <NavLink
-              to="/menu"
-              className={({ isActive }) =>
-                `luxury-underline transition-colors duration-500 ${isActive ? 'text-brand-primary' : 'hover:text-brand-textMain'}`
-              }
-            >
-              Menú
-            </NavLink>
-            <NavLink
-              to="/market"
-              className={({ isActive }) =>
-                `luxury-underline transition-colors duration-500 ${isActive ? 'text-brand-primary' : 'hover:text-brand-textMain'}`
-              }
-            >
-              Tienda Café
-            </NavLink>
-            <NavLink
-              to="/club"
-              className={({ isActive }) =>
-                `luxury-underline transition-colors duration-500 ${isActive ? 'text-brand-primary' : 'hover:text-brand-textMain'}`
-              }
-            >
-              Club
-            </NavLink>
-            <NavLink
-              to="/events"
-              className={({ isActive }) =>
-                `luxury-underline transition-colors duration-500 ${isActive ? 'text-brand-primary' : 'hover:text-brand-textMain'}`
-              }
-            >
-              Eventos
-            </NavLink>
-          </div>
+          {/* Center: Nav Links */}
+          <ul className="hidden lg:flex items-center gap-7 text-[13px] font-medium text-brand-textMain">
+            {navLinks.map((link) => (
+              <li
+                key={link.to + link.label}
+                className="relative"
+                onMouseEnter={link.hasDropdown ? () => setCartaOpen(true) : undefined}
+                onMouseLeave={link.hasDropdown ? () => setCartaOpen(false) : undefined}
+              >
+                {link.hasDropdown ? (
+                  <>
+                    <button
+                      ref={cartaTriggerRef}
+                      type="button"
+                      aria-haspopup="menu"
+                      aria-expanded={cartaOpen}
+                      aria-controls="carta-menu"
+                      onFocus={() => setCartaOpen(true)}
+                      onClick={() => setCartaOpen((v) => !v)}
+                      className="group inline-flex items-center gap-1 min-h-[44px] pr-2 transition-colors duration-base hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                    >
+                      <span className="luxury-underline inline-block">{link.label}</span>
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 10 10"
+                        aria-hidden="true"
+                        className={`transition-transform duration-200 ${cartaOpen ? 'rotate-180' : ''}`}
+                      >
+                        <path d="M2 4 L5 7 L8 4" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </button>
 
-          {/* ── Right: Actions (Desktop) ── */}
-          <div className="hidden lg:flex items-center space-x-6">
+                    <AnimatePresence>
+                      {cartaOpen && (
+                        <m.div
+                          ref={cartaPanelRef}
+                          id="carta-menu"
+                          role="menu"
+                          aria-label="Subcategorías de carta"
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -8 }}
+                          transition={{ duration: 0.20, ease: EASE.editorial }}
+                          className="absolute top-full left-0 mt-2 min-w-[480px] bg-brand-background border border-brand-border shadow-[0_8px_32px_rgba(0,0,0,0.08)] py-5 z-50"
+                        >
+                          <div className="grid grid-cols-2 gap-x-8 gap-y-2 px-6">
+                            {cartaSubcats.map((sub) => (
+                              <Link
+                                key={sub.cat}
+                                to={`${link.to}?cat=${sub.cat}`}
+                                role="menuitem"
+                                onClick={() => setCartaOpen(false)}
+                                className="min-h-[40px] inline-flex items-center text-[14px] font-normal text-brand-textMain hover:text-brand-primary transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary luxury-underline"
+                              >
+                                {sub.label}
+                              </Link>
+                            ))}
+                            <Link
+                              to={link.to}
+                              role="menuitem"
+                              onClick={() => setCartaOpen(false)}
+                              className="col-span-2 mt-2 pt-3 border-t border-brand-border min-h-[40px] inline-flex items-center text-[12px] font-sans uppercase tracking-[0.16em] text-brand-textSubtle hover:text-brand-primary transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                            >
+                              Ver toda la carta
+                              <span className="ml-2" aria-hidden="true">→</span>
+                            </Link>
+                          </div>
+                        </m.div>
+                      )}
+                    </AnimatePresence>
+                  </>
+                ) : link.anchor ? (
+                  <a
+                    href={link.to}
+                    className="inline-flex items-center min-h-[44px] transition-colors duration-base hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                  >
+                    <span className="luxury-underline inline-block">{link.label}</span>
+                  </a>
+                ) : (
+                  <NavLink
+                    to={link.to}
+                    className={({ isActive }) =>
+                      `inline-flex items-center min-h-[44px] transition-colors duration-base hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary ${isActive ? 'text-brand-textMain border-b-2 border-brand-cta pb-0.5' : ''}`
+                    }
+                  >
+                    <span className="luxury-underline inline-block">{link.label}</span>
+                  </NavLink>
+                )}
+              </li>
+            ))}
+          </ul>
 
+          {/* Right: Actions */}
+          <div className="flex items-center gap-1 lg:gap-3">
+            {/* Secundarios — más discretos */}
             <button
               onClick={() => { openCart(); track(EVENTS.DRAWER_OPEN, { drawer: 'cart' }); }}
-              className={`w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-brand-textMain bg-brand-surface/50 relative transition-all duration-500 ${pulse
-                ? 'border-brand-primary/85 scale-110 shadow-lg shadow-brand-primary/10 text-brand-primary'
-                : 'hover:border-brand-primary/45 hover:scale-105 hover:text-brand-primary'
-                }`}
-              aria-label="Ver Carrito"
+              className={`hidden md:inline-flex relative items-center min-h-[44px] text-[12px] font-normal transition-colors duration-base px-2 text-brand-textMuted hover:text-brand-textMain focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary ${pulse ? 'text-brand-accent' : ''}`}
+              aria-label={`Bolsa${cartCount > 0 ? `, ${cartCount} ${cartCount === 1 ? 'artículo' : 'artículos'}` : ''}`}
             >
-              <CartIcon size={16} />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-brand-primary text-black font-body text-[11px] font-bold flex items-center justify-center border-2 border-brand-background animate-pulse">
-                  {cartCount}
-                </span>
-              )}
+              Bolsa{cartCount > 0 ? ` (${cartCount})` : ''}
             </button>
 
             <button
               onClick={() => { openPortal(); track(EVENTS.DRAWER_OPEN, { drawer: 'portal' }); }}
-              className="w-10 h-10 rounded-full border border-white/10 hover:border-brand-primary/45 flex items-center justify-center text-brand-textMain hover:text-brand-primary transition-all duration-300 bg-brand-surface/50 relative"
-              aria-label="Mi Cuenta"
+              className="hidden md:inline-flex items-center min-h-[44px] gap-2 text-[12px] font-normal text-brand-textMuted hover:text-brand-textMain transition-colors duration-base px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+              aria-label={`${loggedIn ? 'Cuenta' : 'Entrar'}${loggedIn ? ', sesión activa' : ''}`}
             >
-              <UserIcon size={16} />
-              {loggedIn && (
-                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-brand-primary border border-brand-background" />
-              )}
+              {loggedIn && <span className="w-1.5 h-1.5 rounded-full bg-brand-success" aria-hidden="true" />}
+              {loggedIn ? 'Cuenta' : 'Entrar'}
             </button>
 
+            {/* Primario destacado */}
             <Link
               to="/reservar"
-              className="px-6 py-3 border border-brand-primary/35 text-brand-textMain hover:border-brand-primary hover:bg-brand-primary hover:text-black font-body tracking-[0.2em] text-[11px] uppercase transition-all duration-700 rounded-full font-semibold bg-black/30 backdrop-blur-sm"
+              className="inline-flex items-center min-h-[40px] md:min-h-[44px] text-[12px] md:text-[13px] font-semibold tracking-wide uppercase px-4 md:px-5 py-2 transition-all duration-base bg-brand-cta text-white hover:bg-brand-ctaHover border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cta focus-visible:ring-offset-2 focus-visible:ring-offset-brand-background"
             >
-              Reservar Mesa
+              Reservar
             </Link>
-          </div>
-
-          {/* ── Mobile: Action Buttons ── */}
-          <div className="flex items-center space-x-3.5 lg:hidden relative z-50">
-            <button
-              onClick={() => { openCart(); track(EVENTS.DRAWER_OPEN, { drawer: 'cart' }); }}
-              className={`w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-brand-textMain bg-brand-surface/40 relative transition-all duration-500 ${pulse ? 'border-brand-primary/85 scale-110 text-brand-primary' : ''}`}
-              aria-label="Ver Carrito"
-            >
-              <CartIcon size={14} />
-              {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4.5 h-4.5 rounded-full bg-brand-primary text-black font-body text-[11px] font-bold flex items-center justify-center border border-brand-background">
-                  {cartCount}
-                </span>
-              )}
-            </button>
-
-            <button
-              onClick={() => { openPortal(); track(EVENTS.DRAWER_OPEN, { drawer: 'portal' }); }}
-              className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-brand-textMain bg-brand-surface/40 relative"
-              aria-label="Mi Cuenta"
-            >
-              <UserIcon size={14} />
-              {loggedIn && (
-                <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-brand-primary border border-brand-background" />
-              )}
-            </button>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-brand-textMain bg-brand-surface/40"
-              aria-label="Toggle Menu"
+              className="lg:hidden w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center text-brand-textMain focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+              aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
             >
               <AnimatePresence mode="wait">
                 {mobileMenuOpen
-                  ? <m.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.25 }}><CloseIcon size={16} /></m.div>
-                  : <m.div key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.25 }}><MenuIcon size={16} /></m.div>
+                  ? <m.span key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}><CloseIcon size={18} /></m.span>
+                  : <m.span key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}><MenuIcon size={18} /></m.span>
                 }
               </AnimatePresence>
             </button>
@@ -218,73 +267,87 @@ export default function Navbar() {
         </div>
       </m.nav>
 
-      {/* ── Mobile Full-Screen Overlay ── */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <m.div
-            className="fixed inset-0 z-40 bg-brand-background lg:hidden flex flex-col justify-between p-8 pt-32"
-            initial={{ opacity: 0, y: '-100%' }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: '-100%' }}
-            transition={{ duration: 0.55, ease: EASE.silk }}
+            id="mobile-menu"
+            ref={mobileMenuRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menú de navegación"
+            tabIndex={-1}
+            className="fixed inset-0 z-40 bg-brand-background lg:hidden flex flex-col justify-between px-8 pt-28 pb-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: EASE.silk }}
           >
-            <div className="absolute -top-20 -left-20 w-80 h-80 bg-brand-primary/5 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-brand-accent/5 rounded-full blur-[100px] pointer-events-none" />
-
-            {/* Navigation Links — no stagger */}
-            <div className="flex flex-col space-y-5 text-left relative z-10 pl-4 border-l border-brand-primary/20">
-              <span className="font-body text-[11px] tracking-[0.3em] uppercase text-brand-primary block font-semibold mb-1">
-                Explora P&amp;P
-              </span>
-
+            <ul className="space-y-5 text-left">
+              <li>
+                <span className="text-[12px] text-brand-textSubtle">Explora</span>
+              </li>
+              {cartCount > 0 && (
+                <li>
+                  <button
+                    onClick={() => { setMobileMenuOpen(false); openCart(); track(EVENTS.DRAWER_OPEN, { drawer: 'cart' }); }}
+                    className="min-h-[44px] inline-flex items-center font-display text-2xl font-light text-brand-textMain hover:text-brand-primary transition-colors duration-base rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-background"
+                  >
+                    Bolsa ({cartCount})
+                  </button>
+                </li>
+              )}
+              <li>
+                <button
+                  onClick={() => { setMobileMenuOpen(false); openPortal(); track(EVENTS.DRAWER_OPEN, { drawer: 'portal' }); }}
+                  className="min-h-[44px] inline-flex items-center font-display text-2xl font-light text-brand-textMain hover:text-brand-primary transition-colors duration-base rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-background"
+                >
+                  {loggedIn ? 'Mi cuenta' : 'Iniciar sesión'}
+                </button>
+              </li>
               {[
-                { label: 'Nuestra Historia',          href: '/#story',    type: 'anchor' },
-                { label: 'Experiencias',               href: '/#experiences', type: 'anchor' },
-                { label: 'El Menú del Chef',           href: '/menu',      type: 'link' },
-                { label: 'Tienda Specialty Coffee',    href: '/market',    type: 'link' },
-                { label: 'Club PANNA Rewards',         href: '/club',      type: 'link' },
-                { label: 'Próximos Eventos',           href: '/events',    type: 'link' },
-                { label: 'Reservar Mesa',              href: '/reservar',  type: 'link', primary: true },
+                { label: 'Carta',         to: '/menu' },
+                { label: 'Ubicación',     to: '/#location' },
+                { label: 'Nosotros',      to: '/#story' },
+                { label: 'Café & Tienda', to: '/market' },
+                { label: 'Club PANNA',    to: '/club' },
+                { label: 'Eventos',       to: '/events' },
+                { label: 'Reservar mesa', to: '/reservar' },
               ].map((item) => (
-                <div key={item.href}>
-                  {item.type === 'anchor' ? (
+                <li key={item.label}>
+                  {item.to.startsWith('/#') ? (
                     <a
-                      href={item.href}
+                      href={item.to}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`font-display text-2xl font-light hover:text-brand-primary transition-colors duration-300 ${item.primary ? 'text-brand-primary' : 'text-brand-textMain'}`}
+                      className="min-h-[44px] inline-flex items-center font-display text-2xl font-light text-brand-textMain hover:text-brand-primary transition-colors duration-base rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-background"
                     >
                       {item.label}
                     </a>
                   ) : (
                     <Link
-                      to={item.href}
+                      to={item.to}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`font-display text-2xl font-light hover:text-brand-primary transition-colors duration-300 ${item.primary ? 'text-brand-primary' : 'text-brand-textMain'}`}
+                      className="min-h-[44px] inline-flex items-center font-display text-2xl font-light text-brand-textMain hover:text-brand-primary transition-colors duration-base rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-background"
                     >
                       {item.label}
                     </Link>
                   )}
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
 
-            {/* Footer Details */}
-            <div className="space-y-6 pt-6 border-t border-white/5 relative z-10">
-              <div className="grid grid-cols-1 gap-3 text-[11px] font-body tracking-[0.2em] text-brand-textMuted uppercase">
-                <div className="flex items-center space-x-3">
-                  <MapPinIcon size={14} className="text-brand-primary" />
-                  <span className="leading-relaxed">Blvd Las Palmeras, CC El Arco</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <PhoneIcon size={14} className="text-brand-primary" />
-                  <a href="tel:+50324511000" className="hover:text-brand-primary transition-all">
-                    Llamar: 2451-1000
-                  </a>
-                </div>
+            <div className="space-y-3 pt-8 border-t border-brand-border text-[13px] text-brand-textMain">
+              <div className="flex items-center gap-2">
+                <MapPinIcon size={14} className="text-brand-primary shrink-0" aria-hidden="true" />
+                <span>Blvd Las Palmeras, CC El Arco</span>
               </div>
-              <div className="text-[11px] font-body tracking-[0.25em] text-brand-textMuted/40 uppercase text-left">
-                &copy; 2018 Panna &amp; Pomodoro.
+              <div className="flex items-center gap-2">
+                <PhoneIcon size={14} className="text-brand-primary shrink-0" aria-hidden="true" />
+                <a href="tel:+50324511000" className="hover:text-brand-primary transition-colors duration-base tabular-nums rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-background">
+                  2451-1000
+                </a>
               </div>
+              <p className="text-brand-textSubtle pt-2">© Panna &amp; Pomodoro, 2018.</p>
             </div>
           </m.div>
         )}
