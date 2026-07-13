@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { m, useReducedMotion } from 'framer-motion';
 import { useEffect } from 'react';
-import pizzaHero from '../assets/sourdough_pizza.webp';
+import heroBackground from '../assets/bulldog.webp';
 import { EASE } from '../motion/variants';
 
 /**
@@ -88,7 +88,7 @@ export default function Hero() {
         }}
       >
         <img
-          src={pizzaHero}
+          src={heroBackground}
           alt=""
           aria-hidden="true"
           width={2000}
