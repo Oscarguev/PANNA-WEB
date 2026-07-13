@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { TagIcon } from './Icons';
 import { useCartStore } from '../stores/useCartStore';
 import { useUIStore } from '../stores/useUIStore';
@@ -9,23 +9,20 @@ import coffeeBags from '../assets/coffee_bags.webp';
 import cinnamonRoll from '../assets/cinnamon_roll.webp';
 import sourdoughToast from '../assets/sourdough_toast.webp';
 import sourdoughPizza from '../assets/sourdough_pizza.webp';
-import menuDish from '../assets/menu_dish.webp';
 import coffeePour from '../assets/coffee_pour.webp';
-import chefPlating from '../assets/chef_plating.webp';
 
-// Fallback images por categoría cuando no hay imagen_url
+// Solo assets auténticos Panna. Cero referencias a chef_plating o menu_dish.
 const FALLBACK = {
   cafe:    coffeeBourbon,
   food:    cinnamonRoll,
-  merch:   menuDish,
+  merch:   coffeeBags,
   general: coffeeBags,
 };
 
-// Mapeo de nombre → asset local (para productos seeded sin URL)
 const SEED_IMAGES = {
   'Bourbon Naranja (Finca El Ángel)':   coffeeBourbon,
   'Heirloom (Finca La Fany)':           coffeeBags,
-  'Taza Cerámica Artesanal P&P':        menuDish,
+  'Taza Cerámica Artesanal P&P':        coffeePour,
   'Tostada Dulce de Masa Madre':        sourdoughToast,
   'Cinnamon Roll (Pack Familiar)':      cinnamonRoll,
   'Pizza Pesto & Camarón (Pre-orden)':  sourdoughPizza,
@@ -34,8 +31,8 @@ const SEED_IMAGES = {
 const BREW_GUIDES = [
   {
     method: 'V60',
-    ratio: '1:15 (15g Café / 225g Agua)',
-    grind: 'Medio-Fino (Textura sal de mesa)',
+    ratio: '1:15 (15g café / 225g agua)',
+    grind: 'Medio-fino (textura sal de mesa)',
     temp: '92°C / 198°F',
     time: '2:45 minutos',
     steps: [
@@ -47,8 +44,8 @@ const BREW_GUIDES = [
   },
   {
     method: 'AeroPress',
-    ratio: '1:14 (16g Café / 224g Agua)',
-    grind: 'Medio (Textura arena fina)',
+    ratio: '1:14 (16g café / 224g agua)',
+    grind: 'Medio (textura arena fina)',
     temp: '90°C / 194°F',
     time: '2:00 minutos',
     steps: [
@@ -60,10 +57,10 @@ const BREW_GUIDES = [
   },
   {
     method: 'Prensa Francesa',
-    ratio: '1:14 (20g Café / 280g Agua)',
-    grind: 'Grueso (Textura sal gruesa)',
+    ratio: '1:14 (20g café / 280g agua)',
+    grind: 'Grueso (textura sal gruesa)',
     temp: '94°C / 201°F',
-    time: '6:00 minutos (Infusión lenta)',
+    time: '6:00 minutos (infusión lenta)',
     steps: [
       'Vierte los 280g de agua caliente directamente sobre el café molido en 10 segundos.',
       'Coloca la tapa sin presionar y permite la infusión total por 4 minutos completos.',
@@ -79,38 +76,35 @@ function getImage(product) {
   return FALLBACK[product.categoria] ?? coffeeBourbon;
 }
 
-const HOVER_IMAGES = {
-  'Bourbon Naranja (Finca El Ángel)':   coffeePour,
-  'Heirloom (Finca La Fany)':           coffeePour,
-  'Taza Cerámica Artesanal P&P':        coffeePour,
-  'Tostada Dulce de Masa Madre':        chefPlating,
-  'Cinnamon Roll (Pack Familiar)':      chefPlating,
-  'Pizza Pesto & Camarón (Pre-orden)':  chefPlating,
-};
-
-function getHoverImage(product) {
-  if (product.imagen_hover_url) return product.imagen_hover_url;
-  if (HOVER_IMAGES[product.nombre]) return HOVER_IMAGES[product.nombre];
-  return product.categoria === 'cafe' ? coffeePour : chefPlating;
-}
+// Hover: usamos el mismo asset (sin chef_plating ni menu_dish ajenos).
 
 function StockBadge({ stock }) {
   if (stock === 0) {
     return (
-      <span className="absolute top-3 right-3 z-20 font-body text-[11px] tracking-[0.2em] uppercase font-bold text-white bg-red-600/80 backdrop-blur-md px-2 py-1 rounded border border-red-500/30">
+      <span className="absolute top-3 right-3 z-20 text-[12px] text-brand-danger bg-white border border-brand-danger/40 px-2 py-1">
         Agotado
       </span>
     );
   }
   if (stock <= 5) {
     return (
-      <span className="absolute top-3 right-3 z-20 font-body text-[11px] tracking-[0.2em] uppercase font-bold text-amber-400 bg-amber-500/10 backdrop-blur-md px-2 py-1 rounded border border-amber-500/30">
+      <span className="absolute top-3 right-3 z-20 text-[12px] text-brand-accent bg-white border border-brand-accent/40 px-2 py-1">
         Últimas {stock} uds
       </span>
     );
   }
-  return null;
+  return (
+    <span className="absolute top-3 right-3 z-20 text-[12px] text-brand-success bg-white border border-brand-success/40 px-2 py-1">
+      Disponible
+    </span>
+  );
 }
+
+const CATEGORY_LABELS = {
+  cafe:  'Granos de especialidad',
+  merch: 'Apparel & merch',
+  food:  'Horneados',
+};
 
 export default function Market() {
   const addItem       = useCartStore((state) => state.addItem);
@@ -122,9 +116,9 @@ export default function Market() {
   const [activeGuide, setActiveGuide] = useState(0);
   const [activeTab, setActiveTab]     = useState('cafe');
 
-  // Cargar productos desde Supabase
   useEffect(() => {
     let active = true;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
 
     supabase
@@ -138,7 +132,6 @@ export default function Market() {
         setLoading(false);
       });
 
-    // Suscripción realtime para actualizaciones de stock desde TREES
     const channelId = `market-stock-${Math.random().toString(36).substring(7)}`;
     const channel = supabase
       .channel(channelId)
@@ -186,182 +179,160 @@ export default function Market() {
   };
 
   return (
-    <section id="market" className="bg-brand-background py-24 md:py-36 px-6 md:px-16 relative overflow-hidden border-t border-white/[0.02]">
-      <div className="absolute top-10 left-10 w-96 h-96 bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-brand-accent/5 rounded-full blur-[120px] pointer-events-none" />
+    <section id="market" className="section bg-brand-background border-t border-brand-border">
+      <div className="container-page space-y-16">
 
-      <div className="max-w-7xl mx-auto space-y-20">
-
-        {/* Header */}
-        <div className="text-center space-y-4 max-w-2xl mx-auto flex flex-col items-center">
-          <span className="eyebrow text-center mb-0">
-            Boutique & Café de Especialidad
-          </span>
-          <h2 className="font-display text-brand-textMain font-light tracking-[0.05em] uppercase">
-            Specialty Coffee Market
+        <header className="max-w-2xl mx-auto text-center space-y-4 flex flex-col items-center">
+          <div className="eyebrow flex items-center gap-3 justify-center">
+            <span className="w-8 h-px bg-brand-textSubtle" aria-hidden="true" />
+            <span>Boutique &amp; café de especialidad</span>
+            <span className="w-8 h-px bg-brand-textSubtle" aria-hidden="true" />
+          </div>
+          <h2 className="h-section text-center">
+            Specialty Coffee Market.
           </h2>
-          <div className="w-16 h-[1px] bg-brand-primary/30 mx-auto mt-3" />
-          <p className="font-body text-brand-textMuted font-light leading-relaxed pt-2">
-            Llévate el aroma de Panna & Pomodoro a casa. Explora nuestro café y repostería artesana recién horneada.
+          <p className="text-[15px] text-brand-textMain leading-relaxed max-w-reading">
+            Llévate el aroma de Panna &amp; Pomodoro a casa. Café y repostería artesana recién horneada.
           </p>
+        </header>
+
+        <div className="flex justify-center items-center max-w-md mx-auto border-y border-brand-border">
+          {[
+            { value: 'cafe', label: 'Café & Accesorios' },
+            { value: 'food', label: 'Masa madre & brunch' },
+          ].map(({ value, label }) => (
+            <button
+              key={value}
+              onClick={() => setActiveTab(value)}
+              className={`flex-1 min-h-[48px] py-3 text-[14px] transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary ${
+                activeTab === value
+                  ? 'text-brand-textMain border-b-2 border-brand-primary -mb-px'
+                  : 'text-brand-textSubtle hover:text-brand-textMain'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
 
-        {/* Tab switcher */}
-        <div className="flex justify-center items-center max-w-md mx-auto p-1 bg-brand-surface/40 border border-white/5 rounded-full relative z-10">
-          <button
-            onClick={() => setActiveTab('cafe')}
-            className={`flex-grow py-3 rounded-full font-body text-[11px] tracking-widest uppercase font-bold transition-all duration-[600ms] ease-high-end ${
-              activeTab === 'cafe'
-                ? 'bg-brand-primary text-black shadow-lg shadow-brand-primary/10'
-                : 'text-brand-textMuted hover:text-brand-textMain'
-            }`}
-          >
-            Café & Accesorios
-          </button>
-          <button
-            onClick={() => setActiveTab('food')}
-            className={`flex-grow py-3 rounded-full font-body text-[11px] tracking-widest uppercase font-bold transition-all duration-[600ms] ease-high-end ${
-              activeTab === 'food'
-                ? 'bg-brand-primary text-black shadow-lg shadow-brand-primary/10'
-                : 'text-brand-textMuted hover:text-brand-textMain'
-            }`}
-          >
-            Masa Madre & Brunch
-          </button>
-        </div>
-
-        {/* Product grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pt-4 relative z-10 min-h-[480px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {loading ? (
             Array.from({ length: 3 }).map((_, i) => (
-              <div key={i} className="h-80 bg-brand-surface/25 rounded-[4px] animate-pulse" />
+              <div key={i} className="h-80 bg-brand-placeholder animate-pulse" />
             ))
           ) : activeProducts.length === 0 ? (
             <div className="col-span-3 py-24 text-center">
-              <p className="font-body text-xs text-brand-textMuted">
+              <p className="text-[14px] text-brand-textSubtle">
                 No hay productos disponibles en esta categoría en este momento.
               </p>
             </div>
           ) : (
-            activeProducts.map((product) => {
+            activeProducts.map((product, idx) => {
               const img = getImage(product);
               const agotado = product.stock === 0;
+              const eager = idx < 3;
 
               return (
-                <div
+                <article
                   key={product.id}
-                  className={`group flex flex-col justify-between overflow-hidden rounded-[3px] border border-white/[0.03] bg-brand-surface/40 hover:border-brand-primary/20 hover:bg-brand-surface/75 hover:shadow-2xl transition-all duration-700 ease-high-end p-5 relative animate-fade-in ${
+                  className={`group flex flex-col overflow-hidden bg-white border border-brand-border hover:border-brand-primary/40 transition-[transform,border-color] duration-base hover:-translate-y-1.5 will-change-transform ${
                     agotado ? 'opacity-60' : ''
                   }`}
                 >
                   <div className="space-y-4">
-                    {/* Image Container with alternate hover reveal */}
-                    <div className="relative overflow-hidden aspect-[4/3] rounded-[2px] bg-neutral-950 group/img">
-                      <span className="absolute top-3 left-3 z-20 font-body text-[11px] tracking-[0.2em] uppercase font-bold text-brand-primary bg-black/60 backdrop-blur-md px-2.5 py-1 rounded border border-brand-primary/20">
-                        {product.categoria === 'cafe' ? 'Granos de Especialidad'
-                          : product.categoria === 'merch' ? 'Apparel & Merch'
-                          : product.categoria === 'food' ? 'Horneados'
-                          : product.categoria}
+                    <div className="relative overflow-hidden aspect-[4/3] bg-brand-placeholder">
+                      <span className="absolute top-3 left-3 z-20 text-[12px] text-brand-textMain bg-white border border-brand-border px-2 py-1">
+                        {CATEGORY_LABELS[product.categoria] ?? product.categoria}
                       </span>
                       <StockBadge stock={product.stock} />
-                      
-                      {/* Primary Image */}
+
                       <img
                         src={img}
                         alt={product.nombre}
-                        className="w-full h-full object-cover absolute inset-0 transform transition-all duration-[1200ms] ease-high-end group-hover:scale-105 group-hover:opacity-0"
+                        loading={eager ? 'eager' : 'lazy'}
+                        fetchPriority={eager ? 'high' : 'auto'}
+                        className="image-zoom-slow w-full h-full object-cover absolute inset-0"
                       />
-                      
-                      {/* Hover Reveal Image */}
-                      <img
-                        src={getHoverImage(product)}
-                        alt={`${product.nombre} detalle`}
-                        className="w-full h-full object-cover absolute inset-0 transform scale-105 opacity-0 transition-all duration-[1200ms] ease-high-end group-hover:scale-100 group-hover:opacity-100"
-                      />
-                      
-                      <div className="absolute inset-0 bg-brand-background/25 pointer-events-none z-10" />
                     </div>
 
-                    {/* Info */}
-                    <div className="space-y-2 text-left">
-                      <div className="flex items-start justify-between">
-                        <h3 className="font-display text-brand-textMain group-hover:text-brand-primary transition-colors duration-500 font-light tracking-wide leading-snug">
+                    <div className="space-y-3 px-5 text-left">
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="font-display text-[18px] text-brand-textMain font-normal leading-snug">
                           {product.nombre}
                         </h3>
-                        <span className="price">
+                        <span className="text-[15px] text-brand-textMain tabular-nums shrink-0">
                           ${parseFloat(product.precio).toFixed(2)}
                         </span>
                       </div>
 
                       {product.notas && (
-                        <div className="flex items-center space-x-2.5">
-                          <TagIcon size={12} className="text-brand-primary/60" />
-                          <span className="font-body text-[12px] text-brand-primary tracking-wider uppercase font-semibold">
+                        <div className="flex items-center gap-2">
+                          <TagIcon size={12} className="text-brand-success" />
+                          <span className="text-[13px] text-brand-success">
                             {product.notas}
                           </span>
                         </div>
                       )}
 
-                      <p className="font-body text-[14px] text-brand-textMuted leading-relaxed font-light pt-2 line-clamp-2">
+                      <p className="text-[14px] text-brand-textMain leading-relaxed line-clamp-2">
                         {product.descripcion}
                       </p>
                     </div>
                   </div>
 
-                  {/* Actions */}
-                  <div className="pt-5 mt-6 border-t border-white/5 flex items-center justify-between gap-4">
+                  <div className="px-5 pb-5 pt-4 mt-auto border-t border-brand-border flex items-center justify-between gap-4">
                     <button
                       onClick={() => setSelectedProduct(product)}
-                      className="font-body text-[11px] tracking-[0.2em] text-brand-textMuted hover:text-brand-primary uppercase transition-all duration-300 pb-0.5 border-b border-transparent hover:border-brand-primary/40"
+                      className="btn-underline"
                     >
-                      Detalles & Origen
+                      Detalles &amp; origen
                     </button>
 
                     <button
                       onClick={() => handleAddToBag(product)}
                       disabled={agotado}
-                      className={`px-5 py-2.5 font-body tracking-[0.2em] text-[11px] uppercase font-bold transition-all duration-500 rounded-full ${
+                      className={`btn-primary-sm ${
                         agotado
-                          ? 'bg-brand-surface/60 text-brand-textMuted cursor-not-allowed'
-                          : 'bg-brand-primary text-black hover:bg-[#ab8b5f]'
+                          ? 'bg-brand-placeholder text-brand-textSubtle cursor-not-allowed hover:bg-brand-placeholder'
+                          : ''
                       }`}
                     >
-                      {agotado ? 'Agotado' : 'Añadir al Carro'}
+                      {agotado ? 'Agotado' : 'Añadir al carro'}
                     </button>
                   </div>
-
-                  <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-gradient-to-r from-transparent via-brand-primary/30 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-high-end" />
-                </div>
+                </article>
               );
             })
           )}
         </div>
 
-        {/* Brew guides — solo tab café */}
         {activeTab === 'cafe' && (
           <>
-            <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-brand-primary/10 to-transparent pt-12 animate-fade-in" />
-            <div className="bg-brand-surface/20 border border-white/[0.02] p-8 md:p-12 rounded-[2px] shadow-2xl relative animate-fade-in">
-              <div className="absolute top-4 bottom-4 left-4 right-4 border border-brand-primary/5 pointer-events-none rounded-[1px]" />
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+            <div className="border-t border-brand-border pt-8" />
+            <div className="bg-white border border-brand-border p-8 md:p-12">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
                 <div className="lg:col-span-5 text-left space-y-6">
-                  <div className="space-y-2">
-                    <span className="eyebrow block">Coffee Education</span>
-                    <h2 className="font-display text-brand-textMain font-light uppercase tracking-[0.05em]">Guías de Extracción</h2>
-                    <div className="w-12 h-[1px] bg-brand-primary/20 mt-2" />
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 text-[12px] text-brand-textSubtle">
+                      <span className="w-8 h-px bg-brand-textSubtle" aria-hidden="true" />
+                      <span>Coffee education</span>
+                    </div>
+                    <h3 className="h-section">
+                      Guías de extracción.
+                    </h3>
                   </div>
-                  <p className="font-body text-small text-brand-textMuted leading-relaxed font-light">
+                  <p className="text-[15px] text-brand-textMain leading-relaxed">
                     La perfección en taza requiere precisión. Nuestros baristas han estandarizado los ratios de agua, moliendas y vertidos de los tres métodos más aclamados.
                   </p>
-                  <div className="flex flex-wrap gap-3 pt-2">
+                  <div className="flex flex-wrap gap-2 pt-2">
                     {BREW_GUIDES.map((guide, idx) => (
                       <button
                         key={idx}
                         onClick={() => setActiveGuide(idx)}
-                        className={`px-4 py-2 border rounded-full font-body text-[11px] tracking-widest uppercase font-semibold transition-all duration-500 ${
+                        className={`min-h-[44px] py-2 px-4 border text-[13px] transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary ${
                           activeGuide === idx
-                            ? 'border-brand-primary bg-brand-primary/10 text-brand-primary'
-                            : 'border-white/10 text-brand-textMuted hover:border-white/30 hover:text-brand-textMain'
+                            ? 'border-brand-primary text-brand-textMain'
+                            : 'border-brand-border text-brand-textSubtle hover:border-brand-primary hover:text-brand-textMain'
                         }`}
                       >
                         {guide.method}
@@ -369,26 +340,26 @@ export default function Market() {
                     ))}
                   </div>
                 </div>
-                <div className="lg:col-span-7 bg-brand-background/60 border border-white/5 p-6 md:p-8 rounded-[2px] text-left space-y-6">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pb-4 border-b border-white/5">
+                <div className="lg:col-span-7 bg-brand-surfaceMuted border border-brand-border p-6 md:p-8 text-left space-y-6">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pb-4 border-b border-brand-border">
                     {[
-                      ['MÉTODO', BREW_GUIDES[activeGuide].method],
-                      ['RATIO CAFÉ/AGUA', BREW_GUIDES[activeGuide].ratio],
-                      ['MOLIENDA', BREW_GUIDES[activeGuide].grind],
-                      ['TIEMPO', BREW_GUIDES[activeGuide].time],
+                      ['Método', BREW_GUIDES[activeGuide].method],
+                      ['Ratio café/agua', BREW_GUIDES[activeGuide].ratio],
+                      ['Molienda', BREW_GUIDES[activeGuide].grind],
+                      ['Tiempo', BREW_GUIDES[activeGuide].time],
                     ].map(([label, val]) => (
                       <div key={label} className="space-y-1">
-                        <div className="text-[11px] font-body tracking-[0.15em] text-brand-textMuted/60 uppercase">{label}</div>
-                        <p className="text-[14px] font-body font-medium text-brand-textMain leading-relaxed">{val}</p>
+                        <div className="text-[12px] text-brand-textSubtle">{label}</div>
+                        <p className="text-[14px] text-brand-textMain leading-relaxed">{val}</p>
                       </div>
                     ))}
                   </div>
                   <div className="space-y-4">
-                    <span className="text-[13px] font-body tracking-[0.25em] text-brand-primary uppercase font-bold block">Paso a Paso</span>
-                    <ol className="space-y-3.5">
+                    <p className="text-[14px] text-brand-textSubtle">Paso a paso</p>
+                    <ol className="space-y-3">
                       {BREW_GUIDES[activeGuide].steps.map((step, idx) => (
-                        <li key={idx} className="flex items-start space-x-3.5 text-[14px] text-brand-textMuted leading-relaxed font-light">
-                          <span className="font-display italic text-brand-primary font-medium text-sm leading-none pt-0.5">{idx + 1}.</span>
+                        <li key={idx} className="flex items-start gap-3 text-[14px] text-brand-textMain leading-relaxed">
+                          <span className="text-brand-textSubtle tabular-nums shrink-0">{idx + 1}.</span>
                           <span>{step}</span>
                         </li>
                       ))}
@@ -401,71 +372,78 @@ export default function Market() {
         )}
       </div>
 
-      {/* Product detail modal */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-md p-4 transition-all duration-500">
-          <div className="absolute inset-0 cursor-zoom-out" onClick={() => setSelectedProduct(null)} />
-          <div className="relative z-10 w-full max-w-4xl bg-[#090909] border border-white/10 rounded-[3px] overflow-hidden flex flex-col md:flex-row shadow-2xl animate-fade-in max-h-[90vh]">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4">
+          <div className="absolute inset-0 cursor-zoom-out" onClick={() => setSelectedProduct(null)} aria-hidden="true" />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="market-modal-title"
+            tabIndex={-1}
+            className="relative z-10 w-full max-w-4xl bg-white border border-brand-border overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
+          >
             <button
               onClick={() => setSelectedProduct(null)}
-              className="absolute top-4 right-4 z-30 w-10 h-10 rounded-full border border-white/10 hover:border-brand-primary flex items-center justify-center bg-black/60 text-brand-textMain hover:text-brand-primary transition-all duration-300"
+              className="absolute top-4 right-4 z-30 w-11 h-11 min-w-[44px] min-h-[44px] border border-brand-border hover:border-brand-primary flex items-center justify-center bg-white text-brand-textMain hover:text-brand-primary transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary text-xl"
+              aria-label="Cerrar detalle de producto"
             >
               &times;
             </button>
-            <div className="w-full md:w-1/2 aspect-[4/3] md:aspect-auto md:h-[60vh] overflow-hidden bg-black">
+            <div className="w-full md:w-1/2 aspect-[4/3] md:aspect-auto md:h-[60vh] overflow-hidden bg-brand-placeholder">
               <img src={getImage(selectedProduct)} alt={selectedProduct.nombre} className="w-full h-full object-cover" />
             </div>
-            <div className="w-full md:w-1/2 p-8 flex flex-col justify-between space-y-6 bg-brand-surface border-t md:border-t-0 md:border-l border-white/[0.04] text-left">
+            <div className="w-full md:w-1/2 p-8 flex flex-col justify-between space-y-6 bg-brand-surfaceMuted border-t md:border-t-0 md:border-l border-brand-border text-left">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="font-body text-[12px] text-brand-primary tracking-[0.2em] uppercase font-bold">
-                    {selectedProduct.categoria}
+                  <span className="text-[13px] text-brand-accent">
+                    {CATEGORY_LABELS[selectedProduct.categoria] ?? selectedProduct.categoria}
                   </span>
-                  <div className="flex space-x-2">
-                    {(selectedProduct.tags || []).map((tg, i) => (
-                      <span key={i} className="text-[12px] font-body tracking-wider uppercase font-semibold text-brand-primary border border-brand-primary/20 bg-brand-primary/5 px-2 py-0.5 rounded-full">
-                        {tg}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <h4 className="font-display text-2xl md:text-3xl text-brand-textMain font-light leading-snug">{selectedProduct.nombre}</h4>
-                {selectedProduct.notas && (
-                  <div className="flex items-center space-x-2 pb-2">
-                    <TagIcon size={12} className="text-brand-primary" />
-                    <span className="font-body text-[12px] text-brand-primary tracking-wider uppercase font-bold">{selectedProduct.notas}</span>
-                  </div>
-                )}
-                <div className="w-12 h-[1px] bg-brand-primary/30 mt-2" />
-                <p className="font-body text-[14px] text-brand-textMuted leading-relaxed font-light pt-1">{selectedProduct.descripcion}</p>
-                {selectedProduct.specs && Object.keys(selectedProduct.specs).length > 0 && (
-                  <div className="pt-4 space-y-2 border-t border-white/5">
-                    <span className="text-[12px] font-body tracking-wider text-brand-textMain font-bold block uppercase">Especificaciones</span>
-                    <div className="grid grid-cols-2 gap-3 text-[12px] font-body text-brand-textMuted uppercase tracking-wider font-light">
-                      {Object.entries(selectedProduct.specs).map(([key, val]) => (
-                        <div key={key} className="space-y-0.5">
-                          <span className="text-[12px] text-brand-primary/60 font-semibold block">{key}</span>
-                          <span>{val}</span>
-                        </div>
+                  {selectedProduct.tags && selectedProduct.tags.length > 0 && (
+                    <div className="flex gap-2 flex-wrap">
+                      {selectedProduct.tags.map((tg, i) => (
+                        <span key={i} className="text-[12px] text-brand-accent border border-brand-accent/30 bg-white px-2 py-0.5">
+                          {tg}
+                        </span>
                       ))}
                     </div>
+                  )}
+                </div>
+                <h4 id="market-modal-title" className="font-display text-2xl md:text-3xl text-brand-textMain font-light leading-snug">{selectedProduct.nombre}</h4>
+                {selectedProduct.notas && (
+                  <div className="flex items-center gap-2 pb-2">
+                    <TagIcon size={12} className="text-brand-primary" aria-hidden="true" />
+                    <span className="text-[14px] text-brand-accent">{selectedProduct.notas}</span>
+                  </div>
+                )}
+                <p className="text-[14px] text-brand-textMain leading-relaxed">{selectedProduct.descripcion}</p>
+                {selectedProduct.specs && Object.keys(selectedProduct.specs).length > 0 && (
+                  <div className="pt-4 space-y-3 border-t border-brand-border">
+                    <p className="text-[14px] text-brand-textSubtle">Especificaciones</p>
+                    <dl className="grid grid-cols-2 gap-3 text-[13px] text-brand-textMain">
+                      {Object.entries(selectedProduct.specs).map(([key, val]) => (
+                        <div key={key} className="space-y-0.5">
+                          <dt className="text-brand-accent">{key}</dt>
+                          <dd className="text-brand-textMain">{val}</dd>
+                        </div>
+                      ))}
+                    </dl>
                   </div>
                 )}
               </div>
-              <div className="pt-6 border-t border-white/5 flex items-center justify-between">
-                <span className="font-display italic text-brand-primary text-2xl font-light">
+              <div className="pt-6 border-t border-brand-border flex items-center justify-between">
+                <span className="font-display text-2xl text-brand-textMain font-light tabular-nums">
                   ${parseFloat(selectedProduct.precio).toFixed(2)}
                 </span>
                 <button
                   onClick={() => { handleAddToBag(selectedProduct); setSelectedProduct(null); }}
                   disabled={selectedProduct.stock === 0}
-                  className={`px-6 py-3 font-body tracking-[0.2em] text-[11px] uppercase font-bold transition-all duration-500 rounded-full ${
+                  className={`btn-primary ${
                     selectedProduct.stock === 0
-                      ? 'bg-brand-surface/60 text-brand-textMuted cursor-not-allowed'
-                      : 'bg-brand-primary text-black hover:bg-[#ab8b5f]'
+                      ? 'bg-brand-placeholder text-brand-textSubtle cursor-not-allowed hover:bg-brand-placeholder'
+                      : ''
                   }`}
                 >
-                  {selectedProduct.stock === 0 ? 'Agotado' : 'Añadir al Carro'}
+                  {selectedProduct.stock === 0 ? 'Agotado' : 'Añadir al carro'}
                 </button>
               </div>
             </div>

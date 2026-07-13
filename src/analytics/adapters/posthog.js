@@ -7,12 +7,12 @@
  * 3. In analytics/index.js, uncomment: registerAdapter(posthogAdapter)
  */
 export const posthogAdapter = {
-  track({ event, timestamp, url, ...properties }) {
+  track({ event, timestamp: _timestamp, url: _url, ...properties }) {
     if (typeof window.posthog?.capture !== 'function') return
     window.posthog.capture(event, properties)
   },
 
-  page({ path }) {
+  page({ path: _path }) {
     if (typeof window.posthog?.capture !== 'function') return
     window.posthog.capture('$pageview', { $current_url: window.location.href })
   },

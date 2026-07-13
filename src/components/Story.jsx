@@ -1,157 +1,107 @@
-import React, { useRef } from 'react';
-import { m, useScroll, useTransform } from 'framer-motion';
-import imagePan from '../assets/pan.webp';
-import imageBaguette from '../assets/images/BAGUETTE MASA MADRE.webp';
-import BrandWatermark from './BrandWatermark';
-import { reveal, revealFade, EASE } from '../motion/variants';
+import { m } from 'framer-motion';
+import imageRotulo from '../assets/bulldog.webp';
+import { reveal, revealFade } from '../motion/variants';
+
+const PILLARS = [
+  {
+    title: 'Fermentación lenta',
+    body: 'La hogaza del día se empieza dos días antes. Cuarenta y ocho horas entre la harina y el horno. La diferencia se escucha al partir el pan.',
+  },
+  {
+    title: 'Café con trazabilidad',
+    body: 'Cada microlote tiene productor y finca. Rafael Silva en Chalchuapa, Bicafe en La Fany. Compramos por nombre, no por volumen.',
+  },
+  {
+    title: 'Cocina servida en barra',
+    body: 'La carta cambia según lo que haya llegado esa mañana. No hay menú permanente. Lo que sirves hoy no es exactamente lo que serviste la semana pasada, y eso es a propósito.',
+  },
+];
 
 export default function Story() {
-  const sectionRef = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  })
-  const panY      = useTransform(scrollYProgress, [0, 1], ['6%', '-6%'])
-  const baguetteY = useTransform(scrollYProgress, [0, 1], ['10%', '-10%'])
-  // ── EDITABLE: Los tres pilares de la sección Historia ───────────────────
-  // Cambia num, title y body de cada pilar. Se muestran bajo el titular principal.
-  const pillars = [
-    {
-      num: 'I.',
-      title: 'Panadería & Fermentación Lenta',         // ✏️ título del pilar
-      body: 'Nuestra masa madre pasa 48 horas fermentando antes de entrar al horno. Es un proceso lento, pero es el único que produce la textura y el sabor que buscamos. La diferencia se escucha al partir el pan.',  // ✏️ descripción
-    },
-    {
-      num: 'II.',
-      title: 'Rigor de Especialidad',
-      body: 'Cada extracción se hace a mano: V60 o AeroPress, báscula y temperatura controlada. Los granos vienen de microlotes con nombre y productor. Lo que sirves hoy no es exactamente lo que sirviste la semana pasada — eso es especialidad.',
-    },
-    {
-      num: 'III.',
-      title: 'El Brunch de Todos los Días',
-      body: 'Brunch, tertulia o pausa larga — el salón está listo a cualquier hora. Ingredientes frescos de origen local, café en su punto y pan recién salido del horno. No hay distinción entre el cliente de las 7 AM y el de las 3 PM.',
-    },
-  ];
-
   return (
     <section
-      ref={sectionRef}
       id="story"
-      className="relative bg-brand-background py-14 md:py-20 px-6 md:px-16 overflow-hidden border-t border-white/[0.02]"
+      aria-label="Masa madre y proceso"
+      className="section bg-brand-background border-t border-brand-border"
     >
+      <div className="container-page">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
 
-      <BrandWatermark className="right-6 top-1/2 -translate-y-1/2" opacity={0.035} />
-
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
-
-          {/* ── Left Column: single reveal — all children move as one block ── */}
+          {/* Left Column */}
           <m.div
-            className="lg:col-span-6 space-y-10 text-left relative z-10"
+            className="lg:col-span-5 lg:sticky lg:top-28 space-y-8 text-left"
             variants={reveal}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
+            viewport={{ once: true, amount: 0.3 }}
           >
-            {/* Section header */}
-            <div className="space-y-3">
-              <span className="font-body text-[11px] tracking-[0.3em] uppercase text-brand-primary block font-semibold">
-                Nuestra Identidad Culinaria
-              </span>
-              <h2 className="font-display text-brand-textMain font-light tracking-[0.02em]">
-                El Respeto por <br />
-                <span className="italic font-normal text-brand-primary">Los Procesos Nobles</span>
-              </h2>
-              <div className="w-20 h-[1px] bg-brand-primary/45 mt-4" />
-            </div>
-
-            <p className="font-body text-brand-textMuted leading-relaxed font-light">
-              Somos un pequeño salón que se toma en serio lo que sirve. Cada hogaza lleva dos días de trabajo antes de salir del horno. Cada taza empieza con granos de productores que conocemos por nombre. No tenemos atajos favoritos.
+            <p className="eyebrow flex items-center gap-3">
+              <span className="w-8 h-px bg-brand-textSubtle/60" aria-hidden="true" />
+              La historia
             </p>
 
-            {/* Three Pillars — static, no stagger */}
-            <div className="space-y-8 pt-4">
-              {pillars.map((pillar) => (
-                <div key={pillar.num} className="space-y-2 text-left group">
-                  <div className="flex items-center space-x-3.5">
-                    <span className="font-body text-xs text-brand-primary font-semibold tracking-luxury uppercase">
-                      {pillar.num} {pillar.title}
-                    </span>
-                    <div className="flex-grow h-[1px] bg-white/5 group-hover:bg-brand-primary/20 transition-colors duration-500" />
-                  </div>
-                  <p className="font-body text-brand-textMuted leading-relaxed font-light pl-6">
-                    {pillar.body}
-                  </p>
-                </div>
-              ))}
-            </div>
+            <h2 className="h-section">
+              Masa madre desde el primer día, el mismo horno encendido a las cinco de la mañana.
+            </h2>
 
-            {/* Signature */}
-            <div className="pt-6 flex items-center space-x-6">
-              <div className="text-left pl-6">
-                {/* ✏️ EDITABLE: firma al pie de la sección */}
-              <span className="font-brand text-3xl text-brand-primary block">
-                  Panna
-                </span>
-                <span className="font-body text-[11px] tracking-[0.25em] text-brand-textMuted/60 uppercase block pt-1">
-                  Artesanal y Fresco · Sonsonate  {/* ✏️ ciudad / tagline */}
-                </span>
-              </div>
+            <p className="font-sans text-[15px] md:text-[16px] text-brand-textSubtle leading-relaxed max-w-reading">
+              Abrimos en 2018 en un local del Boulevard Las Palmeras con una sola mesa y un horno. Hoy seguimos siendo un local pequeño. Lo que cambió es la constancia: la misma masa madre desde el primer día, los mismos productores de café, el mismo horario.
+            </p>
+
+            <div className="pt-2">
+              <p className="font-display text-base text-brand-textMain italic">
+                — Alejandro &amp; el equipo de cocina
+              </p>
             </div>
           </m.div>
 
-          {/* ── Right Column: Asymmetric Image Collage ── */}
-          <div className="lg:col-span-6 relative flex items-center justify-center">
+          {/* Right Column */}
+          <div className="lg:col-span-7 space-y-12">
 
-            <div className="absolute -inset-4 border border-brand-primary/10 rounded-[4px] pointer-events-none select-none z-0" />
+            <m.ul
+              className="space-y-10"
+              variants={revealFade}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+            >
+              {PILLARS.map((pillar, i) => (
+                <li key={pillar.title} className="grid grid-cols-12 gap-6 items-start">
+                  <span className="col-span-2 font-sans text-[13px] font-medium text-brand-textMuted tabular-nums pt-2">
+                    0{i + 1}
+                  </span>
+                  <div className="col-span-10 space-y-3 border-t border-brand-border pt-4">
+                    <h3 className="font-display text-[1.25rem] md:text-[1.5rem] text-brand-textMain font-normal leading-snug">
+                      {pillar.title}
+                    </h3>
+                    <p className="font-sans text-[14px] md:text-[15px] text-brand-textMain leading-relaxed max-w-reading">
+                      {pillar.body}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </m.ul>
 
-            <div className="grid grid-cols-12 gap-4 w-full relative z-10">
-
-              {/* Primary Large Image — reveal + parallax */}
-              <m.div
-                className="col-span-12 lg:col-span-8 overflow-hidden rounded-[2px] border border-white/5 shadow-2xl aspect-[4/5] max-h-[420px] lg:max-h-none bg-neutral-950"
-                variants={revealFade}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-60px' }}
-              >
-                <m.img
-                  src={imagePan}
-                  alt="Masa madre artesanal"
+            <m.figure
+              className="img-grid-item"
+              variants={revealFade}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+            >
+              <div className="aspect-[16/9] overflow-hidden bg-brand-stone">
+                <img
+                  src={imageRotulo}
+                  alt="Rótulo original Panna & Pomodoro, Boulevard Las Palmeras, 2018"
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-[115%] object-cover"
-                  style={{ y: panY }}
+                  className="image-zoom-slow w-full h-full object-cover"
                 />
-              </m.div>
-
-              {/* Offset Small Image — reveal + parallax */}
-              <m.div
-                className="hidden lg:block absolute -bottom-8 -right-4 lg:-right-8 w-[44%] overflow-hidden rounded-[2px] border border-brand-primary/20 shadow-2xl aspect-[3/4] bg-neutral-950 z-20"
-                variants={revealFade}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ delay: 0.2 }}
-              >
-                <m.img
-                  src={imageBaguette}
-                  alt="Baguette de masa madre"
-                  loading="lazy"
-                  decoding="async"
-                  className="w-full h-[120%] object-cover"
-                  style={{ y: baguetteY }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
-              </m.div>
-            </div>
-
-            {/* Gold emblem stamp — static */}
-            <div className="absolute -top-6 -left-6 w-20 h-20 rounded-full border border-brand-primary/20 flex items-center justify-center bg-brand-background/80 backdrop-blur-sm z-30 pointer-events-none select-none">
-              <span className="font-display text-[11px] tracking-wider text-brand-primary uppercase text-center font-light leading-none">
-                Est.<br />2018
-              </span>
-            </div>
+              </div>
+              <figcaption className="font-sans text-[11px] uppercase tracking-[0.18em] text-brand-textSubtle mt-3">
+                Boulevard Las Palmeras · 2018
+              </figcaption>
+            </m.figure>
           </div>
 
         </div>

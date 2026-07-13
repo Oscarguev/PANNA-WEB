@@ -8,37 +8,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Panna & Pomodoro" />
 
   <!-- Primary Meta -->
   <title>Panna & Pomodoro</title>
   <meta name="description" content="Pan de masa madre, café de especialidad y cocina de autor en Sonsonate. Abiertos todos los días de 7:00 a 21:00. Reserva tu mesa en línea." />
-  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="theme-color" content="#f5f1ea" />
 
   <!-- Open Graph / WhatsApp / Facebook -->
   <meta property="og:type" content="restaurant" />
   <meta property="og:title" content="Panna & Pomodoro | Gastronomía Artesanal" />
   <meta property="og:description" content="Pan de masa madre, café de especialidad y cocina de autor en Sonsonate, El Salvador. Abiertos todos los días." />
-  <meta property="og:image" content="https://pannapomodoro.sv/og-image.jpg" />
+  <meta property="og:image" content="https://frontend-oscarguevs-projects.vercel.app/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:type" content="image/jpeg" />
-  <meta property="og:url" content="https://pannapomodoro.sv" />
+  <meta property="og:url" content="https://frontend-oscarguevs-projects.vercel.app" />
   <meta property="og:locale" content="es_SV" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Panna & Pomodoro | Gastronomía Artesanal" />
   <meta name="twitter:description" content="Pan de masa madre, café de especialidad y cocina de autor en Sonsonate, El Salvador." />
-  <meta name="twitter:image" content="https://pannapomodoro.sv/og-image.jpg" />
+  <meta name="twitter:image" content="https://frontend-oscarguevs-projects.vercel.app/og-image.jpg" />
 
-  <!-- Fonts -->
+  <!-- LCP hero image preload (avoids flash negro del hero en cold load) -->
+  <!-- Asset is imported from JS so URL is hashed by Vite; rely on fetchpriority="high" + warm bg fallback. -->
+
+  <!-- Fonts: Outfit (cuerpo + UI + eyebrows) + Fraunces SOFT (display editorial cálido) -->
+  <!-- Ejes: ital (0/1) + opsz 14..144 (óptica media) + SOFT 0..100 (curvas redondeadas) + wght -->
+  <!-- Bebas Neue: wordmark corporativo de Panna & Pomodoro (manual de marca, titulares) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Gilda+Display&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,opsz,SOFT,wght@0,14..144,0..100,300;0,14..144,0..100,400;0,14..144,0..100,500;1,14..144,0..100,300;1,14..144,0..100,400&family=Outfit:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
+
+  <!-- JSON-LD: Restaurant + LocalBusiness + Menu -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["Restaurant", "LocalBusiness", "CafeOrCoffeeShop"],
+    "name": "Panna & Pomodoro",
+    "image": "https://frontend-oscarguevs-projects.vercel.app/og-image.jpg",
+    "url": "https://frontend-oscarguevs-projects.vercel.app",
+    "telephone": "+50324511000",
+    "priceRange": "$$",
+    "servesCuisine": ["Panadería artesanal", "Café de especialidad", "Cocina italiana artesanal"],
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Boulevard Las Palmeras, CC El Arco",
+      "addressLocality": "Sonsonate",
+      "addressCountry": "SV"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 13.7188,
+      "longitude": -89.7286
+    },
+    "openingHoursSpecification": [
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday"], "opens": "07:00", "closes": "21:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday","Saturday"], "opens": "07:00", "closes": "22:00" },
+      { "@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "07:00", "closes": "21:00" }
+    ],
+    "acceptsReservations": "True",
+    "hasMenu": {
+      "@type": "Menu",
+      "name": "Carta Panna & Pomodoro",
+      "url": "https://frontend-oscarguevs-projects.vercel.app/menu"
+    },
+    "sameAs": []
+  }
+  </script>
 </head>
 
 <body>

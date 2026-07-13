@@ -1,49 +1,54 @@
-import logo from '../assets/logo.png';
-
-// ── EDITABLE: Textos del banner deslizante (credibility strip) ───────────
-// Agrega, elimina o cambia cualquier texto. Aparece en bucle bajo el hero.
 const ITEMS = [
-  'Est. 2018 — Sonsonate, El Salvador',       // ✏️ año de fundación / ciudad
-  'Masa Madre Fermentada 48 Horas',
-  'Café de Especialidad — Proceso Natural Anaeróbico',
-  'Finca El Ángel · Rafael Silva · Chalchuapa', // ✏️ nombre de finca y productor
-  'Horneado Artesanal Diariamente',
-  'Finca La Fany · Bicafe · El Salvador',
-  'Pizza Napolitana a la Piedra',
-  'Club PANNA Rewards',
+  { label: 'Est. 2018',          sub: 'en Sonsonate' },
+  { label: 'Masa madre',         sub: '48 h fermentación' },
+  { label: 'Café de origen',     sub: 'microlotes trazables' },
+  { label: 'Horneado diario',    sub: 'artesanal' },
 ];
 
-function StripItem({ text }) {
+function Item({ label, sub }) {
   return (
-    <span className="inline-flex items-center gap-5 px-5">
-      <img
-        src={logo}
-        alt=""
-        aria-hidden="true"
-        className="object-contain mix-blend-screen shrink-0"
-        style={{ width: 14, height: 14, opacity: 0.35 }}
-      />
-      <span className="font-body text-[11px] tracking-[0.28em] uppercase text-brand-textMuted/50 whitespace-nowrap">
-        {text}
+    <div className="flex flex-col items-center text-center sm:flex-row sm:items-baseline sm:gap-2 sm:whitespace-nowrap">
+      <span className="font-display text-[14px] sm:text-[16px] md:text-[18px] font-light text-brand-textMain leading-tight sm:leading-none">
+        {label}
       </span>
-    </span>
+      <span className="text-[11px] sm:text-[12px] md:text-[13px] text-brand-textSubtle leading-tight sm:leading-none sm:whitespace-nowrap">
+        {sub}
+      </span>
+    </div>
   );
 }
 
 export default function CredibilityStrip() {
   return (
-    <div className="w-full border-y border-white/[0.035] py-3.5 overflow-hidden bg-brand-background select-none">
-      <div
-        className="flex animate-marquee"
-        style={{ width: 'max-content' }}
-        onMouseEnter={(e) => e.currentTarget.style.animationPlayState = 'paused'}
-        onMouseLeave={(e) => e.currentTarget.style.animationPlayState = 'running'}
-      >
-        {/* Duplicated for seamless loop */}
-        {[...ITEMS, ...ITEMS].map((text, i) => (
-          <StripItem key={i} text={text} />
-        ))}
+    <section
+      aria-label="Credenciales de la marca"
+      className="w-full border-y border-brand-border py-6 md:py-14 bg-brand-background"
+    >
+      <div className="container-page">
+        {/* Mobile (<md): 2x2 grid, sin separadores */}
+        <ul className="grid grid-cols-2 gap-x-3 gap-y-4 md:hidden">
+          {ITEMS.map((item) => (
+            <li key={item.label} className="flex items-center justify-center">
+              <Item label={item.label} sub={item.sub} />
+            </li>
+          ))}
+        </ul>
+
+        {/* Desktop (md+): una fila con separadores verticales */}
+        <div className="hidden md:flex flex-wrap items-center justify-center gap-y-5">
+          {ITEMS.map((item, i) => (
+            <span key={item.label} className="inline-flex items-center">
+              <Item label={item.label} sub={item.sub} />
+              {i < ITEMS.length - 1 && (
+                <span
+                  aria-hidden="true"
+                  className="inline-block w-px h-5 bg-brand-border mx-8 md:mx-12 shrink-0"
+                />
+              )}
+            </span>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -7,7 +7,6 @@ import cinnamonRoll    from '../assets/cinnamon_roll.webp';
 import coffeeBourbon   from '../assets/coffee_bourbon.webp';
 import sourdoughPizza  from '../assets/sourdough_pizza.webp';
 import coffeePour      from '../assets/coffee_pour.webp';
-import menuDish        from '../assets/menu_dish.webp';
 
 // ── EDITABLE: Selección del día (carrusel horizontal) ────────────────────
 // Estos ítems también son agregables al carrito. Mantén el mismo `id` si
@@ -19,7 +18,7 @@ const ITEMS = [
   { id: 'hs-3', tag: 'Especial',   title: 'Pizza Pesto & Camarón',            price: 18.50, image: sourdoughPizza  },
   { id: 'hs-4', tag: 'Horneado',   title: 'Rol de Canela Artesanal',          price: 5.50,  image: cinnamonRoll   },
   { id: 'hs-5', tag: 'Premium',    title: 'Heirloom — Finca La Fany',         price: 6.00,  image: coffeePour     },
-  { id: 'hs-6', tag: 'Vegetal',    title: 'Pizza Vegetariana',                price: 16.00, image: menuDish       },
+  { id: 'hs-6', tag: 'Vegetal',    title: 'Pizza Vegetariana',                price: 16.00, image: sourdoughPizza  },
 ];
 
 export default function HorizontalShowcase() {

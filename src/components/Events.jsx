@@ -1,220 +1,139 @@
-import React, { useState } from 'react';
-import { TicketIcon, SparklesIcon, ClockIcon } from './Icons';
+import { useState, useRef } from 'react';
 import { useCartStore } from '../stores/useCartStore';
 import { useUIStore } from '../stores/useUIStore';
 import { track, EVENTS } from '../analytics';
-import chefPlating from '../assets/chef_plating.webp';
 import coffeePour from '../assets/coffee_pour.webp';
-import spaghettiImage from '../assets/spaghetti.webp';
+import pan from '../assets/pan.webp';
 
-// ── EDITABLE: Eventos y talleres ─────────────────────────────────────────
-// Cada objeto es una tarjeta de evento. Puedes cambiar fecha, precio, cupos
-// y descripción. Para agregar un evento: copia un objeto con un `id` nuevo.
-// ⚠️ `spotsLeft` es solo visual — no descuenta automáticamente al comprar.
-const EVENTS_DATA = [
+// Solo assets auténticos. Cero chef_plating o menu_dish.
+const EVENT_ITEMS = [
   {
     id: 'e1',
-    title: "Coffee Cupping & Tasting Masterclass",  // ✏️ nombre del evento
-    date: "14 de Junio, 2026",                       // ✏️ fecha (texto libre)
-    time: "10:00 AM &mdash; 12:30 PM",               // ✏️ horario
-    price: 25.00,                                    // ✏️ precio del ticket
-    image: coffeePour,                               // ✏️ imagen (importar arriba)
-    category: "Workshop Barismo",                    // ✏️ etiqueta de categoría
-    description: "Aprende el arte de la catación profesional. Analizaremos fragancias, aromas, acidez y cuerpo de 4 orígenes únicos de café de especialidad.", // ✏️ descripción
-    spotsLeft: 4                                     // ✏️ cupos disponibles (solo visual)
+    title: 'Coffee Cupping & Tasting Masterclass',
+    date: 'Sábado 14 de junio, 2026 · 10:00 a 12:30',
+    blurb: 'Cuatro microlotes servidos a ciegas. Aprendes a identificar fragancia, aroma, acidez y cuerpo con el barista.',
+    price: 25.00,
+    image: coffeePour,
   },
   {
     id: 'e2',
-    title: "Taller de Panadería Artesanal & Masa Madre",
-    date: "21 de Junio, 2026",
-    time: "9:00 AM &mdash; 12:00 PM",
+    title: 'Taller de masa madre',
+    date: 'Sábado 21 de junio, 2026 · 9:00 a 12:00',
+    blurb: 'Te llevás tu propia hogaza. Aprendés a alimentar la masa madre, manejar hidratación y hornear corteza crujiente.',
     price: 35.00,
-    image: chefPlating,
-    category: "Técnica & Oficio",
-    description: "Aprende el arte de la panadería de fermentación lenta. Aprenderás a alimentar tu masa madre, manejar la hidratación y hornear hogazas perfectas con corteza crujiente.",
-    spotsLeft: 8
+    image: pan,
   },
   {
     id: 'e3',
-    title: "Vuelo de Café de Especialidad & Filtrados",
-    date: "28 de Junio, 2026",
-    time: "4:00 PM &mdash; 6:30 PM",
+    title: 'Vuelo de filtrados',
+    date: 'Sábado 28 de junio, 2026 · 16:00 a 18:30',
+    blurb: 'Tres extracciones paralelas — Chemex, V60 y Sifón — con granos de microlote seleccionados.',
     price: 20.00,
-    image: spaghettiImage,
-    category: "Cata Sensorial",
-    description: "Una degustación guiada de tres métodos de extracción (Chemex, V60, Sifón) utilizando granos cultivados en altitudes extremas de Sonsonate. Descubre el impacto de los procesos en taza.",
-    spotsLeft: 6
-  }
+    image: coffeePour,
+  },
 ];
 
 export default function Events() {
-  const addItem       = useCartStore((state) => state.addItem);
+  const addItem = useCartStore((state) => state.addItem);
   const showCartToast = useUIStore((state) => state.showCartToast);
+  const [boughtIds, setBoughtIds] = useState({});
+  const timersRef = useRef({});
 
-  const [quantities, setQuantities] = useState({ e1: 1, e2: 1, e3: 1 });
-
-  const handleQtyChange = (eventId, val) => {
-    setQuantities({ ...quantities, [eventId]: Math.max(1, parseInt(val) || 1) });
-  };
-
-  const handleBuyTicket = (ev) => {
-    const qty = quantities[ev.id];
-    const item = {
+  const handleBuy = (ev) => {
+    if (boughtIds[ev.id]) return;
+    addItem({
       id: ev.id,
-      title: `Ticket: ${ev.title} (${ev.date})`,
+      title: `Entrada: ${ev.title}`,
       price: ev.price,
       image: ev.image,
-      quantity: qty,
-    };
-    addItem(item);
-    showCartToast({ title: item.title, price: item.price, image: item.image });
-    track(EVENTS.EVENT_TICKET_BUY, {
-      event_id:    ev.id,
-      event_name:  ev.title,
-      event_date:  ev.date,
-      price:       ev.price,
-      quantity:    qty,
+      quantity: 1,
     });
-    track(EVENTS.ADD_TO_CART, {
-      item_id:   ev.id,
-      item_name: item.title,
-      price:     ev.price,
-      quantity:  qty,
-      source:    'events',
-    });
+    showCartToast({ title: `Entrada: ${ev.title}`, price: ev.price, image: ev.image });
+    track(EVENTS.EVENT_TICKET_BUY, { event_id: ev.id, event_name: ev.title, price: ev.price });
+    setBoughtIds((prev) => ({ ...prev, [ev.id]: true }));
+    clearTimeout(timersRef.current[ev.id]);
+    timersRef.current[ev.id] = setTimeout(() => {
+      setBoughtIds((prev) => {
+        const next = { ...prev };
+        delete next[ev.id];
+        return next;
+      });
+    }, 1800);
   };
 
   return (
-    <section id="events" className="bg-[#050505] py-24 md:py-36 px-6 md:px-16 relative overflow-hidden border-t border-white/[0.02]">
-      {/* Visual background lights */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-96 h-96 bg-brand-primary/3 rounded-full blur-[180px] pointer-events-none" />
+    <section id="events" className="section bg-brand-background border-t border-brand-border">
+      <div className="container-page space-y-16">
 
-      <div className="max-w-7xl mx-auto space-y-16">
-        
-        {/* Section Header */}
-        <div className="text-center space-y-4 max-w-2xl mx-auto flex flex-col items-center">
-          <span className="eyebrow text-center mb-0">
-            Cultura & Encuentros
-          </span>
-          <h2 className="font-display text-brand-textMain font-light tracking-[0.05em] uppercase">
-            Talleres & Catas de Café
+        <header className="max-w-3xl space-y-4">
+          <h2 className="h-section">
+            Lo que viene en la agenda.
           </h2>
-          <div className="w-16 h-[1px] bg-brand-primary/30 mx-auto mt-3" />
-          <p className="font-body text-brand-textMuted font-light leading-relaxed pt-2">
-            Disfruta de nuestra agenda de especialidad. Reserva tus entradas para talleres interactivos de panadería de masa madre y cataciones guiadas de café de altura.
+          <p className="text-brand-textMain text-base md:text-lg leading-relaxed max-w-reading">
+            Hacemos catas y talleres casi todos los sábados. No son eventos
+            grandes — son grupos pequeños donde se aprende algo y se prueba café.
           </p>
-        </div>
+        </header>
 
-        {/* Dynamic Tickets Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {EVENTS_DATA.map((ev) => (
-            <div
+        <ol className="space-y-16">
+          {EVENT_ITEMS.map((ev, i) => (
+            <li
               key={ev.id}
-              className="group relative bg-brand-surface/40 rounded-[4px] border border-white/[0.03] overflow-hidden flex flex-col justify-between hover:border-brand-primary/20 hover:bg-brand-surface/80 hover:shadow-2xl transition-all duration-700 h-full shadow-xl"
+              className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start border-t border-brand-border pt-10"
             >
-              
-              {/* Upper Visual section */}
-              <div className="relative h-48 shrink-0 bg-neutral-950 overflow-hidden">
-                {/* Category tag */}
-                <span className="absolute top-4 left-4 z-20 font-body text-[11px] tracking-[0.2em] uppercase font-bold text-brand-primary bg-black/60 backdrop-blur-md px-2.5 py-1.5 rounded border border-brand-primary/20">
-                  {ev.category}
-                </span>
-
+              <figure className="md:col-span-5 img-grid-item aspect-[4/3] overflow-hidden bg-brand-placeholder">
                 <img
                   src={ev.image}
                   alt={ev.title}
-                  className="w-full h-full object-cover transform transition-transform duration-[1800ms] ease-high-end group-hover:scale-105"
+                  loading="lazy"
+                  className="w-full h-full object-cover"
                 />
-                
-                {/* Visual vignette */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0c0c] via-transparent to-transparent pointer-events-none" />
-              </div>
+              </figure>
 
-              {/* Lower Details section */}
-              <div className="p-6 md:p-8 flex-grow flex flex-col justify-between space-y-4 text-left relative z-20">
-                <div className="space-y-3">
-                  
-                  {/* Date details */}
-                  <div className="flex items-center space-x-2 text-[11px] font-body tracking-wider text-brand-primary uppercase font-bold">
-                    <TicketIcon size={12} />
-                    <span>{ev.date}</span>
-                  </div>
-
-                   <h3 className="font-display text-brand-textMain group-hover:text-brand-primary transition-colors duration-500 font-light leading-snug">
-                    {ev.title}
-                  </h3>
-
-                  {/* Time info */}
-                  <div className="flex items-center space-x-2 text-[11px] font-body text-brand-textMuted/75 uppercase tracking-widest font-light pb-1">
-                    <ClockIcon size={10} className="text-brand-primary/60" />
-                    <span dangerouslySetInnerHTML={{ __html: ev.time }} />
-                  </div>
-
-                  <p className="font-body text-[14px] text-brand-textMuted leading-relaxed font-light line-clamp-3 pt-1">
-                    {ev.description}
-                  </p>
-                </div>
-
-                {/* Tickets Buy Controls */}
-                <div className="pt-4 border-t border-white/5 space-y-4">
-                  <div className="flex items-center justify-between">
-                    {/* Price and remaining spots */}
-                    <div className="text-left">
-                      <span className="text-[11px] font-body tracking-wider text-brand-textMuted uppercase block">TICKET INDIVIDUAL</span>
-                      <span className="price">${ev.price.toFixed(2)}</span>
-                    </div>
-
-                    {/* Quantity Selector */}
-                    <div className="flex items-center space-x-2">
-                      <span className="font-body text-[11px] tracking-wider uppercase text-brand-textMuted">Cantidad:</span>
-                      <div className="flex items-center space-x-3 bg-black/60 border border-white/10 rounded-full px-3 py-1">
-                        <button
-                          type="button"
-                          onClick={() => handleQtyChange(ev.id, quantities[ev.id] - 1)}
-                          disabled={quantities[ev.id] <= 1}
-                          className="text-brand-textMuted hover:text-brand-primary disabled:opacity-30 disabled:hover:text-brand-textMuted transition-colors text-[11px] font-bold font-mono px-1"
-                        >
-                          -
-                        </button>
-                        <span className="font-body text-[11px] text-brand-textMain font-bold min-w-[12px] text-center select-none">
-                          {quantities[ev.id]}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => handleQtyChange(ev.id, quantities[ev.id] + 1)}
-                          disabled={quantities[ev.id] >= 5}
-                          className="text-brand-textMuted hover:text-brand-primary disabled:opacity-30 disabled:hover:text-brand-textMuted transition-colors text-[11px] font-bold font-mono px-1"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Buy Button */}
+              <div className="md:col-span-7 space-y-4">
+                <span className="text-[12px] text-brand-textSubtle tabular-nums">
+                  0{i + 1}
+                </span>
+                <h3 className="font-display text-2xl md:text-3xl text-brand-textMain font-normal leading-snug">
+                  {ev.title}
+                </h3>
+                <p className="text-[13px] text-brand-textSubtle tabular-nums">
+                  {ev.date}
+                </p>
+                <p className="text-[15px] text-brand-textMain leading-relaxed max-w-reading">
+                  {ev.blurb}
+                </p>
+                <div className="flex flex-wrap items-baseline justify-between gap-6 pt-2">
+                  <span className="font-sans text-lg text-brand-textMain tabular-nums">
+                    ${ev.price.toFixed(2)}
+                  </span>
                   <button
-                    onClick={() => handleBuyTicket(ev)}
-                    className="w-full py-3 bg-transparent border border-brand-primary/45 hover:bg-brand-primary hover:text-black text-brand-primary font-body tracking-[0.2em] text-[11px] uppercase font-bold transition-all duration-500 rounded-full flex items-center justify-center space-x-2"
+                    onClick={() => handleBuy(ev)}
+                    aria-pressed={!!boughtIds[ev.id]}
+                    aria-live="polite"
+                    className={`btn-underline gap-2 ${
+                      boughtIds[ev.id]
+                        ? 'text-brand-primary border-brand-primary'
+                        : ''
+                    }`}
                   >
-                    <span>Reservar Entradas</span>
-                    <SparklesIcon size={10} />
+                    {boughtIds[ev.id] ? (
+                      <>
+                        <span aria-hidden="true">✓</span>
+                        <span>Apartado</span>
+                      </>
+                    ) : (
+                      <>
+                        <span aria-hidden="true">+</span>
+                        <span>Apartar mi lugar</span>
+                      </>
+                    )}
                   </button>
-
-                  {/* Spots left indicator */}
-                  <div className="text-center">
-                    <span className="text-[11px] font-body tracking-[0.2em] text-brand-primary/70 uppercase font-semibold">
-                      ¡Solo quedan {ev.spotsLeft} cupos disponibles!
-                    </span>
-                  </div>
                 </div>
-
               </div>
-
-              {/* Gold border accent that slides in */}
-              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-brand-primary to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
 
       </div>
     </section>

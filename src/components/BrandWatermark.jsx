@@ -2,7 +2,7 @@ import logo from '../assets/logo.png';
 
 export default function BrandWatermark({
   className = 'right-8 top-1/2 -translate-y-1/2',
-  opacity = 0.04,
+  opacity = 0.05,
   vertical = true,
 }) {
   return (
@@ -13,14 +13,14 @@ export default function BrandWatermark({
       <img
         src={logo}
         alt=""
-        className="h-12 w-auto object-contain filter brightness-150 mix-blend-screen"
+        className="h-12 w-auto object-contain"
       />
 
       <span
-        className="font-brand text-[11px] tracking-[0.5em] uppercase text-brand-textMuted"
+        className="font-wordmark uppercase text-[12px] tracking-[0.18em] text-brand-textSubtle"
         style={vertical ? { writingMode: 'vertical-rl', textOrientation: 'mixed' } : {}}
       >
-        PANNA &amp; POMODORO
+        Panna &amp; Pomodoro
       </span>
     </div>
   );

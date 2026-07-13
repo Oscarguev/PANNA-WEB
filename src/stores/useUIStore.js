@@ -4,6 +4,7 @@ export const useUIStore = create((set) => ({
   cartOpen: false,
   portalOpen: false,
   cartToast: null,
+  newsletterOpen: false,
 
   openCart:    () => set({ cartOpen: true }),
   closeCart:   () => set({ cartOpen: false }),
@@ -12,4 +13,6 @@ export const useUIStore = create((set) => ({
 
   showCartToast:  (item) => set({ cartToast: item }),
   clearCartToast: () => set({ cartToast: null }),
+
+  setNewsletterOpen: (v) => set({ newsletterOpen: v }),
 }))

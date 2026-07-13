@@ -15,7 +15,7 @@ export const consoleAdapter = {
     console.groupEnd()
   },
 
-  page({ path, timestamp }) {
+  page({ path, timestamp: _timestamp }) {
     if (!DEV) return
     console.log(
       `%c[Analytics] %cpage_view %c${path}`,

@@ -1,11 +1,31 @@
-import React, { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { CloseIcon, TagIcon, SparklesIcon } from './Icons';
+import { CloseIcon, TagIcon, SparklesIcon, AlertTriangleIcon, TrashIcon } from './Icons';
 import { track, EVENTS } from '../analytics';
 import { useCartStore, selectCartSubtotal } from '../stores/useCartStore';
 import { useSessionStore } from '../stores/useSessionStore';
 import { useUIStore } from '../stores/useUIStore';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import { supabase } from '../lib/supabase';
+
+function Spinner() {
+  return (
+    <svg className="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
+      <path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function ErrorBox({ id, message }) {
+  if (!message) return null;
+  return (
+    <p id={id} role="alert" className="text-[13px] text-brand-danger border border-brand-danger/40 bg-brand-dangerBg px-3 py-2.5 flex items-start gap-2">
+      <AlertTriangleIcon size={14} className="text-brand-danger mt-0.5 shrink-0" aria-hidden="true" />
+      <span>{message}</span>
+    </p>
+  );
+}
 
 export default function CartDrawer() {
   const cartItems      = useCartStore((state) => state.items);
@@ -30,12 +50,16 @@ export default function CartDrawer() {
   const [orderId, setOrderId] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [useWallet, setUseWallet] = useState(false);
+  const [removingItemId, setRemovingItemId] = useState(null);
+  const [pendingRemoveId, setPendingRemoveId] = useState(null);
 
-  // Alianza estratégica
   const [codigoAlianza, setCodigoAlianza]   = useState('');
-  const [alianzaInfo, setAlianzaInfo]       = useState(null); // { alianza_nombre, descuento_porcentaje, miembro_nombre }
+  const [alianzaInfo, setAlianzaInfo]       = useState(null);
   const [alianzaError, setAlianzaError]     = useState(null);
   const [validandoAlianza, setValidandoAlianza] = useState(false);
+
+  const drawerRef = useRef(null);
+  useFocusTrap(isOpen, onClose, drawerRef);
 
   const tax = subtotal * 0.13;
   const shipping = deliveryMode === 'delivery' && subtotal > 0 ? 3.50 : 0.00;
@@ -158,270 +182,301 @@ export default function CartDrawer() {
     setCodigoAlianza('');
     setAlianzaInfo(null);
     setAlianzaError(null);
+    setPendingRemoveId(null);
     onClose();
+  };
+
+  const confirmRemove = (id) => {
+    const item = cartItems.find(i => i.id === id);
+    track(EVENTS.REMOVE_FROM_CART, { item_id: id, item_name: item?.title, price: item?.price });
+    setRemovingItemId(id);
+    setTimeout(() => {
+      removeItem(id);
+      setRemovingItemId(null);
+      setPendingRemoveId(null);
+    }, 200);
   };
 
   return (
     <>
-      {/* Background shadow overlay */}
       <div
-        className={`fixed inset-0 bg-black/85 backdrop-blur-sm z-50 transition-opacity duration-700 ${
+        className={`fixed inset-0 bg-black/40 z-50 transition-opacity duration-base ${
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
         onClick={checkoutStep === 'success' ? handleCloseSuccess : onClose}
+        aria-hidden="true"
       />
 
-      {/* Cart Drawer */}
       <div
-        className={`fixed right-0 top-0 h-full w-full sm:w-[460px] z-50 bg-[#0c0c0c] border-l border-white/[0.04] shadow-2xl transition-transform duration-[800ms] ease-high-end transform flex flex-col justify-between ${
+        ref={drawerRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cart-drawer-title"
+        tabIndex={-1}
+        className={`fixed right-0 top-0 h-full w-full sm:w-[460px] z-50 bg-white border-l border-brand-border shadow-sm transition-transform duration-base ease-out transform flex flex-col justify-between ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        {/* Subtle interior gold border contour */}
-        <div className="absolute top-4 bottom-4 left-4 right-4 border border-brand-primary/5 pointer-events-none rounded-[1px] z-0" />
-
         <div className="relative z-10 flex flex-col h-full justify-between">
-          
-          {/* Header Block */}
-          <div className="p-6 md:p-8 border-b border-white/5 flex items-center justify-between">
+
+          <div className="p-6 md:p-8 border-b border-brand-border flex items-center justify-between bg-brand-surface">
             <div className="space-y-1 text-left">
-              <span className="font-body text-[11px] tracking-[0.25em] text-brand-primary uppercase font-bold">
-                {checkoutStep === 'cart' ? 'Tu Selección' : checkoutStep === 'checkout' ? 'Pasarela Premium' : 'Confirmación'}
+              <span className="text-[12px] text-brand-textSubtle">
+                {checkoutStep === 'cart' ? 'Paso 1 de 3' : checkoutStep === 'checkout' ? 'Paso 2 de 3' : 'Paso 3 de 3'}
               </span>
-              <h3 className="font-display text-2xl text-brand-textMain font-light uppercase tracking-wide">
-                {checkoutStep === 'cart' ? 'Bolsa Gastronómica' : checkoutStep === 'checkout' ? 'Pago de Experiencia' : 'Pedido Completado'}
-              </h3>
+              <h2 id="cart-drawer-title" className="font-display text-2xl text-brand-textMain font-light">
+                {checkoutStep === 'cart' ? 'Tu selección' : checkoutStep === 'checkout' ? 'Pago del pedido' : 'Pedido completado'}
+              </h2>
             </div>
-            
-            {/* Close Button */}
+
             {checkoutStep !== 'success' && (
               <button
                 onClick={onClose}
-                className="w-8 h-8 rounded-full border border-white/10 hover:border-brand-primary flex items-center justify-center text-brand-textMain hover:text-brand-primary transition-all duration-300 bg-brand-surface/40"
+                className="w-11 h-11 min-w-[44px] min-h-[44px] border border-brand-border hover:border-brand-primary flex items-center justify-center text-brand-textMain hover:text-brand-primary transition-colors duration-base bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                aria-label="Cerrar bolsa"
               >
                 <CloseIcon size={14} />
               </button>
             )}
           </div>
 
-          {/* STEP 1: SHOPPING CART LISTING */}
           {checkoutStep === 'cart' && (
             <div className="flex-grow overflow-y-auto px-6 py-4 space-y-6 scrollbar-thin">
               {cartItems.length === 0 ? (
                 <div className="py-24 text-center space-y-4">
-                  <div className="w-12 h-12 rounded-full border border-white/5 mx-auto flex items-center justify-center text-brand-textMuted/40">
+                  <div className="w-12 h-12 border border-brand-border mx-auto flex items-center justify-center text-brand-textSubtle text-2xl" aria-hidden="true">
                     &empty;
                   </div>
-                  <p className="font-body text-xs text-brand-textMuted font-light">
+                  <p className="text-[14px] text-brand-textSubtle">
                     Tu bolsa está vacía. Explora nuestro menú o tienda de café.
                   </p>
+                  <Link
+                    to="/menu"
+                    onClick={onClose}
+                    className="inline-block text-[13px] text-brand-textMain border-b border-brand-textMain pb-0.5 hover:border-brand-primary hover:text-brand-primary transition-colors duration-base min-h-[44px] leading-[44px]"
+                  >
+                    Explorar la carta
+                  </Link>
                 </div>
               ) : (
                 <>
-                  {/* Delivery Mode Toggle */}
-                  <div className="bg-brand-surface/50 border border-white/5 p-1 rounded-full grid grid-cols-3 text-center">
-                    {['pickup', 'delivery', 'preorder'].map((mode) => (
+                  <div role="radiogroup" aria-label="Modalidad de entrega" className="border-y border-brand-border grid grid-cols-3 text-center">
+                    {[
+                      { id: 'pickup', label: 'Recoger' },
+                      { id: 'delivery', label: 'Domicilio' },
+                      { id: 'preorder', label: 'Preordenar' },
+                    ].map(({ id, label }) => (
                       <button
-                        key={mode}
+                        key={id}
+                        type="button"
+                        role="radio"
+                        aria-checked={deliveryMode === id}
                         onClick={() => {
-                        setDeliveryMode(mode);
-                        if (mode === 'preorder') track(EVENTS.PREORDER_SELECT);
-                      }}
-                        className={`py-2 rounded-full font-body text-[10px] tracking-wider uppercase font-bold transition-all duration-500 ${
-                          deliveryMode === mode
-                            ? 'bg-brand-primary text-black'
-                            : 'text-brand-textMuted hover:text-brand-textMain'
+                          setDeliveryMode(id);
+                          if (id === 'preorder') track(EVENTS.PREORDER_SELECT);
+                        }}
+                        className={`min-h-[44px] py-3 text-[14px] transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary border-r border-brand-border last:border-r-0 ${
+                          deliveryMode === id
+                            ? 'text-brand-textMain border-b-2 border-brand-primary -mb-px'
+                            : 'text-brand-textSubtle hover:text-brand-textMain'
                         }`}
                       >
-                        {mode === 'pickup' ? 'Recoger' : mode === 'delivery' ? 'Domicilio' : 'Preordenar'}
+                        {label}
                       </button>
                     ))}
                   </div>
 
-                  {/* Cart Items Scroll */}
-                  <div className="space-y-4">
+                  <ul className="space-y-4">
                     {cartItems.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center justify-between border-b border-white/[0.03] pb-4 group"
-                      >
+                      <li key={item.id} className="flex items-center justify-between border-b border-brand-border pb-4">
                         <div className="flex items-center space-x-4 text-left">
-                          {/* Mini Image */}
-                          <div className="w-14 h-14 rounded-[2px] overflow-hidden border border-white/5 bg-neutral-950 flex-shrink-0">
+                          <div className="w-14 h-14 overflow-hidden border border-brand-border bg-brand-placeholder shrink-0">
                             <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                           </div>
-                          
-                          {/* Title and details */}
+
                           <div className="space-y-1">
-                            <h4 className="font-display text-sm text-brand-textMain font-light">
-                              {item.title}
-                            </h4>
-                            <span className="font-body text-[12px] text-brand-primary tracking-wider uppercase block">
+                            <h3 className="font-display text-[15px] text-brand-textMain font-normal">{item.title}</h3>
+                            <span className="text-[13px] text-brand-textMain tabular-nums block">
                               ${item.price.toFixed(2)}
                             </span>
                           </div>
                         </div>
 
-                        {/* Controls */}
                         <div className="flex items-center space-x-4">
-                          <div className="flex items-center border border-white/10 rounded-full bg-brand-surface/40 px-2 py-1">
+                          <div className="flex items-center border border-brand-border">
                             <button
                               onClick={() => item.quantity > 1 && updateQuantity(item.id, item.quantity - 1)}
-                              className="text-brand-textMuted hover:text-brand-primary px-1.5 text-xs focus:outline-none"
+                              disabled={item.quantity <= 1}
+                              aria-label={`Disminuir cantidad de ${item.title}`}
+                              className="min-w-[44px] min-h-[44px] flex items-center justify-center text-brand-textMain hover:text-brand-primary transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary disabled:opacity-40 disabled:cursor-not-allowed"
                             >
-                              -
+                              −
                             </button>
-                            <span className="font-body text-[12px] text-brand-textMain px-2">
+                            <span aria-live="polite" className="text-[13px] text-brand-textMain px-3 tabular-nums">
                               {item.quantity}
                             </span>
                             <button
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              className="text-brand-textMuted hover:text-brand-primary px-1.5 text-xs focus:outline-none"
+                              aria-label={`Aumentar cantidad de ${item.title}`}
+                              className="min-w-[44px] min-h-[44px] flex items-center justify-center text-brand-textMain hover:text-brand-primary transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
                             >
                               +
                             </button>
                           </div>
 
-                          <button
-                            onClick={() => {
-                            track(EVENTS.REMOVE_FROM_CART, { item_id: item.id, item_name: item.title, price: item.price });
-                            removeItem(item.id);
-                          }}
-                            className="text-brand-textMuted/40 hover:text-brand-primary transition-colors text-[11px] uppercase font-body"
-                          >
-                            Quitar
-                          </button>
+                          {pendingRemoveId === item.id ? (
+                            <div className="flex items-center gap-1">
+                              <button
+                                onClick={() => confirmRemove(item.id)}
+                                disabled={removingItemId === item.id}
+                                className="text-[13px] text-white bg-brand-danger hover:bg-rose-700 px-2.5 py-2 min-h-[36px] transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-danger disabled:opacity-50 inline-flex items-center gap-1"
+                                aria-label="Confirmar eliminación"
+                              >
+                                {removingItemId === item.id ? <Spinner /> : 'Quitar'}
+                              </button>
+                              <button
+                                onClick={() => setPendingRemoveId(null)}
+                                className="text-[13px] text-brand-textSubtle hover:text-brand-textMain px-2 py-2 min-h-[36px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
+                              >
+                                Cancelar
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => setPendingRemoveId(item.id)}
+                              disabled={isProcessing}
+                              className="text-brand-textSubtle hover:text-brand-danger transition-colors duration-base text-[13px] min-h-[44px] px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-danger disabled:opacity-40 inline-flex items-center gap-1"
+                              aria-label={`Quitar ${item.title} de la bolsa`}
+                            >
+                              <TrashIcon size={12} aria-hidden="true" />
+                              Quitar
+                            </button>
+                          )}
                         </div>
-                      </div>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </>
               )}
             </div>
           )}
 
-          {/* STEP 2: PREMIUM CHECKOUT PAYMENTS FORM */}
           {checkoutStep === 'checkout' && (
             <form onSubmit={handleCheckoutSubmit} className="flex-grow overflow-y-auto px-6 py-6 space-y-6 text-left relative z-10 scrollbar-thin">
-              
-              {/* Delivery / Pickup conditional inputs */}
+
               {deliveryMode === 'delivery' ? (
                 <div className="space-y-4">
-                  <h4 className="font-body text-[11px] tracking-[0.2em] uppercase font-bold text-brand-primary border-b border-white/5 pb-2">
-                    Detalles del Envío
-                  </h4>
-                  <div className="space-y-3">
+                  <h3 className="text-[14px] text-brand-textMain border-b border-brand-border pb-2">
+                    Detalles del envío
+                  </h3>
+                  <div className="space-y-4">
                     <div className="space-y-1">
-                      <label htmlFor="address" className="font-body text-[11px] tracking-wider uppercase text-brand-textMuted">Dirección de Domicilio *</label>
+                      <label htmlFor="checkout-address" className="text-[12px] text-brand-textSubtle">Dirección de domicilio *</label>
                       <input
+                        id="checkout-address"
                         type="text"
-                        id="address"
                         required
-                        placeholder="Calle, Residencial, Número de casa..."
+                        placeholder="Calle, residencial, número de casa…"
                         value={deliveryInfo.address}
                         onChange={(e) => setDeliveryInfo({ ...deliveryInfo, address: e.target.value })}
-                        className="w-full bg-transparent border-b border-white/10 focus:border-brand-primary text-brand-textMain font-body text-xs py-2 px-1 focus:outline-none transition-colors duration-500 font-light placeholder-white/10"
+                        className="w-full bg-white border border-brand-border focus:border-brand-primary text-brand-textMain text-[14px] py-3 px-3 min-h-[44px] focus:outline-none transition-colors duration-base placeholder:text-brand-textMuted"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1">
-                        <label htmlFor="phone" className="font-body text-[11px] tracking-wider uppercase text-brand-textMuted">Teléfono de Contacto *</label>
+                        <label htmlFor="checkout-phone" className="text-[12px] text-brand-textSubtle">Teléfono de contacto *</label>
                         <input
+                          id="checkout-phone"
                           type="tel"
-                          id="phone"
                           required
                           placeholder="Ej: 7794-7885"
                           value={deliveryInfo.phone}
                           onChange={(e) => setDeliveryInfo({ ...deliveryInfo, phone: e.target.value })}
-                          className="w-full bg-transparent border-b border-white/10 focus:border-brand-primary text-brand-textMain font-body text-xs py-2 px-1 focus:outline-none transition-colors duration-500 font-light placeholder-white/10"
+                          className="w-full bg-white border border-brand-border focus:border-brand-primary text-brand-textMain text-[14px] py-3 px-3 min-h-[44px] focus:outline-none transition-colors duration-base placeholder:text-brand-textMuted"
                         />
                       </div>
                       <div className="space-y-1">
-                        <label htmlFor="delTime" className="font-body text-[11px] tracking-wider uppercase text-brand-textMuted">Hora Sugerida</label>
+                        <label htmlFor="checkout-time" className="text-[12px] text-brand-textSubtle">Hora sugerida</label>
                         <input
+                          id="checkout-time"
                           type="time"
-                          id="delTime"
                           value={deliveryInfo.time}
                           onChange={(e) => setDeliveryInfo({ ...deliveryInfo, time: e.target.value })}
-                          className="w-full bg-transparent border-b border-white/10 focus:border-brand-primary text-brand-textMain font-body text-xs py-2 px-1 focus:outline-none transition-colors duration-500 font-light"
+                          className="w-full bg-white border border-brand-border focus:border-brand-primary text-brand-textMain text-[14px] py-3 px-3 min-h-[44px] focus:outline-none transition-colors duration-base"
                         />
                       </div>
                     </div>
                   </div>
                 </div>
               ) : deliveryMode === 'pickup' ? (
-                <div className="bg-brand-surface/40 border border-white/[0.03] p-4 rounded-[2px] space-y-2 text-left">
-                  <span className="font-body text-[11px] tracking-[0.25em] text-brand-primary uppercase font-bold block">
-                    Información de Recogida
-                  </span>
-                  <p className="font-body text-xs text-brand-textMuted leading-relaxed font-light">
+                <div className="bg-brand-surfaceMuted border border-brand-border p-4 space-y-2 text-left">
+                  <p className="text-[13px] text-brand-textSubtle">Información de recogida</p>
+                  <p className="text-[14px] text-brand-textMain leading-relaxed">
                     Tu pedido estará listo en barra en un aproximado de 20 a 30 minutos. Por favor presenta tu nombre al barista.
                   </p>
                 </div>
               ) : (
-                <div className="bg-brand-surface/40 border border-white/[0.03] p-4 rounded-[2px] space-y-3 text-left">
-                  <span className="font-body text-[11px] tracking-[0.25em] text-brand-primary uppercase font-bold block">
-                    Información de Preorden
-                  </span>
-                  <p className="font-body text-xs text-brand-textMuted leading-relaxed font-light">
+                <div className="bg-brand-surfaceMuted border border-brand-border p-4 space-y-3 text-left">
+                  <p className="text-[13px] text-brand-textSubtle">Información de preorden</p>
+                  <p className="text-[14px] text-brand-textMain leading-relaxed">
                     Tu preorden gastronómica se reservará para tu mesa en la fecha y hora seleccionada.
                   </p>
 
                   {userSession?.loggedIn && userSession?.reservations && userSession.reservations.length > 0 ? (
-                    <div className="space-y-1.5 pt-2 border-t border-white/5">
-                      <label htmlFor="preorderRes" className="font-body text-[11px] tracking-wider uppercase text-brand-primary block font-bold">
-                        Vincular a tu Mesa Reservada *
+                    <div className="space-y-1.5 pt-2 border-t border-brand-border">
+                      <label htmlFor="checkout-preorder-res" className="text-[12px] text-brand-textSubtle block">
+                        Vincular a tu mesa reservada *
                       </label>
                       <select
-                        id="preorderRes"
-                        className="w-full bg-[#0d0d0d] border border-white/10 rounded-full font-body text-[12px] px-3.5 py-2.5 focus:outline-none focus:border-brand-primary text-brand-textMain font-semibold uppercase tracking-wider cursor-pointer"
+                        id="checkout-preorder-res"
+                        className="w-full bg-white border border-brand-border text-[14px] px-3 py-3 min-h-[44px] focus:outline-none focus:border-brand-primary text-brand-textMain cursor-pointer"
                       >
                         {userSession.reservations.map((res) => (
                           <option key={res.id} value={res.id}>
-                            {res.id} &mdash; {res.date} a las {res.time} ({res.guests} comensales)
+                            {res.id} — {res.date} a las {res.time} ({res.guests} comensales)
                           </option>
                         ))}
                       </select>
                     </div>
                   ) : (
-                    <div className="pt-2 border-t border-white/5 space-y-2">
-                      <p className="font-body text-[12px] text-brand-primary uppercase tracking-wider font-semibold leading-relaxed">
-                        ⚠️ No tienes una mesa reservada activa en tu cuenta.
+                    <div className="pt-2 border-t border-brand-border space-y-2">
+                      <p className="text-[13px] text-brand-accent leading-relaxed">
+                        No tienes una mesa reservada activa en tu cuenta.
                       </p>
                       <Link
                         to="/reservar"
                         onClick={onClose}
-                        className="inline-block font-body text-[11px] tracking-widest text-brand-textMain hover:text-brand-primary uppercase font-bold border-b border-brand-primary pb-0.5"
+                        className="inline-block min-h-[44px] leading-[44px] text-[13px] text-brand-accent border-b border-brand-accent pb-0.5 hover:text-brand-primary hover:border-brand-primary"
                       >
-                        Reservar una Mesa ahora &rarr;
+                        Reservar una mesa ahora
                       </Link>
                     </div>
                   )}
                 </div>
               )}
 
-              {/* Nombre + Método de pago */}
               <div className="space-y-5 pt-2">
                 <div className="space-y-1">
-                  <label className="font-body text-[11px] tracking-[0.2em] uppercase font-bold text-brand-primary border-b border-white/5 pb-2 block">
-                    Nombre para el Pedido *
+                  <label htmlFor="checkout-name" className="text-[14px] text-brand-textMain border-b border-brand-border pb-2 block">
+                    Nombre para el pedido *
                   </label>
                   <input
+                    id="checkout-name"
                     type="text"
                     required
                     placeholder="Ej: Alejandro Valenzuela"
                     value={nombre}
                     onChange={(e) => { setNombre(e.target.value); setFormError(''); }}
-                    className="w-full bg-transparent border-b border-white/10 focus:border-brand-primary text-brand-textMain font-body text-xs py-2 px-1 focus:outline-none transition-colors duration-500 font-light placeholder-white/10"
+                    className="w-full bg-white border border-brand-border focus:border-brand-primary text-brand-textMain text-[14px] py-3 px-3 min-h-[44px] focus:outline-none transition-colors duration-base placeholder:text-brand-textMuted"
                   />
                 </div>
 
-                <div className="space-y-3">
-                  <label className="font-body text-[11px] tracking-[0.2em] uppercase font-bold text-brand-primary border-b border-white/5 pb-2 block">
-                    Método de Pago
-                  </label>
-                  <div className="grid grid-cols-2 gap-3">
+                <fieldset className="space-y-3 border-0 p-0 m-0">
+                  <legend className="text-[14px] text-brand-textMain border-b border-brand-border pb-2 w-full">
+                    Método de pago
+                  </legend>
+                  <div className="grid grid-cols-2 gap-3 pt-1" role="radiogroup">
                     {[
                       { id: 'efectivo', label: 'Efectivo' },
                       { id: 'tarjeta',  label: 'Tarjeta' },
@@ -429,88 +484,85 @@ export default function CartDrawer() {
                       <button
                         key={id}
                         type="button"
+                        role="radio"
+                        aria-checked={paymentMethod === id}
                         onClick={() => setPaymentMethod(id)}
-                        className={`py-3 rounded-[2px] border text-[11px] font-body tracking-widest uppercase font-bold transition-all duration-300 ${
+                        className={`min-h-[44px] py-3 border text-[14px] transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary ${
                           paymentMethod === id
-                            ? 'border-brand-primary bg-brand-primary/10 text-brand-primary'
-                            : 'border-white/10 text-brand-textMuted hover:border-brand-primary/40'
+                            ? 'border-brand-primary text-brand-textMain'
+                            : 'border-brand-border text-brand-textMain hover:border-brand-primary/60'
                         }`}
                       >
                         {label}
                       </button>
                     ))}
                   </div>
-                  <p className="font-body text-[11px] text-brand-textMuted/50 tracking-wider font-light">
+                  <p className="text-[13px] text-brand-textSubtle">
                     Pago al recoger en caja o al recibir el domicilio.
                   </p>
-                </div>
+                </fieldset>
               </div>
 
-              {/* Award Loyalty notification if logged in */}
               {userSession?.loggedIn && (
-                <div className="flex items-center space-x-3 p-3.5 bg-brand-primary/10 border border-brand-primary/20 rounded-[2px]">
-                  <TagIcon size={16} className="text-brand-primary" />
-                  <span className="font-body text-[12px] text-brand-primary tracking-wider uppercase font-semibold leading-relaxed">
-                    PANNA Rewards: Acumularás aproximadamente +{Math.round(total * 10)} puntos con este pedido.
+                <div className="flex items-center space-x-3 p-3.5 border-l-2 border-brand-primary bg-brand-surfaceMuted">
+                  <TagIcon size={16} className="text-brand-primary shrink-0" aria-hidden="true" />
+                  <span className="text-[13px] text-brand-textMain leading-relaxed">
+                    PANNA Rewards: acumularás aproximadamente +{Math.round(total * 10)} puntos con este pedido.
                   </span>
                 </div>
               )}
 
-              {formError && (
-                <p className="font-body text-[12px] text-red-400 tracking-wider text-center border border-red-400/20 bg-red-400/5 rounded-[2px] p-3">
-                  {formError}
-                </p>
-              )}
+              <ErrorBox id="checkout-error" message={formError} />
 
-              {/* Back to cart */}
               <div className="pt-2 text-center">
                 <button
                   type="button"
                   onClick={() => setCheckoutStep('cart')}
-                  className="font-body text-[11px] tracking-widest uppercase text-brand-textMuted hover:text-brand-textMain"
+                  className="min-h-[44px] px-4 text-[13px] text-brand-textSubtle hover:text-brand-textMain focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
                 >
-                  &larr; Volver a la Bolsa de Compras
+                  ← Volver a la bolsa
                 </button>
               </div>
 
             </form>
           )}
 
-          {/* STEP 3: SUCCESS CONFIRMATION END OF PAYMENT */}
           {checkoutStep === 'success' && (
-            <div className="flex-grow flex flex-col justify-center items-center p-8 space-y-6 text-center animate-fade-in">
-              <div className="w-16 h-16 rounded-full border border-brand-primary/45 flex items-center justify-center bg-brand-primary/10">
-                <SparklesIcon size={24} className="text-brand-primary animate-pulse" />
+            <div className="flex-grow flex flex-col justify-center items-center p-8 space-y-6 text-center">
+              <div className="w-16 h-16 border border-brand-success/60 flex items-center justify-center bg-brand-success/10" aria-hidden="true">
+                <SparklesIcon size={24} className="text-brand-success" />
               </div>
 
               <div className="space-y-2">
-                <span className="font-body text-[11px] tracking-[0.25em] text-brand-primary uppercase font-bold">
-                  Pedido Confirmado
+                <span className="text-[13px] text-brand-textSubtle">
+                  Pedido confirmado
                 </span>
-                <h3 className="font-display text-2xl text-brand-textMain font-light uppercase tracking-wide">
-                  ¡Gracias, {nombre}!
-                </h3>
+                <h2 className="font-display text-2xl text-brand-textMain font-light">
+                  Gracias, {nombre}.
+                </h2>
               </div>
 
-              <div className="w-16 h-[1.5px] bg-brand-primary/30 mx-auto" />
-
-              <p className="font-body text-xs text-brand-textMuted leading-relaxed font-light max-w-sm">
-                Tu pedido ha sido registrado. Preséntate en caja con tu código o indícalo al barista. Pago: <strong className="text-brand-primary capitalize">{paymentMethod}</strong> al recoger. Tu código de pedido es: <strong className="text-brand-primary tracking-widest block py-2 text-sm">PP-{orderId}</strong>
+              <p className="text-[14px] text-brand-textMain leading-relaxed max-w-sm">
+                Tu pedido ha sido registrado. Preséntate en caja con tu código o indícalo al barista. Pago: <strong className="text-brand-accent capitalize">{paymentMethod}</strong> al recoger. Tu código de pedido es:
               </p>
-              
+
+              <p className="font-display text-xl text-brand-accent tabular-nums">
+                PP-{orderId}
+              </p>
+
               {userSession?.loggedIn && (
-                <div className="bg-brand-surface border border-white/[0.04] p-4 rounded-[2px] max-w-xs space-y-2">
-                  <span className="font-body text-[11px] tracking-wider text-brand-primary font-semibold uppercase block">Resumen de Cuenta</span>
-                  <p className="font-body text-[12px] text-brand-textMain font-light">
-                    Se han acreditado <strong>+{Math.round(total * 10)} puntos</strong> en tu cuenta de PANNA Rewards.
+                <div className="bg-brand-surface border border-brand-border p-4 max-w-xs space-y-2 text-left">
+                  <span className="text-[13px] text-brand-textSubtle block">Resumen de cuenta</span>
+                  <p className="text-[13px] text-brand-textMain">
+                    Se han acreditado <strong className="text-brand-accent">+{Math.round(total * 10)} puntos</strong> en tu cuenta de PANNA Rewards.
                   </p>
                   {walletDiscount > 0 && (
-                    <p className="font-body text-[12px] text-brand-primary font-light">
+                    <p className="text-[13px] text-brand-textMain">
                       Crédito PANNA Wallet: <strong>-${walletDiscount.toFixed(2)}</strong>
                     </p>
                   )}
                   {alianzaDescuento > 0 && (
-                    <p className="font-body text-[12px] text-brand-primary font-light">
+                    <p className="text-[13px] text-brand-textMain">
                       Descuento {alianzaInfo?.alianza_nombre}: <strong>-${alianzaDescuento.toFixed(2)}</strong>
                     </p>
                   )}
@@ -520,43 +572,43 @@ export default function CartDrawer() {
               <div className="pt-6 w-full">
                 <button
                   onClick={handleCloseSuccess}
-                  className="w-full py-4 bg-brand-primary text-black font-body tracking-[0.2em] text-xs uppercase font-bold transition-all duration-500 rounded-full"
+                  className="w-full min-h-[48px] py-3 bg-brand-cta text-white text-[14px] transition-colors duration-base hover:bg-brand-ctaHover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
                 >
-                  Entendido & Finalizar
+                  Entendido
                 </button>
               </div>
             </div>
           )}
 
-          {/* Bottom Billing Block */}
           {checkoutStep !== 'success' && (
-            <div className="p-6 md:p-8 bg-brand-surface border-t border-white/5 space-y-6">
+            <div className="p-6 md:p-8 bg-brand-surface border-t border-brand-border space-y-6">
 
-              {/* Código de carnet alianza */}
               {alianzaInfo ? (
-                <div className="flex items-center justify-between px-4 py-3 rounded-[2px] border border-brand-primary/50 bg-brand-primary/10">
+                <div className="flex items-center justify-between px-4 py-3 border border-brand-primary/50 bg-brand-primary/10">
                   <div className="space-y-0.5">
-                    <span className="font-body text-[11px] tracking-[0.2em] uppercase font-bold text-brand-primary block">
+                    <span className="text-[13px] text-brand-accent block">
                       Alianza: {alianzaInfo.alianza_nombre}
                     </span>
-                    <span className="font-body text-[12px] text-brand-textMuted">
-                      {alianzaInfo.miembro_nombre} &bull; <strong className="text-brand-primary">-{alianzaInfo.descuento_porcentaje}%</strong>
+                    <span className="text-[13px] text-brand-textMain">
+                      {alianzaInfo.miembro_nombre} — <strong className="text-brand-accent">-{alianzaInfo.descuento_porcentaje}%</strong>
                     </span>
                   </div>
                   <button
                     onClick={() => { setAlianzaInfo(null); setCodigoAlianza(''); }}
-                    className="font-body text-[11px] tracking-wider uppercase text-brand-textMuted hover:text-red-400 transition-colors"
+                    className="min-h-[44px] text-[13px] text-brand-textSubtle hover:text-brand-danger transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-danger px-2"
+                    aria-label="Quitar código de alianza aplicado"
                   >
                     Quitar
                   </button>
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <span className="font-body text-[11px] tracking-[0.2em] uppercase font-bold text-brand-textMuted block">
+                  <label htmlFor="checkout-alianza" className="text-[13px] text-brand-textMain block">
                     Código de carnet empresarial
-                  </span>
+                  </label>
                   <div className="flex gap-2">
                     <input
+                      id="checkout-alianza"
                       type="text"
                       value={codigoAlianza}
                       onChange={(e) => {
@@ -565,117 +617,103 @@ export default function CartDrawer() {
                       }}
                       onKeyDown={(e) => e.key === 'Enter' && validarCodigoAlianza()}
                       placeholder="Ej: BCIE-00145"
-                      className="flex-1 bg-transparent border-b border-white/10 focus:border-brand-primary text-brand-textMain font-body text-xs py-1.5 px-1 focus:outline-none transition-colors font-light placeholder-white/20 tracking-widest"
+                      className="flex-1 bg-white border border-brand-border focus:border-brand-primary text-brand-textMain text-[14px] py-3 px-3 min-h-[44px] focus:outline-none transition-colors duration-base placeholder:text-brand-textMuted"
                     />
                     <button
                       onClick={validarCodigoAlianza}
                       disabled={validandoAlianza || !codigoAlianza.trim()}
-                      className="px-3 py-1 bg-brand-surface border border-white/10 hover:border-brand-primary/50 text-brand-textMuted hover:text-brand-primary font-body text-[11px] tracking-wider uppercase transition-all duration-300 rounded disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="min-h-[44px] px-4 bg-white border border-brand-border hover:border-brand-primary text-brand-textMain hover:text-brand-primary text-[13px] transition-colors duration-base disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
                     >
-                      {validandoAlianza ? '...' : 'Validar'}
+                      {validandoAlianza ? <><Spinner /> Validando</> : 'Validar'}
                     </button>
                   </div>
-                  {alianzaError && (
-                    <p className="font-body text-[12px] text-red-400 tracking-wider">{alianzaError}</p>
-                  )}
+                  <ErrorBox id="alianza-error" message={alianzaError} />
                 </div>
               )}
 
-              {/* Wallet toggle — only if logged in and has balance */}
               {userSession?.loggedIn && walletBalance > 0 && (
                 <button
                   type="button"
+                  role="switch"
+                  aria-checked={useWallet}
                   onClick={() => setUseWallet((v) => !v)}
-                  className={`w-full flex items-center justify-between px-4 py-3 rounded-[2px] border transition-all duration-300 text-left ${
+                  className={`w-full flex items-center justify-between px-4 py-3 border transition-colors duration-base text-left min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary ${
                     useWallet
-                      ? 'border-brand-primary/50 bg-brand-primary/10'
-                      : 'border-white/[0.06] bg-brand-surface/40 hover:border-brand-primary/30'
+                      ? 'border-brand-primary bg-brand-primary/10'
+                      : 'border-brand-border bg-brand-surfaceMuted hover:border-brand-primary/40'
                   }`}
                 >
                   <div className="space-y-0.5">
-                    <span className="font-body text-[11px] tracking-[0.2em] uppercase font-bold text-brand-primary block">
+                    <span className="text-[13px] text-brand-accent block">
                       Crédito PANNA Wallet
                     </span>
-                    <span className="font-body text-[12px] text-brand-textMuted">
-                      Disponible: <strong className="text-brand-textMain">${walletBalance.toFixed(2)}</strong>
+                    <span className="text-[13px] text-brand-textMain">
+                      Disponible: <strong>${walletBalance.toFixed(2)}</strong>
                     </span>
                   </div>
-                  <div className={`w-9 h-5 rounded-full transition-all duration-300 flex items-center px-0.5 ${
-                    useWallet ? 'bg-brand-primary justify-end' : 'bg-white/10 justify-start'
+                  <div className={`w-9 h-5 transition-colors duration-base flex items-center px-0.5 ${
+                    useWallet ? 'bg-brand-primary justify-end' : 'bg-brand-placeholder justify-start'
                   }`}>
-                    <div className="w-4 h-4 rounded-full bg-black/80" />
+                    <span className="sr-only">{useWallet ? 'Activado' : 'Desactivado'}</span>
+                    <div className="w-4 h-4 bg-white border border-brand-border" aria-hidden="true" />
                   </div>
                 </button>
               )}
 
-              {/* Calculations */}
-              <div className="space-y-2 font-body text-[12px] text-brand-textMuted uppercase tracking-wider font-light">
+              <div className="space-y-2 text-[13px] text-brand-textMain">
                 <div className="flex items-center justify-between">
-                  <span>Subtotal</span>
-                  <span className="text-brand-textMain font-medium">${subtotal.toFixed(2)}</span>
+                  <span className="text-brand-textSubtle">Subtotal</span>
+                  <span className="tabular-nums">${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span>Impuestos (13% IVA)</span>
-                  <span className="text-brand-textMain font-medium">${tax.toFixed(2)}</span>
+                  <span className="text-brand-textSubtle">Impuestos (13% IVA)</span>
+                  <span className="tabular-nums">${tax.toFixed(2)}</span>
                 </div>
                 {deliveryMode === 'delivery' && (
                   <div className="flex items-center justify-between">
-                    <span>Costo de Envío</span>
-                    <span className="text-brand-textMain font-medium">${shipping.toFixed(2)}</span>
+                    <span className="text-brand-textSubtle">Costo de envío</span>
+                    <span className="tabular-nums">${shipping.toFixed(2)}</span>
                   </div>
                 )}
                 {walletDiscount > 0 && (
-                  <div className="flex items-center justify-between text-brand-primary">
-                    <span>Crédito Wallet Aplicado</span>
-                    <span className="font-medium">-${walletDiscount.toFixed(2)}</span>
+                  <div className="flex items-center justify-between text-brand-accent">
+                    <span>Crédito wallet aplicado</span>
+                    <span className="tabular-nums">-${walletDiscount.toFixed(2)}</span>
                   </div>
                 )}
                 {alianzaDescuento > 0 && (
-                  <div className="flex items-center justify-between text-brand-primary">
+                  <div className="flex items-center justify-between text-brand-accent">
                     <span>Descuento {alianzaInfo?.alianza_nombre} ({alianzaInfo?.descuento_porcentaje}%)</span>
-                    <span className="font-medium">-${alianzaDescuento.toFixed(2)}</span>
+                    <span className="tabular-nums">-${alianzaDescuento.toFixed(2)}</span>
                   </div>
                 )}
-                <div className="h-[1px] bg-white/5 my-2" />
-                <div className="flex items-center justify-between text-xs text-brand-textMain font-medium">
-                  <span>Total Neto</span>
-                  <span className="text-brand-primary italic text-lg font-light">${total.toFixed(2)}</span>
+                <div className="h-px bg-brand-border my-2" />
+                <div className="flex items-center justify-between text-brand-textMain">
+                  <span>Total neto</span>
+                  <span className="font-display text-2xl text-brand-accent tabular-nums">${total.toFixed(2)}</span>
                 </div>
               </div>
 
-              {formError && checkoutStep === 'checkout' && (
-                <p className="font-body text-[12px] text-red-400 tracking-wider text-center border border-red-400/20 bg-red-400/5 rounded-[2px] p-3">
-                  {formError}
-                </p>
-              )}
-
-              {/* Action Button */}
               {checkoutStep === 'cart' ? (
                 <button
                   onClick={handleStartCheckout}
                   disabled={cartItems.length === 0}
-                  className={`w-full py-4 bg-brand-primary text-black font-body tracking-[0.2em] text-xs uppercase font-bold transition-all duration-500 rounded-full ${
-                    cartItems.length === 0 ? 'opacity-40 cursor-not-allowed' : 'hover:bg-[#ab8b5f] shadow-lg hover:shadow-brand-primary/10'
-                  }`}
+                  className="w-full min-h-[48px] py-3 bg-brand-cta text-white text-[14px] transition-colors duration-base disabled:opacity-40 disabled:cursor-not-allowed disabled:bg-brand-placeholder disabled:text-brand-textSubtle hover:bg-brand-ctaHover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
                 >
-                  Proceder al Pago
+                  Proceder al pago
                 </button>
               ) : (
                 <button
                   onClick={handleCheckoutSubmit}
                   disabled={isProcessing}
-                  className={`w-full py-4 bg-brand-primary text-black font-body tracking-[0.2em] text-xs uppercase font-bold transition-all duration-500 rounded-full flex items-center justify-center space-x-2 ${
-                    isProcessing ? 'opacity-70 cursor-wait' : 'hover:bg-[#ab8b5f]'
-                  }`}
+                  className="w-full min-h-[48px] py-3 bg-brand-cta text-white text-[14px] transition-colors duration-base flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-brand-ctaHover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
                 >
                   {isProcessing ? (
-                    <>
-                      <span>Procesando Pago Seguro...</span>
-                    </>
+                    <><Spinner /> Procesando…</>
                   ) : (
                     <span>
-                    {total === 0 ? 'Confirmar Pedido (Saldo Cubierto)' : `Pagar $${total.toFixed(2)}`}
-                  </span>
+                      {total === 0 ? 'Confirmar pedido (saldo cubierto)' : `Pagar $${total.toFixed(2)}`}
+                    </span>
                   )}
                 </button>
               )}

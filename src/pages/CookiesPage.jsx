@@ -29,45 +29,48 @@ const SECTIONS = [
 
 export default function CookiesPage() {
   return (
-    <main className="min-h-screen bg-brand-background pt-36 pb-24 px-6 md:px-16">
+    <main id="main" className="min-h-screen bg-brand-background pt-36 pb-24 px-6 md:px-16">
       <div className="max-w-3xl mx-auto space-y-16">
 
-        <div className="space-y-4">
-          <span className="font-body text-[12px] tracking-[0.35em] text-brand-primary uppercase font-semibold block">
-            Legal
-          </span>
-          <h1 className="font-display text-4xl md:text-5xl text-brand-textMain font-light tracking-[0.03em] uppercase leading-tight">
+        <header className="space-y-4">
+          <div className="flex items-center gap-3 text-[12px] text-brand-textSubtle">
+            <span className="w-8 h-px bg-brand-textSubtle" aria-hidden="true" />
+            <span>Legal · Última actualización, mayo de 2026</span>
+          </div>
+          <h1 className="font-display text-4xl md:text-5xl text-brand-textMain font-light leading-tight tracking-tighter">
             Política de Cookies
           </h1>
-          <div className="w-16 h-[1px] bg-brand-primary/30" />
-          <p className="font-body text-xs text-brand-textMuted leading-relaxed font-light pt-2">
-            Última actualización: Mayo 2026. Este sitio usa cookies de forma mínima y transparente para ofrecerle la mejor experiencia posible.
+          <p className="text-[15px] text-brand-textMain leading-relaxed max-w-reading pt-2">
+            Este sitio usa cookies de forma mínima y transparente para ofrecerle la mejor experiencia posible.
           </p>
-        </div>
+        </header>
 
-        <div className="space-y-10">
-          {SECTIONS.map((s) => (
-            <div key={s.title} className="space-y-3 border-l border-brand-primary/20 pl-6">
-              <h2 className="font-body text-[12px] tracking-[0.25em] text-brand-primary uppercase font-bold">
+        <ol className="space-y-12 border-t border-brand-border pt-12">
+          {SECTIONS.map((s, i) => (
+            <li key={s.title} className="space-y-3">
+              <span className="text-[12px] text-brand-textSubtle tabular-nums">
+                0{i + 1}
+              </span>
+              <h2 className="font-display text-2xl text-brand-textMain font-normal leading-snug">
                 {s.title}
               </h2>
-              <p className="font-body text-xs text-brand-textMuted leading-relaxed font-light">
+              <p className="text-[15px] text-brand-textMain leading-relaxed max-w-reading">
                 {s.body}
               </p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
 
-        <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          <p className="font-body text-[12px] text-brand-textMuted/50">
+        <div className="pt-8 border-t border-brand-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <p className="text-[13px] text-brand-textMain">
             Más información:{' '}
-            <a href="mailto:info@pannapomodoro.sv" className="text-brand-primary hover:underline">
+            <a href="mailto:info@pannapomodoro.sv" className="text-brand-accent hover:underline">
               info@pannapomodoro.sv
             </a>
           </p>
           <Link
             to="/"
-            className="font-body text-[12px] tracking-[0.2em] uppercase text-brand-textMuted hover:text-brand-primary transition-colors duration-300"
+            className="text-[13px] text-brand-textMain border-b border-brand-textMain pb-0.5 hover:border-brand-primary hover:text-brand-primary transition-colors duration-base"
           >
             ← Volver al inicio
           </Link>

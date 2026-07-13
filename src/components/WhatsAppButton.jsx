@@ -1,19 +1,90 @@
+import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { WhatsAppIcon } from './Icons';
+import { useUIStore } from '../stores/useUIStore';
 
 const WA_NUMBER = '50324511000';
-const WA_MESSAGE = encodeURIComponent('Hola, me gustaría hacer una reservación en Panna & Pomodoro.');
+
+const ROUTE_MESSAGES = {
+  '/':          'Hola, quiero información sobre Panna & Pomodoro.',
+  '/reservar':  'Hola, quiero reservar una mesa.',
+  '/events':    'Hola, quiero información sobre sus eventos.',
+  '/menu':      'Hola, tengo una consulta sobre la carta.',
+  '/market':    'Hola, tengo una consulta sobre un producto del Market.',
+  '/club':      'Hola, quiero saber más sobre Club PANNA.',
+};
+
+function messageFor(pathname) {
+  if (ROUTE_MESSAGES[pathname]) return ROUTE_MESSAGES[pathname];
+  if (pathname.startsWith('/events')) return ROUTE_MESSAGES['/events'];
+  if (pathname.startsWith('/market')) return ROUTE_MESSAGES['/market'];
+  if (pathname.startsWith('/menu'))   return ROUTE_MESSAGES['/menu'];
+  if (pathname.startsWith('/club'))   return ROUTE_MESSAGES['/club'];
+  return 'Hola, me gustaría hacer una consulta sobre Panna & Pomodoro.';
+}
 
 export default function WhatsAppButton() {
+  const { pathname } = useLocation();
+  const newsletterOpen = useUIStore((s) => s.newsletterOpen);
+  const [scrolledPastHero, setScrolledPastHero] = useState(false);
+  const isHome = pathname === '/';
+  const isVisible = !isHome || scrolledPastHero;
+
+  useEffect(() => {
+    if (!isHome) return;
+
+    // En home, mostrar solo cuando el hero ha salido completamente del viewport
+    const evaluate = () => {
+      const hero = document.getElementById('hero');
+      if (!hero) {
+        setScrolledPastHero(true);
+        return;
+      }
+      const rect = hero.getBoundingClientRect();
+      const heroFullyScrolled = rect.bottom <= 0;
+      const heroMostlyPassed = window.scrollY >= rect.height * 0.70;
+      setScrolledPastHero(heroFullyScrolled || heroMostlyPassed);
+    };
+
+    evaluate();
+    window.addEventListener('scroll', evaluate, { passive: true });
+    window.addEventListener('resize', evaluate);
+    return () => {
+      window.removeEventListener('scroll', evaluate);
+      window.removeEventListener('resize', evaluate);
+    };
+  }, [isHome]);
+
+  if (newsletterOpen) return null;
+  // Evitar overlap con controles del hero en viewports muy estrechos
+  if (typeof window !== 'undefined' && window.innerWidth < 400) return null;
+
+  const text = encodeURIComponent(messageFor(pathname));
+  const href = `https://wa.me/${WA_NUMBER}?text=${text}`;
+
   return (
-    <a
-      href={`https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Contactar por WhatsApp"
-      className="fixed bottom-6 right-6 z-50 w-13 h-13 flex items-center justify-center rounded-full shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-green-500/30"
-      style={{ width: '52px', height: '52px', backgroundColor: '#25D366' }}
-    >
-      <WhatsAppIcon size={26} className="text-white" />
-    </a>
+    <aside role="complementary" aria-label="Contacto rápido por WhatsApp">
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Contactar por WhatsApp"
+        aria-hidden={!isVisible}
+        tabIndex={isVisible ? 0 : -1}
+        className={`fixed left-4 md:left-auto md:right-6 z-30 flex items-center justify-center rounded-full shadow-2xl transition-all duration-500 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 ${
+          isVisible
+            ? 'opacity-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 translate-y-4 pointer-events-none'
+        }`}
+        style={{
+          width: '52px',
+          height: '52px',
+          backgroundColor: '#25D366',
+          bottom: 'calc(16px + env(safe-area-inset-bottom))',
+        }}
+      >
+        <WhatsAppIcon size={26} className="text-white" />
+      </a>
+    </aside>
   );
 }

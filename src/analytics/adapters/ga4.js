@@ -9,7 +9,7 @@
  * 2. In analytics/index.js, uncomment: registerAdapter(ga4Adapter)
  */
 export const ga4Adapter = {
-  track({ event, timestamp, url, ...properties }) {
+  track({ event, timestamp: _timestamp, url: _url, ...properties }) {
     if (typeof window.gtag !== 'function') return
     window.gtag('event', event, properties)
   },

@@ -1,8 +1,12 @@
+/* eslint-disable react-refresh/only-export-components */
+// Los `lazy()` y el `router` exportado son intencionalmente no-componentes:
+// referencias necesarias para React Router. Fast Refresh no aplica aquí.
 import { createBrowserRouter } from 'react-router-dom'
 import { lazy, Suspense } from 'react'
 import RootLayout from './layouts/RootLayout'
 import Home from './pages/Home'
 import PageLoader from './components/PageLoader'
+import LazyRoute from './components/LazyRoute'
 
 const MenuPage    = lazy(() => import('./pages/MenuPage'))
 const MarketPage  = lazy(() => import('./pages/MarketPage'))
@@ -14,12 +18,6 @@ const TermsPage     = lazy(() => import('./pages/TermsPage'))
 const PrivacyPage   = lazy(() => import('./pages/PrivacyPage'))
 const CookiesPage   = lazy(() => import('./pages/CookiesPage'))
 const NotFoundPage  = lazy(() => import('./pages/NotFoundPage'))
-
-const Lazy = ({ Page }) => (
-  <Suspense fallback={<PageLoader />}>
-    <Page />
-  </Suspense>
-)
 
 export const router = createBrowserRouter([
   {
@@ -35,15 +33,15 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true,       element: <Home /> },
-      { path: 'menu',      element: <Lazy Page={MenuPage} /> },
-      { path: 'market',    element: <Lazy Page={MarketPage} /> },
-      { path: 'events',    element: <Lazy Page={EventsPage} /> },
-      { path: 'club',      element: <Lazy Page={ClubPage} /> },
-      { path: 'reservar',  element: <Lazy Page={ReservarPage} /> },
-      { path: 'terminos',  element: <Lazy Page={TermsPage} /> },
-      { path: 'privacidad', element: <Lazy Page={PrivacyPage} /> },
-      { path: 'cookies',   element: <Lazy Page={CookiesPage} /> },
-      { path: '*',         element: <Lazy Page={NotFoundPage} /> },
+      { path: 'menu',      element: <LazyRoute Page={MenuPage} /> },
+      { path: 'market',    element: <LazyRoute Page={MarketPage} /> },
+      { path: 'events',    element: <LazyRoute Page={EventsPage} /> },
+      { path: 'club',      element: <LazyRoute Page={ClubPage} /> },
+      { path: 'reservar',  element: <LazyRoute Page={ReservarPage} /> },
+      { path: 'terminos',  element: <LazyRoute Page={TermsPage} /> },
+      { path: 'privacidad', element: <LazyRoute Page={PrivacyPage} /> },
+      { path: 'cookies',   element: <LazyRoute Page={CookiesPage} /> },
+      { path: '*',         element: <LazyRoute Page={NotFoundPage} /> },
     ],
   },
 ])

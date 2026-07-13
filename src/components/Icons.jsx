@@ -1,4 +1,4 @@
-import React from 'react';
+
 
 // Common SVG Wrapper to share stroke-width, size, etc.
 const IconWrapper = ({ children, size = 18, className = '', ...props }) => (
@@ -125,3 +125,21 @@ export const TicketIcon = ({ size, className, ...props }) => (
   </IconWrapper>
 );
 
+
+export const AlertTriangleIcon = ({ size, className, ...props }) => (
+  <IconWrapper size={size} className={className} {...props}>
+    <path d="M236.8 188.09 149.35 36.22h-.06a19.85 19.85 0 0 0-34.61 0L27.18 188.09a19.86 19.86 0 0 0 17.3 29.91h174.94a19.86 19.86 0 0 0 17.38-29.91ZM122 96a8 8 0 0 1 16 0v40a8 8 0 0 1-16 0Zm8 88a12 12 0 1 1 12-12 12 12 0 0 1-12 12Z" />
+  </IconWrapper>
+);
+
+export const TrashIcon = ({ size, className, ...props }) => (
+  <IconWrapper size={size} className={className} {...props}>
+    <path d="M216 48h-40v-8a24 24 0 0 0-24-24h-48a24 24 0 0 0-24 24v8H40a8 8 0 0 0 0 16h8v144a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16V64h8a8 8 0 0 0 0-16ZM96 40a8 8 0 0 1 8-8h48a8 8 0 0 1 8 8v8H96Zm96 168H64V64h128Zm-80-112v64a8 8 0 0 1-16 0V96a8 8 0 0 1 16 0Zm48 0v64a8 8 0 0 1-16 0V96a8 8 0 0 1 16 0Z" />
+  </IconWrapper>
+);
+
+export const CheckIcon = ({ size, className, ...props }) => (
+  <IconWrapper size={size} className={className} {...props}>
+    <path d="M229.66 77.66 128 179.19 70.34 121.53a8 8 0 0 0-11.32 11.32l63.99 64a8 8 0 0 0 11.32 0l107.32-107.32a8 8 0 0 0-11.32-11.32Z" />
+  </IconWrapper>
+);

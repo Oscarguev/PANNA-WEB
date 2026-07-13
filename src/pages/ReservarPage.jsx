@@ -2,18 +2,21 @@ import ChefCTA from '../components/ChefCTA'
 
 export default function ReservarPage() {
   return (
-    <main className="bg-brand-background min-h-screen overflow-x-hidden selection:bg-brand-primary/20 selection:text-brand-primary">
+    <main id="main" className="bg-brand-background min-h-screen">
 
-      {/* Page Header */}
-      <div className="pt-36 pb-12 px-6 md:px-16 text-center border-b border-white/[0.03]">
-        <span className="eyebrow justify-center">Panna &amp; Pomodoro</span>
-        <h1 className="font-brand text-4xl md:text-6xl text-brand-textMain font-light uppercase tracking-tight mt-2 mb-4">
-          Reserva tu Mesa
-        </h1>
-        <div className="w-16 h-[1px] bg-brand-primary/30 mx-auto mb-6" />
-        <p className="font-body text-brand-textMuted font-light text-body-mobile md:text-body-desktop max-w-reading mx-auto">
-          Asegura tu lugar en nuestro salón. Confirmamos vía teléfono en menos de 2 horas durante horario de servicio.
-        </p>
+      <div className="pt-36 pb-16 border-b border-brand-border">
+        <div className="container-page max-w-3xl space-y-6">
+          <div className="eyebrow flex items-center gap-3">
+            <span className="w-8 h-px bg-brand-textSubtle" aria-hidden="true" />
+            <span>Panna &amp; Pomodoro</span>
+          </div>
+          <h1 className="font-display font-light text-brand-textMain tracking-tight" style={{ fontSize: 'clamp(2.25rem, 5vw, 4rem)' }}>
+            Reservar una mesa.
+          </h1>
+          <p className="text-[15px] text-brand-textMain leading-relaxed max-w-reading">
+            Asegura tu lugar en el salón o en la terraza. Confirmamos vía teléfono en menos de 2 horas durante horario de servicio.
+          </p>
+        </div>
       </div>
 
       <ChefCTA />
