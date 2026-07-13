@@ -65,6 +65,21 @@ export default function Navbar() {
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setMobileMenuOpen(false); }, [pathname]);
 
+  // Body scroll lock cuando el menú móvil está abierto (Fase 10).
+  // Usa Lenis si está disponible (preserva animación de scroll al cerrar);
+  // cae a overflow:hidden directo si Lenis no existe.
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const prev = document.body.style.overflow;
+    const prevLenisStopped = window.lenis?.classList?.contains?.('lenis-stopped');
+    document.body.style.overflow = 'hidden';
+    window.lenis?.stop?.();
+    return () => {
+      document.body.style.overflow = prev;
+      if (!prevLenisStopped) window.lenis?.start?.();
+    };
+  }, [mobileMenuOpen]);
+
   const cartaSubcats = [
     { label: 'Entrantes', cat: 'entrantes' },
     { label: 'Pasta',     cat: 'pasta' },
