@@ -283,9 +283,10 @@ export default function Market() {
                   <div className="px-5 pb-5 pt-4 mt-auto border-t border-brand-border flex items-center justify-between gap-4">
                     <button
                       onClick={() => setSelectedProduct(product)}
-                      className="btn-underline"
+                      className="btn-underline btn-arrow-shift"
                     >
                       Detalles &amp; origen
+                      <span className="arrow ml-2" aria-hidden="true">→</span>
                     </button>
 
                     <button

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { m } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { PhoneIcon, MapPinIcon, ClockIcon, AlertTriangleIcon } from './Icons';
 import { useSessionStore } from '../stores/useSessionStore';
 import { track, EVENTS } from '../analytics';
@@ -281,8 +281,16 @@ export default function ChefCTA() {
                     </select>
                   </div>
 
+                  <AnimatePresence initial={false}>
                   {formData.guests === '12+' && (
-                    <div className="md:col-span-3 -mt-4 mb-2 flex items-start gap-3 border border-brand-border bg-brand-surface px-4 py-3 text-[13px] text-brand-textMain" role="note">
+                    <m.div
+                      key="whatsapp-note"
+                      initial={{ opacity: 0, y: -8, height: 0 }}
+                      animate={{ opacity: 1, y: 0, height: 'auto', transition: { duration: 0.32, ease: [0.16, 1, 0.3, 1] } }}
+                      exit={{ opacity: 0, y: -8, height: 0, transition: { duration: 0.20, ease: [0.7, 0, 0.84, 0] } }}
+                      className="md:col-span-3 -mt-4 mb-2 flex items-start gap-3 border border-brand-border bg-brand-surface px-4 py-3 text-[13px] text-brand-textMain overflow-hidden"
+                      role="note"
+                    >
                       <PhoneIcon size={16} className="text-brand-primary mt-0.5 shrink-0" aria-hidden="true" />
                       <p className="leading-relaxed">
                         Para grupos de más de 12 personas, contáctanos directamente por WhatsApp y te ayudamos a coordinar una experiencia a la medida.
@@ -296,8 +304,9 @@ export default function ChefCTA() {
                           Escríbenos al 2451-1000
                         </a>.
                       </p>
-                    </div>
+                    </m.div>
                   )}
+                </AnimatePresence>
 
                   <div className="space-y-2">
                     <label htmlFor="chef-date" className="block text-[13px] text-brand-textSubtle">

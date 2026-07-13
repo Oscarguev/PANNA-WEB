@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { m } from 'framer-motion';
 import ScrollReveal from '../motion/ScrollReveal';
 import StaggerGroup from '../motion/StaggerGroup';
+import RevealImage from '../motion/RevealImage';
 import sourdoughToast from '../assets/sourdough_toast.webp';
 import sourdoughPizza from '../assets/sourdough_pizza.webp';
 import coffeeBourbon from '../assets/coffee_bourbon.webp';
@@ -92,7 +93,7 @@ export default function SignatureDishes() {
                 className="group h-full flex flex-col transition-colors duration-base hover:bg-brand-background"
               >
                 <figure className="img-grid-item">
-                  <div className="aspect-[4/3] overflow-hidden">
+                  <RevealImage direction="bottom" aspectRatio="4/3" className="overflow-hidden">
                     <img
                       src={dish.image}
                       alt={dish.alt}
@@ -100,7 +101,7 @@ export default function SignatureDishes() {
                       decoding="async"
                       className="w-full h-full object-cover image-zoom-slow"
                     />
-                  </div>
+                  </RevealImage>
                   <figcaption className="font-sans text-[11px] uppercase text-brand-textSubtle tracking-[0.18em] px-6 md:px-8 pt-3">
                     {dish.category}
                   </figcaption>
@@ -125,9 +126,9 @@ export default function SignatureDishes() {
 
         {/* CTA */}
         <div className="mt-12 md:mt-16 text-center">
-          <Link to="/menu" className="btn-underline">
+          <Link to="/menu" className="btn-underline btn-arrow-shift">
             Ver el menú completo
-            <span className="ml-2" aria-hidden="true">→</span>
+            <span className="arrow ml-2" aria-hidden="true">→</span>
           </Link>
         </div>
       </div>

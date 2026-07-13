@@ -1,5 +1,7 @@
 import { m } from 'framer-motion';
 import { EASE } from '../motion/variants';
+import RevealImage from '../motion/RevealImage';
+import ParallaxMedia from '../motion/ParallaxMedia';
 import pan from '../assets/pan.webp';
 
 /**
@@ -72,15 +74,17 @@ export default function RestaurantIntro() {
           transition={{ duration: 0.7, delay: 0.10, ease: EASE.silk }}
         >
           <figure className="bg-brand-surface img-grid-item">
-            <div className="aspect-[4/5] md:aspect-[5/6] overflow-hidden">
-              <img
-                src={pan}
-                alt="Hogazas de masa madre recién salidas del horno"
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover image-zoom-slow"
-              />
-            </div>
+            <RevealImage direction="right" aspectRatio="4/5" className="md:aspect-[5/6] overflow-hidden">
+              <ParallaxMedia intensity={25} className="w-full h-full">
+                <img
+                  src={pan}
+                  alt="Hogazas de masa madre recién salidas del horno"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover image-zoom-slow"
+                />
+              </ParallaxMedia>
+            </RevealImage>
             <figcaption className="px-1 py-3 font-sans text-[11px] uppercase tracking-[0.18em] text-brand-textSubtle flex items-center justify-between gap-3">
               <span>Hogaza del día · fermentación 48 h</span>
               <span className="text-brand-textMuted normal-case tracking-normal text-[12px]">Sonsonate</span>

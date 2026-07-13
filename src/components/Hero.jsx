@@ -191,10 +191,10 @@ export default function Hero() {
         >
           <Link
             to="/menu"
-            className="group inline-flex items-center gap-2 min-h-[44px] px-1 py-2 text-[12px] md:text-[13px] font-medium tracking-[0.18em] uppercase text-white/90 border-b border-white/40 hover:border-white hover:text-white transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            className="group btn-arrow-shift inline-flex items-center gap-2 min-h-[44px] px-1 py-2 text-[12px] md:text-[13px] font-medium tracking-[0.18em] uppercase text-white/90 border-b border-white/40 hover:border-white hover:text-white transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             Ver carta
-            <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+            <span aria-hidden="true" className="arrow transition-transform duration-200 group-hover:translate-x-0.5">→</span>
           </Link>
         </m.div>
       </div>

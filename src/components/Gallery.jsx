@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence, m } from 'framer-motion';
 import { CloseIcon } from './Icons';
 import { reveal, revealFade, lightboxBackdrop, lightboxDialog } from '../motion/variants';
+import RevealImage from '../motion/RevealImage';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import coffeeBourbon from '../assets/coffee_bourbon.webp';
 import coffeeBags from '../assets/coffee_bags.webp';
@@ -114,13 +115,15 @@ export default function Gallery() {
               className={`${item.aspect} relative overflow-hidden border border-brand-border bg-brand-placeholder group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary text-left`}
               aria-label={`Ampliar imagen: ${item.title}`}
             >
-              <img
-                src={item.image}
-                alt={item.title}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover image-zoom-slow"
-              />
+              <RevealImage direction="bottom" className="w-full h-full">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover image-zoom-slow"
+                />
+              </RevealImage>
 
               {/* Caption discreto permanente abajo */}
               <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 via-black/30 to-transparent px-4 pt-8 pb-3 pointer-events-none">

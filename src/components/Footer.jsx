@@ -2,6 +2,8 @@
 import { Link } from 'react-router-dom';
 import { MapPinIcon, ClockIcon, PhoneIcon } from './Icons';
 import logo from '../assets/logo.png';
+import ScrollReveal from '../motion/ScrollReveal';
+import RevealText from '../motion/RevealText';
 
 function scrollToTop() {
   // Lenis-aware con fallback nativo. Funciona aunque Lenis no esté cargado.
@@ -39,16 +41,21 @@ export default function Footer() {
         <button
           type="button"
           onClick={scrollToTop}
-          className="group inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-white/70 hover:text-white transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-textMain rounded-sm"
+          className="group btn-arrow-shift inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-white/70 hover:text-white transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-textMain rounded-sm"
           aria-label="Volver arriba"
         >
-          <span aria-hidden="true" className="transition-transform duration-base ease-silk group-hover:-translate-y-0.5">↑</span>
+          <span aria-hidden="true" className="arrow transition-transform duration-base ease-silk group-hover:-translate-y-0.5">↑</span>
           Volver arriba
         </button>
 
         {/* Bloque display — nombre grande asimétrico */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
-          <div className="lg:col-span-8 space-y-6">
+          <ScrollReveal
+            as="div"
+            className="lg:col-span-8 space-y-6"
+            amount={0.3}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
             <img
               src={logo}
               alt=""
@@ -57,17 +64,20 @@ export default function Footer() {
               className="h-10 w-auto object-contain"
               style={{ filter: 'brightness(0) invert(1)', opacity: 0.92 }}
             />
-            <p
+            <RevealText
+              as="p"
               className="font-wordmark uppercase leading-[0.94] tracking-[0.01em] text-white"
               style={{ fontSize: 'clamp(2.75rem, 7vw, 6.5rem)' }}
+              duration={0.85}
+              stagger={0.05}
             >
               Panna &amp; Pomodoro
-            </p>
+            </RevealText>
             <p className="text-[14px] md:text-[15px] text-white/70 max-w-reading leading-relaxed">
               Un salón pequeño en Boulevard Las Palmeras que se toma en serio lo que sirve.
               Masa madre desde 2018, café trazable, cocina servida en barra.
             </p>
-          </div>
+          </ScrollReveal>
 
           {/* Datos agrupados — retícula asimétrica */}
           <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 text-[13px] text-white/85">

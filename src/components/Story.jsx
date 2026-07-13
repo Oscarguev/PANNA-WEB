@@ -1,6 +1,7 @@
 import { m } from 'framer-motion';
 import imageRotulo from '../assets/bulldog.webp';
 import { reveal, revealFade } from '../motion/variants';
+import ParallaxMedia from '../motion/ParallaxMedia';
 
 const PILLARS = [
   {
@@ -90,13 +91,15 @@ export default function Story() {
               viewport={{ once: true, amount: 0.2 }}
             >
               <div className="aspect-[16/9] overflow-hidden bg-brand-stone">
-                <img
-                  src={imageRotulo}
-                  alt="Rótulo original Panna & Pomodoro, Boulevard Las Palmeras, 2018"
-                  loading="lazy"
-                  decoding="async"
-                  className="image-zoom-slow w-full h-full object-cover"
-                />
+                <ParallaxMedia intensity={30} className="w-full h-full">
+                  <img
+                    src={imageRotulo}
+                    alt="Rótulo original Panna & Pomodoro, Boulevard Las Palmeras, 2018"
+                    loading="lazy"
+                    decoding="async"
+                    className="image-zoom-slow w-full h-full object-cover"
+                  />
+                </ParallaxMedia>
               </div>
               <figcaption className="font-sans text-[11px] uppercase tracking-[0.18em] text-brand-textSubtle mt-3">
                 Boulevard Las Palmeras · 2018

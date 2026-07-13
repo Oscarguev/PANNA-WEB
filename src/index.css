@@ -274,6 +274,46 @@
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary;
   }
 
+  /* Sliding arrow — CTA microgesto (Fase 11). Mueve la flecha 4px en hover. */
+  .btn-arrow-shift {
+    @apply inline-flex items-center;
+  }
+  .btn-arrow-shift > .arrow {
+    display: inline-block;
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+  .btn-arrow-shift:hover > .arrow,
+  .btn-arrow-shift:focus-visible > .arrow {
+    transform: translateX(4px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-arrow-shift > .arrow { transition: none; }
+    .btn-arrow-shift:hover > .arrow,
+    .btn-arrow-shift:focus-visible > .arrow { transform: none; }
+  }
+
+  /* Sliding surface — fondo que entra desde la izquierda al hover. Fase 11. */
+  .btn-surface-slide {
+    @apply relative inline-flex items-center justify-center overflow-hidden isolate;
+  }
+  .btn-surface-slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    transform: translateX(-101%);
+    transition: transform 380ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+  }
+  .btn-surface-slide:hover::before,
+  .btn-surface-slide:focus-visible::before {
+    transform: translateX(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn-surface-slide::before { transition: none; }
+  }
+
   .btn-underline-on-dark {
     @apply inline-flex items-center gap-2 text-white border-b border-white/40 hover:border-white transition-colors duration-base pb-0.5;
     min-height: var(--tap-min);
