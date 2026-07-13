@@ -72,13 +72,13 @@ export default function CustomerPortal() {
           .limit(8),
         supabase
           .from('favoritos')
-          .select('producto_id, productos(*)')
+          .select('producto_id, productos_market(*)')
           .eq('user_email', session.email)
           .limit(12),
       ]);
       if (ordenesRes.status === 'fulfilled' && ordenesRes.value.data) setOrdenes(ordenesRes.value.data);
       if (favoritosRes.status === 'fulfilled' && favoritosRes.value.data) {
-        const flat = favoritosRes.value.data.map((r) => r.productos).filter(Boolean);
+        const flat = favoritosRes.value.data.map((r) => r.productos_market).filter(Boolean);
         setFavoritos(flat);
       }
     } finally {

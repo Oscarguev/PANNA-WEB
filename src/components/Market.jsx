@@ -125,6 +125,7 @@ export default function Market() {
       .from('productos_market')
       .select('*')
       .eq('activo', true)
+      .eq('sucursal_id', import.meta.env.VITE_SUCURSAL_ID)
       .order('nombre')
       .then(({ data, error }) => {
         if (!active) return;

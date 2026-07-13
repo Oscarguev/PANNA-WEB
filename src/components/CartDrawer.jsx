@@ -139,6 +139,7 @@ export default function CartDrawer() {
         metodo_pago:   paymentMethod,
         mesero:        nombre,
         sucursal_id:   import.meta.env.VITE_SUCURSAL_ID,
+        user_email:    userSession?.email || null,
       })
       .select('id')
       .single();
