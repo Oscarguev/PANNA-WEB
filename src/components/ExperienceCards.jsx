@@ -1,38 +1,35 @@
-import React from 'react';
 import { m } from 'framer-motion';
 import logo from '../assets/logo.png';
 import coffeePour from '../assets/coffee_pour.webp';
-import menuDish from '../assets/menu_dish.webp';
-import spaghettiImage from '../assets/spaghetti.webp';
+import sourdoughToast from '../assets/sourdough_toast.webp';
 import { reveal } from '../motion/variants';
+import StaggerGroup from '../motion/StaggerGroup';
 
-// ── EDITABLE: Tarjetas de experiencias ───────────────────────────────────
-// Cada objeto es una tarjeta. Puedes cambiar título, descripción, imagen y tag.
-// Para cambiar la imagen: importa el archivo arriba (líneas 3-8) y úsalo aquí.
+// Solo assets auténticos. Sin menu_dish (LUMINA), sin chef_plating.
 const EXPERIENCES = [
   {
     id: 1,
-    title: "Un Brunch para Disfrutar",           // ✏️ título de la tarjeta
-    subtitle: "Menu de la casa",                  // ✏️ subtítulo dorado
-    description: "Un brunch diseñado para deleitar tus sentidos. Servido directamente en nuestra barra privada con explicaciones sensoriales y maridajes de fermentos de autor en cada creación.", // ✏️ descripción
-    image: menuDish,                              // ✏️ imagen (importar arriba)
-    tag: "Todo el dia, Todos los dias",           // ✏️ etiqueta sobre la imagen
+    title: 'Un Brunch para Disfrutar',
+    subtitle: 'Menu de la casa',
+    description: 'Un brunch diseñado para deleitar tus sentidos. Servido directamente en nuestra barra con explicaciones sensoriales y maridajes de fermentos de autor.',
+    image: sourdoughToast,
+    tag: 'Todo el dia, Todos los dias',
   },
   {
     id: 2,
-    title: "Catas de Especialidad",
-    subtitle: "Microlotes Exóticos & Notas de Cata",
-    description: "Un recorrido guiado por nuestro barista a través de los microlotes de café más selectos de El Salvador y el mundo. Aprende a identificar perfiles de sabor florales, frutales y achocolatados en taza.",
+    title: 'Catas de Especialidad',
+    subtitle: 'Microlotes Exóticos & Notas de Cata',
+    description: 'Un recorrido guiado por nuestro barista a través de los microlotes de café más selectos de El Salvador. Aprende a identificar perfiles florales, frutales y achocolatados.',
     image: coffeePour,
-    tag: "Rituales de Café",
+    tag: 'Rituales de Café',
   },
   {
     id: 3,
-    title: "Terraza",
-    subtitle: "Atmósfera bajo nuestra ramada",
-    description: "Un espacio reservado al aire libre rodeado de vegetación e iluminación tenue. La combinación ideal de aire fresco, el aroma a masa madre caliente de nuestro horno y la calidez del salón.",
-    image: spaghettiImage,
-    tag: "Cenas Inolvidables",
+    title: 'Servicio en Barra',
+    subtitle: 'La misma barra, dos momentos del día',
+    description: 'Café de filtro por la mañana, espresso de la máquina, bebidas y comida por la tarde. La barra es el lugar para esperar, leer o conversar.',
+    image: coffeePour,
+    tag: 'Momentos en Barra',
   },
 ];
 
@@ -60,16 +57,16 @@ export default function ExperienceCards() {
           </h2>
           <div className="w-16 h-[1px] bg-brand-primary/30 mx-auto mt-3" />
           <p className="font-body text-brand-textMuted font-light leading-relaxed pt-2">
-            Elevamos un brunch ordinario o una cena tranquila a una memoria imborrable. Descubre los rincones y experiencias de Panna &amp; Pomodoro.
+            Elevamos un brunch ordinario o una cena tranquila a una memoria imborrable. Descubre las experiencias de Panna &amp; Pomodoro.
           </p>
         </m.div>
 
-        <m.div
+        <StaggerGroup
+          as="div"
+          stagger={0.09}
+          delayChildren={0.05}
+          amount={0.2}
           className="grid grid-cols-1 md:grid-cols-3 gap-10 pt-6"
-          variants={reveal}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-40px' }}
         >
           {EXPERIENCES.map((exp) => (
             <div
@@ -80,7 +77,6 @@ export default function ExperienceCards() {
               onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
             >
               <div className="flex flex-col h-full">
-                {/* Image Frame */}
                 <div className="relative w-full h-52 shrink-0 overflow-hidden bg-neutral-950">
                   <img
                     src={exp.image}
@@ -94,7 +90,6 @@ export default function ExperienceCards() {
                   </span>
                 </div>
 
-                {/* Info Frame */}
                 <div className="p-6 md:p-8 flex-grow flex flex-col space-y-4">
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
@@ -118,11 +113,10 @@ export default function ExperienceCards() {
                 </div>
               </div>
 
-              {/* Bottom gold line */}
               <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-brand-primary to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-high-end" />
             </div>
           ))}
-        </m.div>
+        </StaggerGroup>
 
       </div>
     </section>

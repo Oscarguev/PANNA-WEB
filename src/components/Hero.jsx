@@ -1,257 +1,203 @@
-import React, { useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { m, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import heroBackground from '../assets/bulldog.webp';
-import logo from '../assets/logo.png';
-import { ArrowRightIcon } from './Icons';
-import { kenBurns, EASE } from '../motion/variants';
+import { m, useReducedMotion } from 'framer-motion';
+import { useEffect } from 'react';
+import pizzaHero from '../assets/sourdough_pizza.webp';
+import { EASE } from '../motion/variants';
+
+/**
+ * Hero v5 — solo marca protagonista.
+ *
+ * Unica pieza textual con voz: "Panna & Pomodoro" en Fraunces.
+ * Eyebrow pequeno y discreto. Un enlace secundario "Ver carta".
+ * No descripcion, no boton de reservar (vive en la navbar),
+ * no datos praticos (viven en InfoStrip debajo).
+ *
+ * Comportamiento esperado por el brief:
+ * 1. PANNA & POMODORO es el unico texto fuerte del hero.
+ * 2. La reserva se hace desde la navbar.
+ * 3. La franja informativa debajo resuelve todo lo demas.
+ */
+
+// Foto: fade + scale entry; parallax sutil manejado por ParallaxMedia wrapper.
+const PHOTO_VARIANTS = {
+  hidden: { opacity: 0, scale: 1.04 },
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.9, ease: EASE.silk } },
+};
+
+const WORDMARK_VARIANTS = {
+  hidden: { opacity: 0, y: 14 },
+  visible: (i = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, delay: 0.20 + i * 0.10, ease: EASE.silk },
+  }),
+};
+
+/**
+ * Listener de parallax sutil para la foto del hero.
+ * Sincroniza la variable CSS --hero-scroll con window.scrollY mapeado a un rango
+ * pequeño (0..-20 desktop, 0 tablet, 0 mobile). Cumple Fase 3: max 3-5% pantalla.
+ */
+function HeroParallax() {
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const root = document.documentElement;
+    const update = () => {
+      const y = window.scrollY;
+      if (window.innerWidth >= 1024) {
+        // Desktop: hasta -20px proporcional.
+        const v = Math.max(-20, Math.min(0, y * -0.06));
+        root.style.setProperty('--hero-scroll', String(v));
+      } else {
+        // Tablet/mobile: 0.
+        root.style.setProperty('--hero-scroll', '0');
+      }
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', update);
+      root.style.setProperty('--hero-scroll', '0');
+    };
+  }, []);
+  return null;
+}
 
 export default function Hero() {
-  const [hoursOpen, setHoursOpen] = React.useState(false);
-  // ── EDITABLE: Horarios del salón ─────────────────────────────────────────
-  // Cambia los días y horas aquí. Se muestran en el hero y en ChefCTA.jsx.
-  const workingHours = [
-    { day: "Domingo",   time: "7:00 - 21:00" }, // ✏️ hora de cierre
-    { day: "Lunes",     time: "7:00 - 21:00" },
-    { day: "Martes",    time: "7:00 - 21:00" },
-    { day: "Miércoles", time: "7:00 - 21:00" },
-    { day: "Jueves",    time: "7:00 - 21:00" },
-    { day: "Viernes",   time: "7:00 - 22:00" },
-    { day: "Sábado",    time: "7:00 - 22:00" },
-  ];
-
-  // ── Mouse parallax setup ──────────────────────────────────────────────────
-  const sectionRef = useRef(null);
-
-  const rawX = useMotionValue(0);
-  const rawY = useMotionValue(0);
-
-  // Spring damping — slower = more cinematic lag between layers
-  const springCfg = { stiffness: 45, damping: 18 };
-  const springX = useSpring(rawX, springCfg);
-  const springY = useSpring(rawY, springCfg);
-
-  // Layer depths — background moves least, logo most (parallax illusion of depth)
-  const bgX     = useTransform(springX, [-0.5, 0.5], [-20, 20]);
-  const bgY     = useTransform(springY, [-0.5, 0.5], [-12, 12]);
-  const logoX   = useTransform(springX, [-0.5, 0.5], [-32, 32]);
-  const logoY   = useTransform(springY, [-0.5, 0.5], [-20, 20]);
-  const titleX  = useTransform(springX, [-0.5, 0.5], [-14, 14]);
-  const titleY  = useTransform(springY, [-0.5, 0.5], [-8, 8]);
-  const ctaX    = useTransform(springX, [-0.5, 0.5], [-7, 7]);
-  const ctaY    = useTransform(springY, [-0.5, 0.5], [-4, 4]);
-
-  const handleMouseMove = useCallback((e) => {
-    if (!sectionRef.current) return;
-    const rect = sectionRef.current.getBoundingClientRect();
-    rawX.set((e.clientX - rect.left) / rect.width - 0.5);
-    rawY.set((e.clientY - rect.top) / rect.height - 0.5);
-  }, [rawX, rawY]);
-
-  const handleMouseLeave = useCallback(() => {
-    rawX.set(0);
-    rawY.set(0);
-  }, [rawX, rawY]);
+  const reduced = useReducedMotion();
 
   return (
     <section
-      ref={sectionRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative w-full min-h-screen bg-brand-background flex flex-col justify-between items-center py-12 md:pt-40 md:pb-12 px-6 md:px-16 overflow-hidden"
+      id="hero"
+      aria-label="Panna y Pomodoro — restaurante italiano en Sonsonate"
+      className="relative bg-black"
+      style={{ minHeight: '76svh', height: 'min(720px, 76svh)' }}
     >
-
-      {/* ── Cinematic Background — Ken Burns + mouse parallax ── */}
-      <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
-        {/* Oversized by 60px on all sides to cover parallax movement */}
-        <m.img
-          src={heroBackground}
-          alt="Panna & Pomodoro Cozy Dining Room"
-          className="absolute object-cover filter brightness-[0.8] contrast-[1.05] object-center max-w-none"
+      {/* Fotografia a sangre — fade + scale entry + parallax sutil via CSS transform.
+          Parallax se aplica al contenedor para mantener GPU-accelerated transform. */}
+      <m.div
+        initial="hidden"
+        animate="visible"
+        variants={PHOTO_VARIANTS}
+        className="absolute inset-0 will-change-transform"
+        aria-hidden="true"
+        style={{
+          transform: typeof window !== 'undefined' && window.innerWidth >= 1024
+            ? 'translate3d(0, calc(var(--hero-scroll, 0) * 1px), 0)'
+            : undefined,
+        }}
+      >
+        <img
+          src={pizzaHero}
+          alt=""
+          aria-hidden="true"
+          width={2000}
+          height={1333}
           fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: '42% center' }}
+        />
+      </m.div>
+
+      {/* Listener parallax: actualiza --hero-scroll entre 0 y -20 (desktop) / 0 (mobile).
+          Skip en prefers-reduced-motion. */}
+      {!reduced && (
+        <HeroParallax />
+      )}
+
+      {/* Overlay superior — soporta la navbar fija */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-32 md:h-36"
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.20) 60%, rgba(10,10,10,0) 100%)',
+        }}
+      />
+
+      {/* Gradiente principal detras del wordmark — concentrado en el centro */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 70% 55% at 50% 55%, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.45) 45%, rgba(10,10,10,0) 75%)',
+        }}
+      />
+
+      {/* Banda inferior suave — cede al cream */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-24 md:h-28"
+        style={{
+          background:
+            'linear-gradient(0deg, rgba(244,240,232,0.55) 0%, rgba(244,240,232,0.18) 55%, rgba(244,240,232,0) 100%)',
+        }}
+      />
+
+      {/* Linea roja 1px arriba — acento discreto */}
+      <div
+        aria-hidden="true"
+        className="absolute top-0 left-0 right-0 h-px bg-brand-primary/80"
+      />
+
+      {/* Contenido debajo del navbar fijo.
+          - pt = navbar (~88px) + 16px de aire. Garantiza que el eyebrow NUNCA
+            quede debajo del navbar aunque el flexbox intente centrar. */}
+      <div
+        className="relative max-w-7xl mx-auto px-6 md:px-12 lg:px-16 flex flex-col items-center justify-center text-center pt-[108px] md:pt-[120px] pb-20 md:pb-24"
+        style={{ minHeight: '76svh' }}
+      >
+        <m.p
+          variants={WORDMARK_VARIANTS}
+          initial="hidden"
+          animate={reduced ? 'visible' : 'visible'}
+          custom={0}
+          className="inline-flex items-center gap-3 text-[10px] md:text-[11px] uppercase tracking-[0.28em] text-white/85 font-medium mb-7 md:mb-9"
+        >
+          <span aria-hidden="true" className="inline-block w-7 h-px bg-brand-primary" />
+          Restaurante italiano · Sonsonate
+        </m.p>
+
+        <h1
+          aria-label="Panna y Pomodoro"
+          className="font-wordmark text-white select-none uppercase"
           style={{
-            inset: '-30px',
-            width: 'calc(100% + 60px)',
-            height: 'calc(100% + 60px)',
-            x: bgX,
-            y: bgY,
+            fontSize: 'clamp(4rem, 13vw, 12.5rem)',
+            lineHeight: 0.92,
+            letterSpacing: '0.01em',
+            textShadow: '0 4px 32px rgba(0,0,0,0.55)',
           }}
-          variants={kenBurns}
+        >
+          <m.span className="block" variants={WORDMARK_VARIANTS} initial="hidden" animate="visible" custom={1}>
+            Panna{' '}
+            <span aria-hidden="true" style={{ marginLeft: '-0.05em' }}>
+              &amp;
+            </span>
+          </m.span>
+          <m.span className="block" variants={WORDMARK_VARIANTS} initial="hidden" animate="visible" custom={2}>
+            Pomodoro
+          </m.span>
+        </h1>
+
+        {/* Unica accion secundaria discreta — la reserva vive en la navbar */}
+        <m.div
+          variants={WORDMARK_VARIANTS}
           initial="hidden"
           animate="visible"
-        />
-        <div className="absolute inset-0 bg-radial-vignette from-transparent via-black/35 to-brand-background" />
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-background/60 via-transparent to-brand-background" />
-        <div className="absolute inset-0 bg-black/25" />
-      </div>
-
-      {/* ── Center Block ── */}
-      <div className="relative z-10 my-auto text-center space-y-4 md:space-y-6 max-w-6xl pt-4 md:pt-6">
-
-        {/* Logo — deepest parallax layer */}
-        <m.div
-          className="flex justify-center select-none pb-2"
-          style={{ x: logoX, y: logoY }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3, ease: EASE.silk }}
-        >
-          <m.img
-            src={logo}
-            alt="Panna & Pomodoro Icon"
-            className="h-16 md:h-24 lg:h-28 w-auto object-contain filter brightness-110 drop-shadow-[0_8px_30px_rgba(197,168,128,0.15)] mix-blend-screen"
-            whileHover={{ scale: 1.04, rotate: 8 }}
-            transition={{ duration: 0.7, ease: EASE.silk }}
-          />
-        </m.div>
-
-        {/* Eyebrow subtitle — mid layer */}
-        <m.span
-          className="font-body text-[11px] tracking-[0.3em] uppercase text-brand-primary block select-none font-semibold"
-          style={{ x: titleX, y: titleY }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.4, ease: EASE.editorial }}
-        >
-          {/* ✏️ EDITABLE: tagline debajo del logo */}
-          Una Verdadera Experiencia Artesanal
-        </m.span>
-
-        {/* ── Main Title — mid layer ── */}
-        <div className="space-y-1 select-none">
-          <m.h1
-            className="font-brand text-[2.25rem] sm:text-7xl md:text-[6.5rem] lg:text-[8rem] text-brand-textMain font-light leading-none uppercase tracking-tight"
-            style={{ x: titleX, y: titleY }}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5, ease: EASE.silk }}
-          >
-            PANNA{' '}
-            <span className="text-brand-primary font-normal md:-mx-2 select-none">
-              &amp;
-            </span>{' '}
-            POMODORO
-          </m.h1>
-        </div>
-
-        {/* ── CTAs — shallowest parallax layer ── */}
-        <m.div
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 pt-6 md:pt-10"
-          style={{ x: ctaX, y: ctaY }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.7, ease: EASE.editorial }}
+          custom={3}
+          className="mt-10 md:mt-14"
         >
           <Link
-            to="/reservar"
-            className="px-8 py-3.5 bg-brand-primary text-black font-body tracking-[0.25em] text-[12px] uppercase font-bold hover:bg-[#ab8b5f] transition-all duration-500 rounded-full shadow-xl hover:shadow-brand-primary/10 transform hover:-translate-y-0.5"
+            to="/menu"
+            className="group inline-flex items-center gap-2 min-h-[44px] px-1 py-2 text-[12px] md:text-[13px] font-medium tracking-[0.18em] uppercase text-white/90 border-b border-white/40 hover:border-white hover:text-white transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
-            Reservar una Mesa
-          </Link>
-
-          <Link to="/menu" className="flex items-center space-x-3 group text-brand-textMain hover:text-brand-primary transition-colors duration-500">
-            <span className="font-body text-[12px] tracking-[0.25em] uppercase">
-              Ver Menú
-            </span>
-            <div className="w-8 h-8 rounded-full border border-brand-primary/30 flex items-center justify-center group-hover:border-brand-primary group-hover:bg-brand-primary/10 transition-all duration-500">
-              <ArrowRightIcon size={12} className="text-brand-primary transform group-hover:translate-x-0.5 transition-transform duration-500" />
-            </div>
+            Ver carta
+            <span aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
           </Link>
         </m.div>
       </div>
-
-      {/* ── Bottom Block: Hours Grid — static, anchors the composition ── */}
-      <div className="relative z-10 w-full max-w-6xl text-center space-y-6 pt-8 md:pt-12">
-        <m.div
-          className="space-y-1"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.9, ease: EASE.editorial }}
-        >
-          <span className="font-body text-[12px] md:text-[14px] tracking-[0.3em] uppercase text-brand-primary block font-semibold">
-            Horarios
-          </span>
-          <div className="w-12 h-[1px] bg-brand-primary/20 mx-auto mt-1" />
-        </m.div>
-
-        {/* Mobile hours dropdown */}
-        <div className="block md:hidden">
-          <m.button
-            onClick={() => setHoursOpen(!hoursOpen)}
-            className="inline-flex items-center justify-center space-x-2 border border-brand-primary/30 rounded-full px-6 py-2.5 text-[11px] tracking-[0.2em] uppercase text-brand-primary hover:bg-brand-primary/10 transition-all duration-300 transform active:scale-95"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 1.0 }}
-          >
-            <span>{hoursOpen ? 'Ocultar Horarios' : 'Ver Horarios'}</span>
-            <span className={`transform transition-transform duration-500 text-[10px] ${hoursOpen ? 'rotate-180' : ''}`}>
-              &darr;
-            </span>
-          </m.button>
-
-          <AnimatePresence>
-            {hoursOpen && (
-              <m.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.4, ease: EASE.silk }}
-                className="overflow-hidden mt-4 w-full max-w-xs mx-auto bg-brand-surfaceMuted/80 backdrop-blur-md rounded-[2px] border border-white/[0.04] p-4 space-y-2.5 text-left"
-              >
-                {workingHours.map((item, idx) => (
-                  <div key={idx} className="flex justify-between border-b border-white/[0.02] last:border-0 pb-1.5 last:pb-0">
-                    <span className="font-body text-[11px] text-brand-textMuted tracking-[0.15em] uppercase font-semibold">
-                      {item.day}
-                    </span>
-                    <span className="font-body text-[11px] text-brand-textMain font-light tracking-wider">
-                      {item.time}
-                    </span>
-                  </div>
-                ))}
-              </m.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* Desktop hours grid */}
-        <m.div
-          className="hidden md:flex md:justify-center overflow-x-auto gap-5 sm:grid sm:grid-cols-4 lg:grid-cols-7 sm:overflow-visible sm:gap-4 lg:gap-2 px-4 max-w-5xl mx-auto pt-1"
-          style={{ scrollbarWidth: 'none' }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 1.0, ease: EASE.editorial }}
-        >
-          {workingHours.map((item, idx) => (
-            <div
-              key={idx}
-              className="min-w-[76px] shrink-0 sm:min-w-0 sm:shrink space-y-1.5 border-r border-white/[0.04] last:border-r-0 px-2 group text-center tabular-nums"
-            >
-              <p className="font-body text-[12px] text-brand-textMuted tracking-[0.2em] uppercase font-semibold group-hover:text-brand-primary transition-colors duration-300">
-                {item.day}
-              </p>
-              <p className="font-body text-[12px] text-brand-textMain font-light tracking-wider">
-                {item.time}
-              </p>
-            </div>
-          ))}
-        </m.div>
-
-        {/* Scroll Indicator */}
-        <m.div
-          className="pt-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.0, duration: 0.4 }}
-        >
-          <a
-            href="#story"
-            className="text-brand-primary/40 hover:text-brand-primary transition-colors duration-300 flex flex-col items-center space-y-2 text-[12px] font-body tracking-luxury uppercase animate-bounce"
-          >
-            <span className="text-[12px]">&darr;</span>
-          </a>
-        </m.div>
-      </div>
-
     </section>
   );
 }
