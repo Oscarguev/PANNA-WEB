@@ -1,143 +1,164 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
-import { m } from 'framer-motion';
+import { MapPinIcon, ClockIcon, PhoneIcon } from './Icons';
 import logo from '../assets/logo.png';
-import { InstagramIcon, FacebookIcon, WhatsAppIcon, TikTokIcon, MapPinIcon } from './Icons';
-import { reveal } from '../motion/variants';
+
+function scrollToTop() {
+  // Lenis-aware con fallback nativo. Funciona aunque Lenis no esté cargado.
+  if (window.lenis?.scrollTo) {
+    window.lenis.scrollTo(0, { duration: 1.1 });
+  } else if (typeof window !== 'undefined') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+const GROUPS = {
+  explorar: [
+    { label: 'Carta',         to: '/menu' },
+    { label: 'Café & Tienda', to: '/market' },
+    { label: 'Eventos',       to: '/events' },
+    { label: 'Club PANNA',    to: '/club' },
+  ],
+  informacion: [
+    { label: 'Reservar',   to: '/reservar' },
+    { label: 'Términos',   to: '/terminos' },
+    { label: 'Privacidad', to: '/privacidad' },
+    { label: 'Cookies',    to: '/cookies' },
+  ],
+};
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#050505] border-t border-white/[0.03] pt-20 pb-12 px-6 md:px-16 text-left">
-      <div className="max-w-7xl mx-auto space-y-16">
+    <footer
+      className="w-full bg-brand-textMain text-brand-background border-t border-brand-textMain"
+      style={{ paddingBottom: 'calc(2.5rem + env(safe-area-inset-bottom) + 72px)' }}
+    >
+      <div className="container-page pt-20 md:pt-28 space-y-20">
 
-        {/* Three Columns Grid — single reveal, no stagger */}
-        <m.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16"
-          variants={reveal}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-60px' }}
+        {/* Botón volver arriba — Lenis-aware */}
+        <button
+          type="button"
+          onClick={scrollToTop}
+          className="group inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-white/70 hover:text-white transition-colors duration-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-brand-textMain rounded-sm"
+          aria-label="Volver arriba"
         >
+          <span aria-hidden="true" className="transition-transform duration-base ease-silk group-hover:-translate-y-0.5">↑</span>
+          Volver arriba
+        </button>
 
-          {/* Column 1: Panna & Pomodoro Identity */}
-          <div className="space-y-6">
-            <div className="flex items-center space-x-3">
-              <img
-                src={logo}
-                alt="Panna & Pomodoro Logo"
-                className="h-8 w-8 object-contain filter brightness-110 mix-blend-screen"
-              />
-              <div className="space-y-0.5">
-                <span className="font-brand text-[14px] tracking-[0.1em] uppercase text-brand-textMain font-normal">
-                  PANNA &amp; POMODORO
-                </span>
-                <span className="font-body text-[11px] tracking-[0.3em] text-brand-primary uppercase font-semibold block pt-0.5">
-                  ARTESANAL Y FRESCO
-                </span>
-              </div>
-            </div>
-
-            <p className="font-body text-small text-brand-textMuted leading-relaxed font-light max-w-sm">
-              Una experiencia íntima inspirada en la tradición gastronómica italiana. Elevamos ingredientes selectos de la huerta y pan de masa madre horneado a mano diariamente en Sonsonate.
+        {/* Bloque display — nombre grande asimétrico */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+          <div className="lg:col-span-8 space-y-6">
+            <img
+              src={logo}
+              alt=""
+              width={40}
+              height={40}
+              className="h-10 w-auto object-contain"
+              style={{ filter: 'brightness(0) invert(1)', opacity: 0.92 }}
+            />
+            <p
+              className="font-wordmark uppercase leading-[0.94] tracking-[0.01em] text-white"
+              style={{ fontSize: 'clamp(2.75rem, 7vw, 6.5rem)' }}
+            >
+              Panna &amp; Pomodoro
             </p>
-            <div className="flex items-center space-x-3 pt-2">
-              {/* TODO: actualizar con handle real */}
-              {/* ✏️ EDITABLE: redes sociales — cambia el href con tu handle real */}
-              <a href="https://instagram.com/pannapomodoro.sv" target="_blank" rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full border border-white/5 hover:border-brand-primary flex items-center justify-center text-brand-textMuted hover:text-brand-primary bg-brand-surface/40 transition-all duration-300"
-                aria-label="Instagram">
-                <InstagramIcon size={14} />
-              </a>
-              <a href="https://facebook.com/pannapomodoro" target="_blank" rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full border border-white/5 hover:border-brand-primary flex items-center justify-center text-brand-textMuted hover:text-brand-primary bg-brand-surface/40 transition-all duration-300"
-                aria-label="Facebook">
-                <FacebookIcon size={14} />
-              </a>
-              {/* TODO: actualizar con handle real de TikTok */}
-              <a href="https://tiktok.com/@pannapomodoro" target="_blank" rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full border border-white/5 hover:border-brand-primary flex items-center justify-center text-brand-textMuted hover:text-brand-primary bg-brand-surface/40 transition-all duration-300"
-                aria-label="TikTok">
-                <TikTokIcon size={14} />
-              </a>
-              <a href="https://wa.me/50324511000" target="_blank" rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full border border-white/5 hover:border-[#25D366] flex items-center justify-center text-brand-textMuted hover:text-[#25D366] bg-brand-surface/40 transition-all duration-300"
-                aria-label="WhatsApp">
-                <WhatsAppIcon size={14} />
+            <p className="text-[14px] md:text-[15px] text-white/70 max-w-reading leading-relaxed">
+              Un salón pequeño en Boulevard Las Palmeras que se toma en serio lo que sirve.
+              Masa madre desde 2018, café trazable, cocina servida en barra.
+            </p>
+          </div>
+
+          {/* Datos agrupados — retícula asimétrica */}
+          <div className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 text-[13px] text-white/85">
+            <div className="flex items-start gap-3">
+              <MapPinIcon size={16} className="text-brand-primary shrink-0 mt-0.5" aria-hidden="true" />
+              <span className="leading-relaxed">
+                Boulevard Las Palmeras<br />CC El Arco · Sonsonate
+              </span>
+            </div>
+            <div className="flex items-start gap-3">
+              <ClockIcon size={16} className="text-brand-primary shrink-0 mt-0.5" aria-hidden="true" />
+              <span className="leading-relaxed tabular-nums">
+                Lun–Jue 7:00–21:00<br />Vie–Sáb 7:00–22:00<br />Dom 7:00–21:00
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <PhoneIcon size={16} className="text-brand-primary shrink-0" aria-hidden="true" />
+              <a href="tel:+50324511000" className="hover:text-white transition-colors duration-base tabular-nums">
+                2451-1000
               </a>
             </div>
           </div>
+        </div>
 
-          {/* Column 2: Ubicación & Contacto */}
-          <div className="space-y-6">
-            <h4 className="font-body text-[11px] tracking-[0.25em] text-brand-primary uppercase font-bold border-b border-white/5 pb-2">
-              Ubicación &amp; Contacto
-            </h4>
-            <div className="space-y-4 text-small font-body text-brand-textMuted leading-relaxed font-light">
-              <div className="space-y-1">
-                <span className="font-body text-brand-textMain font-medium block text-[11px] tracking-wider uppercase">DIRECCIÓN</span>
+        {/* Reticula de navegación — tres columnas asimétricas */}
+        <nav aria-label="Pie de página" className="grid grid-cols-1 md:grid-cols-12 gap-10 border-t border-white/10 pt-12">
+          <div className="md:col-span-5 space-y-4">
+            <p className="eyebrow-on-dark">Explorar</p>
+            <ul className="space-y-2.5 text-[15px]">
+              {GROUPS.explorar.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className="text-white/90 hover:text-white transition-colors duration-base inline-flex items-center min-h-[40px] luxury-underline">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="md:col-span-4 space-y-4">
+            <p className="eyebrow-on-dark">Información</p>
+            <ul className="space-y-2.5 text-[15px]">
+              {GROUPS.informacion.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className="text-white/70 hover:text-white transition-colors duration-base inline-flex items-center min-h-[40px] luxury-underline">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="md:col-span-3 space-y-4">
+            <p className="eyebrow-on-dark">Contacto</p>
+            <ul className="space-y-2.5 text-[14px] text-white/85">
+              <li>
                 <a
-                  href="https://www.google.com/maps/place/Panna+%26+Pomodoro/@13.7229219,-89.7212373,17z/data=!4m14!1m7!3m6!1s0x8f62b7f35601a705:0x2652f9f63206f77b!2sPanna+%26+Pomodoro!8m2!3d13.7229193!4d-89.7190504!16s%2Fg%2F11f4105vb3!3m5!1s0x8f62b7f35601a705:0x2652f9f63206f77b!8m2!3d13.7229193!4d-89.7190504!16s%2Fg%2F11f4105vb3?entry=ttu&g_ep=EgoyMDI2MDUyMC4wIKXMDSoASAFQAw%3D%3D"
+                  href="https://wa.me/50324511000"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-brand-primary transition-all duration-300 flex items-start gap-2 text-[14px] font-body text-brand-textMuted leading-relaxed font-light"
+                  className="hover:text-white transition-colors duration-base inline-flex items-center min-h-[40px] luxury-underline"
                 >
-                  <MapPinIcon size={14} className="mt-1 shrink-0 text-brand-primary/60" />
-                  {/* ✏️ EDITABLE: dirección (también en ChefCTA.jsx) */}
-                  <span>Blvd Las Palmeras, CC El Arco<br />Sonsonate, El Salvador</span>
+                  WhatsApp · 2451-1000
                 </a>
-              </div>
-
-              <div className="space-y-1">
-                <span className="font-body text-brand-textMain font-medium block text-[11px] tracking-wider uppercase">TELÉFONO</span>
-                {/* ✏️ EDITABLE: teléfono — cambia también en ChefCTA.jsx */}
+              </li>
+              <li>
                 <a
-                  href="tel:+50324511000"
-                  className="hover:text-brand-primary transition-all duration-300 text-[14px] font-body text-brand-textMuted leading-relaxed font-light tracking-wider"
+                  href="https://www.instagram.com/panna.pomodoro/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors duration-base inline-flex items-center min-h-[40px] luxury-underline"
                 >
-                  2451-1000
+                  Instagram · @panna.pomodoro
                 </a>
-              </div>
-            </div>
+              </li>
+              <li>
+                <Link
+                  to="/reservar"
+                  className="hover:text-white transition-colors duration-base inline-flex items-center min-h-[40px] luxury-underline"
+                >
+                  Reservar una mesa
+                </Link>
+              </li>
+            </ul>
           </div>
+        </nav>
 
-          {/* Column 3: Horarios & Reservas */}
-          <div className="space-y-6">
-            <h4 className="font-body text-[11px] tracking-[0.25em] text-brand-primary uppercase font-bold border-b border-white/5 pb-2">
-              Horarios &amp; Reservas
-            </h4>
-            <div className="space-y-4 text-small font-body text-brand-textMuted leading-relaxed font-light">
-              <div className="space-y-1">
-                <span className="font-body text-brand-textMain font-medium block text-[11px] tracking-wider uppercase">SALÓN PRINCIPAL</span>
-                {/* ✏️ EDITABLE: horarios (también en Hero.jsx y ChefCTA.jsx) */}
-                <p>Dom &mdash; Jue: 7:00 &mdash; 21:00</p>
-                <p>Vie &mdash; Sáb: 7:00 &mdash; 22:00</p>
-              </div>
-
-              <div className="space-y-1">
-                <span className="font-body text-brand-textMain font-medium block text-[11px] tracking-wider uppercase">POLÍTICA</span>
-                <p className="pr-4">
-                  Reservaciones en línea disponibles hasta con 2 horas de anticipación.
-                </p>
-              </div>
-            </div>
-          </div>
-
-        </m.div>
-
-        {/* Lower copyright bar */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 text-[12px] font-body tracking-[0.2em] uppercase text-brand-textMuted/45">
-          <div className="text-center md:text-left">
-            {/* ✏️ EDITABLE: año de copyright */}
-            Panna &amp; Pomodoro Group &copy; 2026. Todos los derechos reservados.
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-6">
-            <Link to="/terminos"   className="hover:text-brand-primary transition-all duration-300">Términos de Uso</Link>
-            <span className="text-white/5">|</span>
-            <Link to="/privacidad" className="hover:text-brand-primary transition-all duration-300">Políticas de Privacidad</Link>
-            <span className="text-white/5">|</span>
-            <Link to="/cookies"    className="hover:text-brand-primary transition-all duration-300">Cookies</Link>
-          </div>
+        {/* Pie pequeño */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pt-8 border-t border-white/10 text-[12px] text-white/55">
+          <p>© 2018–2026 Panna &amp; Pomodoro. Todos los derechos reservados.</p>
+          <p>Diseñado y horneado en Sonsonate.</p>
         </div>
 
       </div>

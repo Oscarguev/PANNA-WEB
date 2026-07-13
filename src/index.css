@@ -2,32 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Panna & Pomodoro — sistema visual
+ * Una sola fuente de verdad para tokens, contenedores, botones e inputs.
+ * Sin valores hardcoded en componentes.
+ */
+
+:root {
+  /* Contenedor — único para toda la web */
+  --container-max: 1280px;
+
+  /* Gutters */
+  --gutter-mobile: 24px;
+  --gutter-tablet: 32px;
+  --gutter-desktop: 64px;
+
+  /* Sección vertical padding */
+  --section-mobile: 56px;
+  --section-tablet: 80px;
+  --section-desktop: 104px;
+
+  /* Hero / full-bleed vertical */
+  --hero-min-height: 76svh;
+  --hero-max-height: 720px;
+
+  /* Radios */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-pill: 9999px;
+
+  /* Bordes */
+  --border-thin: 1px;
+  --border-default: 1px solid #D5CDBF;
+  --border-strong: 1px solid #E6DFD3;
+
+  /* Tipografía editorial */
+  --tracking-eyebrow: 0.18em;
+  --tracking-button: 0.08em;
+
+  /* Z-index */
+  --z-navbar: 50;
+  --z-drawer: 60;
+  --z-modal: 70;
+  --z-toast: 80;
+
+  /* Navbar altura visible (reservada para scroll-margin) */
+  --navbar-offset: 88px;
+
+  /* Botón touch targets */
+  --tap-min: 44px;
+  --tap-cta: 48px;
+}
+
 
 @layer base {
-  :root {
-    /* Brand Serif Font families custom mappings */
-    --font-family-display: 'Cormorant Garamond', 'Georgia', serif;
-    --font-family-brand: 'Gilda Display', 'Georgia', serif;
-  }
-
-  @media (max-width: 767px) {
-    :root {
-      /* Mobile legibility: swap elegant didone-style serifs for highly legible contemporary Lora */
-      --font-family-display: 'Lora', 'Georgia', serif;
-      --font-family-brand: 'Lora', 'Georgia', serif;
-    }
-  }
-
-  /* =========================================
-     COMPORTAMIENTO BASE PARA LECTURA
-     ========================================= */
   html {
     scroll-behavior: smooth;
-    background-color: #050505;
+    background-color: #F4F0E8;
   }
-  
+
   body {
-    @apply font-body text-body-mobile md:text-body-desktop font-light text-brand-textMain bg-brand-background antialiased;
+    @apply font-sans text-body-mobile md:text-body-desktop text-brand-textMain bg-brand-background antialiased;
     margin: 0;
     padding: 0;
     -webkit-font-smoothing: antialiased;
@@ -36,252 +73,330 @@
   }
 
   p {
-    @apply max-w-reading mb-4; /* Limita el ancho a 68 caracteres automáticamente */
+    @apply max-w-reading mb-4;
   }
 
-  /* =========================================
-     JERARQUÍA DE TÍTULOS (ESTRUCTURA)
-     ========================================= */
   h1 {
-    @apply font-brand text-hero-mobile md:text-hero-desktop font-light tracking-tight mb-6;
+    @apply font-display text-hero-mobile md:text-hero-desktop font-light tracking-tight mb-6;
   }
 
   h2 {
-    @apply font-display text-h2-mobile md:text-h2-desktop font-light mb-4;
+    @apply font-sans text-h2-mobile md:text-h2-desktop font-medium tracking-tight mb-4;
   }
 
   h3 {
-    @apply font-display text-h3-mobile md:text-h3-desktop font-medium mb-3;
+    @apply font-sans text-h3-mobile md:text-h3-desktop font-semibold mb-3;
   }
 
-  /* =========================================
-     MICRO-TIPOGRAFÍA Y UI
-     ========================================= */
   small {
-    @apply font-body text-small font-light text-brand-textMuted;
+    @apply font-sans text-small text-brand-textMuted;
   }
 
-  /* La Ceja (Eyebrow) para introducir secciones */
-  .eyebrow {
-    @apply font-body text-eyebrow-mobile md:text-eyebrow-desktop font-semibold uppercase text-brand-primary block mb-2;
+  /* Cualquier sección con id respeta la navbar fija */
+  section[id],
+  [data-anchor] {
+    scroll-margin-top: var(--navbar-offset);
   }
 
-  /* Botones, precios, cantidades, horarios (Elementos técnicos) */
-  .text-ui {
-    @apply font-body tracking-wide;
-  }
-  
-  button, .btn {
-    @apply font-body font-medium uppercase tracking-wider text-sm;
-  }
-
-  /* Precios en el menú */
-  .price {
-    @apply font-body text-lg font-medium text-brand-primary;
+  /* Tipografía display (Fraunces SOFT) — ligaduras + conjuntos estilísticos.
+     Activa curvas redondeadas y dligaduras orgánicas para calidez italiana.
+     text-wrap: balance evita huérfanas tipográficas en titulares largos. */
+  .font-display,
+  h1, h2 {
+    font-feature-settings: "liga", "dlig", "ss01", "kern";
+    font-variation-settings: "opsz" 14, "SOFT" 50;
+    text-wrap: balance;
   }
 
-  /* Custom Selection styling */
   ::selection {
-    background-color: rgba(197, 168, 128, 0.15);
-    color: #c5a880;
+    background-color: rgba(225, 38, 28, 0.16);
+    color: #2A2520;
   }
 
-  /* Custom premium scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
-  
-  ::-webkit-scrollbar-track {
-    background: #050505;
+  ::-webkit-scrollbar-track  { background: #F4F0E8; }
+  ::-webkit-scrollbar-thumb  { background: #D5CDBF; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #168A3B; }
+}
+
+
+@layer components {
+  /* ─── CONTENEDOR ─────────────────────────────────────────────────────── */
+  .container-page {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--gutter-mobile);
+    padding-right: var(--gutter-mobile);
   }
-  
-  ::-webkit-scrollbar-thumb {
-    background: #141414;
-    border-radius: 3px;
+  @media (min-width: 768px) {
+    .container-page {
+      padding-left: var(--gutter-tablet);
+      padding-right: var(--gutter-tablet);
+    }
   }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: #c5a880;
+  @media (min-width: 1024px) {
+    .container-page {
+      padding-left: var(--gutter-desktop);
+      padding-right: var(--gutter-desktop);
+    }
   }
+
+  /* ─── SECCIÓN ────────────────────────────────────────────────────────── */
+  .section {
+    padding-top: var(--section-mobile);
+    padding-bottom: var(--section-mobile);
+  }
+  @media (min-width: 768px) {
+    .section {
+      padding-top: var(--section-tablet);
+      padding-bottom: var(--section-tablet);
+    }
+  }
+  @media (min-width: 1024px) {
+    .section {
+      padding-top: var(--section-desktop);
+      padding-bottom: var(--section-desktop);
+    }
+  }
+
+  /* ─── TIPOGRAFÍA EDITORIAL ──────────────────────────────────────────── */
+  .eyebrow {
+    @apply font-sans text-[11px] uppercase text-brand-textSubtle block mb-3;
+    letter-spacing: var(--tracking-eyebrow);
+  }
+
+  .eyebrow-on-dark {
+    @apply font-sans text-[11px] uppercase text-white/75 block mb-3;
+    letter-spacing: var(--tracking-eyebrow);
+  }
+
+  .h-section {
+    @apply font-display font-light text-brand-textMain;
+    font-size: clamp(1.875rem, 3.4vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    font-feature-settings: "liga", "dlig", "ss01", "kern";
+    font-variation-settings: "opsz" 14, "SOFT" 50;
+  }
+
+  .h-section-on-dark {
+    @apply font-display font-light text-white;
+    font-size: clamp(1.875rem, 3.4vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    font-feature-settings: "liga", "dlig", "ss01", "kern";
+    font-variation-settings: "opsz" 14, "SOFT" 50;
+  }
+
+  /* ─── BOTONES ───────────────────────────────────────────────────────── */
+  .btn-primary {
+    @apply inline-flex items-center justify-center bg-brand-cta text-white hover:bg-brand-ctaHover transition-colors duration-base;
+    min-height: var(--tap-cta);
+    padding: 0.75rem 1.5rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-button);
+    border-radius: var(--radius-xs);
+    border: 1px solid transparent;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cta focus-visible:ring-offset-2 focus-visible:ring-offset-brand-background;
+  }
+
+  .btn-primary-sm {
+    @apply inline-flex items-center justify-center bg-brand-cta text-white hover:bg-brand-ctaHover transition-colors duration-base;
+    min-height: var(--tap-min);
+    padding: 0.5rem 1.25rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-button);
+    border-radius: var(--radius-xs);
+    border: 1px solid transparent;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cta focus-visible:ring-offset-2 focus-visible:ring-offset-brand-background;
+  }
+
+  .btn-primary-on-dark {
+    @apply inline-flex items-center justify-center bg-brand-cta text-white hover:bg-brand-primaryHover transition-colors duration-base;
+    min-height: var(--tap-cta);
+    padding: 0.75rem 1.75rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-button);
+    border-radius: var(--radius-xs);
+    border: 1px solid transparent;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center text-brand-textMain hover:text-brand-primary transition-colors duration-base;
+    min-height: var(--tap-cta);
+    padding: 0.75rem 1.5rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-button);
+    background: transparent;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-xs);
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary;
+  }
+
+  .btn-ghost-on-dark {
+    @apply inline-flex items-center justify-center text-white transition-colors duration-base;
+    min-height: var(--tap-cta);
+    padding: 0.75rem 1.5rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-button);
+    background: transparent;
+    border: 1px solid rgba(244, 240, 232, 0.7);
+    border-radius: var(--radius-xs);
+    @apply hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white;
+  }
+
+  .btn-underline {
+    @apply inline-flex items-center gap-2 text-brand-textMain hover:text-brand-primary transition-colors duration-base border-b border-brand-textMain hover:border-brand-primary pb-0.5;
+    min-height: var(--tap-min);
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary;
+  }
+
+  .btn-underline-on-dark {
+    @apply inline-flex items-center gap-2 text-white border-b border-white/40 hover:border-white transition-colors duration-base pb-0.5;
+    min-height: var(--tap-min);
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white;
+  }
+
+  /* ─── INPUTS ────────────────────────────────────────────────────────── */
+  /* Underline / editorial (sobre fondo claro) */
+  .input-line {
+    @apply w-full bg-transparent border-0 border-b border-brand-border text-brand-textMain placeholder:text-brand-placeholder;
+    min-height: var(--tap-cta);
+    padding: 0.75rem 0.25rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    transition: border-color 250ms ease;
+    @apply hover:border-brand-primary/60 focus:border-brand-primary focus:outline-none;
+  }
+
+  /* Underline / editorial (sobre fondo oscuro) */
+  .input-line-on-dark {
+    @apply w-full bg-transparent border-0 border-b border-white/40 text-white placeholder:text-white/40;
+    min-height: var(--tap-cta);
+    padding: 0.75rem 0.25rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    transition: border-color 250ms ease;
+    @apply hover:border-white/70 focus:border-white focus:outline-none;
+  }
+
+  /* Boxed claro (formularios críticos) */
+  .input-boxed {
+    @apply w-full bg-white border border-brand-border text-brand-textMain placeholder:text-brand-placeholder;
+    min-height: var(--tap-min);
+    padding: 0.75rem 1rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    border-radius: var(--radius-xs);
+    transition: border-color 250ms ease;
+    @apply hover:border-brand-textSubtle focus-visible:border-brand-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-primary;
+  }
+
+  /* ─── UTILIDADES COMPLEMENTARIAS ────────────────────────────────────── */
+  .text-ui { @apply font-sans; letter-spacing: 0.04em; }
+
+  .price { @apply font-sans text-lg font-medium text-brand-textMain; }
+
+  .divider-thin { height: 1px; background-color: #D5CDBF; width: 100%; }
 }
 
-/* Hide scrollbar utility */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
 
-/* Custom premium hover and animation effects */
-.luxury-underline {
-  position: relative;
-}
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
 
-.luxury-underline::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  transform: scaleX(0);
-  height: 1px;
-  bottom: -4px;
-  left: 0;
-  background-color: theme(colors.brand.primary);
-  transform-origin: bottom right;
-  transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1);
-}
+  .luxury-underline {
+    position: relative;
+  }
+  .luxury-underline::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 1px;
+    bottom: -4px;
+    left: 0;
+    background-color: #E1261C;
+    transform-origin: bottom right;
+    transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
+  }
+  .luxury-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
 
-.luxury-underline:hover::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
+  @keyframes fadeIn    { from { opacity: 0; }                          to { opacity: 1; } }
+  @keyframes fadeInUp  { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Glassmorphism card utility */
-.glass-card {
-  @apply bg-white/10 backdrop-blur-lg border border-white/20 rounded-[2px];
-}
+  .animate-fade-in    { animation: fadeIn 0.4s ease-out forwards; }
+  .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
 
-/* Fade-in animations */
-@keyframes fadeIn {
-  0%   { opacity: 0; }
-  100% { opacity: 1; }
-}
-@keyframes fadeInUp {
-  0%   { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-.animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
-}
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s ease-out forwards;
-}
+  .button-scale { transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1); }
+  .button-scale:hover { transform: scale(1.02); }
 
-/* Button hover scale */
-.button-scale {
-  @apply transition-transform duration-300 ease-out;
-}
-.button-scale:hover {
-  transform: scale(1.05);
+  .image-zoom-slow { transition: transform 1.2s cubic-bezier(0.2, 0, 0, 1); }
+  .image-zoom-slow:hover { transform: scale(1.03); }
+
+  /* Marquee continuo lento (Fase 15). translateX-only, GPU-accelerated. */
+  @keyframes marquee {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+  }
+  .animate-marquee {
+    animation: marquee 60s linear infinite;
+    will-change: transform;
+  }
+
+  /* Defensa para figure/img dentro de grids CSS.
+     Sin min-width:0 el contenido empuja el track y rompe el aspect ratio. */
+  .img-grid-item { min-width: 0; }
 }
 
 
-/* Lenis smooth scroll specific styles */
-html.lenis, html.lenis body {
-  height: auto;
-}
+/* Lenis smooth scroll */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth       { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped      { overflow: hidden; }
+.lenis.lenis-scrolling iframe { pointer-events: none; }
 
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
 
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
-}
-
-/* Smooth zoom transition */
-.image-zoom-slow {
-  transition: transform 2.5s cubic-bezier(0.2, 0, 0, 1);
-}
-
-.image-zoom-slow:hover {
-  transform: scale(1.04);
-}
-
-/* --- Premium Typography inherited globally via @layer base mappings --- */
-
-/* ─── Luxury Motion System ─────────────────────────────────────────────────── */
-
-/* GPU compositing hint for animated elements */
-.motion-gpu {
-  will-change: transform, opacity;
-  transform: translateZ(0);
-}
-
-/* Film grain CSS-only fallback (used by AmbientLayer SVG) */
-@keyframes grainShift {
-  0%,  100% { transform: translate(0,    0);    }
-  10%        { transform: translate(-2%, -3%);   }
-  20%        { transform: translate(3%,   2%);   }
-  30%        { transform: translate(-1%,  4%);   }
-  40%        { transform: translate(4%,  -2%);   }
-  50%        { transform: translate(-3%,  1%);   }
-  60%        { transform: translate(2%,   3%);   }
-  70%        { transform: translate(-4%, -1%);   }
-  80%        { transform: translate(1%,  -4%);   }
-  90%        { transform: translate(-2%,  2%);   }
-}
-
-/* Ambient glow breathing (CSS fallback for non-JS) */
-@keyframes ambientGlow {
-  0%, 100% { opacity: 0.03; transform: scale(1);    }
-  50%       { opacity: 0.055; transform: scale(1.08); }
-}
-
-/* Ambient orb drift — slow organic float for background atmosphere */
-@keyframes orbDrift1 {
-  0%   { transform: translate(0px,    0px)   scale(1);    }
-  20%  { transform: translate(120px, -90px)  scale(1.08); }
-  45%  { transform: translate(60px,  110px)  scale(0.94); }
-  70%  { transform: translate(-90px,  50px)  scale(1.06); }
-  100% { transform: translate(0px,    0px)   scale(1);    }
-}
-@keyframes orbDrift2 {
-  0%   { transform: translate(0px,    0px)   scale(1);    }
-  30%  { transform: translate(-110px, 80px)  scale(1.07); }
-  60%  { transform: translate(80px,  -70px)  scale(0.95); }
-  100% { transform: translate(0px,    0px)   scale(1);    }
-}
-@keyframes orbDrift3 {
-  0%   { transform: translate(0px,   0px)   scale(1);    }
-  40%  { transform: translate(70px, 100px)  scale(1.10); }
-  80%  { transform: translate(-80px,-50px)  scale(0.93); }
-  100% { transform: translate(0px,   0px)   scale(1);    }
-}
-
-/* Cinematic page entrance — used on route change */
-@keyframes cinematicEnter {
-  0%   { opacity: 0; transform: translateY(12px); }
-  100% { opacity: 1; transform: translateY(0);    }
-}
-
-.cinematic-enter {
-  animation: cinematicEnter 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-/* ─── Reduced Motion Overrides ─────────────────────────────────────────────── */
+/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-
   .animate-fade-in-up,
-  .cinematic-enter,
-  .image-zoom-slow {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
+  .image-zoom-slow { animation: none !important; opacity: 1 !important; transform: none !important; }
 }
-
-/* --- Transparent sections and main to reveal fixed AmbientLayer orbs --- */
-section,
-main {
-  background-color: transparent !important;
-}
-

@@ -10,25 +10,37 @@ import CustomerPortal from '../components/CustomerPortal'
 import CartToast from '../components/CartToast'
 import WhatsAppButton from '../components/WhatsAppButton'
 import LuxuryMotionConfig from '../motion/MotionConfig'
-import AmbientLayer from '../motion/AmbientLayer'
+import IntroOverlay from '../motion/IntroOverlay'
+import { useIntroGate } from '../motion/useIntroGate'
+import { EASE, MOTION } from '../motion/variants'
 import { supabase } from '../lib/supabase'
 import { useSessionStore } from '../stores/useSessionStore'
 
 const Newsletter = lazy(() => import('../components/Newsletter'))
 
 const PAGE_TRANSITION = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit:    { opacity: 0 },
-  transition: { duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] },
+  initial: { opacity: 0, y: MOTION.route.pageOffsetY },
+  animate: { opacity: 1, y: 0, transition: { duration: MOTION.route.pageDuration, ease: EASE.silk } },
+  exit:    { opacity: 0, y: MOTION.route.pageOffsetYExit, transition: { duration: MOTION.route.pageDuration, ease: EASE.silk } },
 }
 
-export default function RootLayout() {
-  const loadProfile = useSessionStore((s) => s.loadProfile)
-  const logout      = useSessionStore((s) => s.logout)
+// Cortina cinematográfica: cortina que cae y se levanta entre páginas.
+// position fixed para no afectar layout, pointer-events none para no bloquear.
+const CURTAIN_VARIANTS = {
+  initial: { scaleY: 1, originY: 0 },
+  animate: { scaleY: 0, originY: 0, transition: { duration: MOTION.route.curtainEnter, ease: EASE.editorial, delay: 0.05 } },
+  exit:    { scaleY: 1, originY: 0, transition: { duration: MOTION.route.curtainExit, ease: EASE.editorial } },
+}
 
+// Curtain cinematográfica: cortina que cae y se levanta entre páginas.
+// position fixed para no afectar layout, pointer-events none para no bloquear.
+
+export default function RootLayout() {
   useEffect(() => {
-    // Restaura sesión si el usuario ya estaba logueado
+    // Restaura sesión si el usuario ya estaba logueado.
+    // Leemos las acciones del store vía getState() para evitar re-suscripciones
+    // cada vez que cambie la referencia del store.
+    const { loadProfile, logout } = useSessionStore.getState()
     supabase.auth.getSession().then(({ data }) => {
       if (data.session?.user) {
         loadProfile(data.session.user.id, data.session.user.email)
@@ -72,6 +84,7 @@ export default function RootLayout() {
   }, [])
 
   const { pathname } = useLocation()
+  const showIntro = useIntroGate()
   usePageView()
 
   useEffect(() => {
@@ -80,13 +93,35 @@ export default function RootLayout() {
 
   return (
     <LuxuryMotionConfig>
-      <AmbientLayer />
+      <IntroOverlay show={showIntro} />
       <Navbar />
-      <AnimatePresence mode="sync" initial={false}>
-        <m.div key={pathname} {...PAGE_TRANSITION}>
+      <AnimatePresence mode="wait" initial={false}>
+        <m.div key={pathname} {...PAGE_TRANSITION} className="will-change-opacity">
           <Outlet />
         </m.div>
       </AnimatePresence>
+      {/* Cortina cinematográfica sincronizada con cada navegación */}
+      <AnimatePresence>
+        <m.div
+          key={`curtain-${pathname}`}
+          aria-hidden="true"
+          variants={CURTAIN_VARIANTS}
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          className="fixed inset-0 z-[55] bg-brand-textMain pointer-events-none origin-top"
+        />
+      </AnimatePresence>
+      {/* Grain overlay fijo — textura de papel sutil. pointer-events-none para no bloquear. */}
+      <div
+        aria-hidden="true"
+        className="fixed inset-0 z-[40] pointer-events-none mix-blend-multiply opacity-[0.035]"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>\")",
+          backgroundSize: '160px 160px',
+        }}
+      />
       <Footer />
       <CartDrawer />
       <CustomerPortal />
