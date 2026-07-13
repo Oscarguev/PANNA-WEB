@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Mobile menu opens",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Mobile menu closes",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Menu closes on Escape",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Newsletter appears after delay",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "WhatsApp hidden when popup open",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Popup closes via X",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "WhatsApp reappears after popup close",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "sessionStorage cleared (manual)",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Reservas: shows error on empty submit",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Reservas: marks required fields invalid",
+    "pass": true,
+    "info": "aria-invalid=true"
+  },
+  {
+    "name": "Reservas: notes is textarea",
+    "pass": true,
+    "info": "tag=textarea"
+  },
+  {
+    "name": "Reservas: zone radio switches",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Menu add-to-bag: text changes to Agregado",
+    "pass": true,
+    "info": "+Agregar a la bolsa -> ✓Agregado"
+  },
+  {
+    "name": "CartToast appears after add",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Menu add-to-bag: resets after timeout",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Footer mobile: Explorar visible",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Footer mobile: Información visible",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Footer mobile: Contacto visible",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Footer mobile: footer rendered",
+    "pass": true,
+    "info": ""
+  },
+  {
+    "name": "Footer area: no horizontal overflow",
+    "pass": true,
+    "info": "390<=390"
+  }
+]

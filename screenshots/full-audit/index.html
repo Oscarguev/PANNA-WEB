@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Panna & Pomodoro — Auditoría final UX/UI</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; margin: 0; background: #f5f1ea; color: #1a1a1a; }
+  header { background: #1a1a1a; color: #f5f1ea; padding: 32px 48px; }
+  header h1 { margin: 0 0 8px 0; font-size: 28px; font-weight: 400; letter-spacing: -0.02em; }
+  header .meta { font-size: 13px; color: #a67c52; }
+  section.kpis { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; padding: 32px 48px; background: white; border-bottom: 1px solid #e8dfd0; }
+  .kpi { padding: 16px; border: 1px solid #e8dfd0; background: #faf6ef; }
+  .kpi .v { font-size: 32px; font-weight: 300; line-height: 1; }
+  .kpi .l { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #7a6450; margin-top: 8px; }
+  main { padding: 32px 48px 64px; }
+  .vp-section { margin-bottom: 48px; }
+  .vp-title { font-size: 16px; text-transform: uppercase; letter-spacing: 0.15em; color: #5b3a1f; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #1a1a1a; }
+  .route-card { background: white; border: 1px solid #e8dfd0; margin-bottom: 24px; }
+  .route-head { padding: 14px 18px; background: #faf6ef; border-bottom: 1px solid #e8dfd0; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .route-head h2 { margin: 0; font-size: 15px; font-weight: 500; }
+  .metrics { padding: 12px 18px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; font-size: 12px; border-bottom: 1px solid #e8dfd0; }
+  .metric .l { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: #7a6450; }
+  .metric .v { font-size: 15px; font-weight: 500; }
+  .b { display: inline-block; padding: 2px 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .b-ok { background: #eaf2ec; color: #4a7c59; }
+  .b-err { background: #fbecec; color: #a14242; }
+  .b-warn { background: #fdf6e3; color: #8a6e1f; }
+  .b-info { background: #f0e8db; color: #5b3a1f; }
+  .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px 18px; }
+  .shot { border: 1px solid #e8dfd0; }
+  .shot .lbl { font-size: 10px; padding: 5px 9px; background: #faf6ef; border-bottom: 1px solid #e8dfd0; text-transform: uppercase; letter-spacing: 0.1em; color: #5b3a1f; }
+  .shot img { display: block; width: 100%; height: auto; }
+  details { padding: 12px 18px; border-top: 1px solid #e8dfd0; font-size: 12px; }
+  summary { cursor: pointer; font-size: 11px; color: #5b3a1f; text-transform: uppercase; letter-spacing: 0.1em; }
+  .func-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; padding: 16px 0; }
+  .func-shot { border: 1px solid #e8dfd0; background: white; }
+  .func-shot .lbl { padding: 8px 12px; font-size: 11px; background: #faf6ef; border-bottom: 1px solid #e8dfd0; text-transform: uppercase; letter-spacing: 0.1em; }
+  .func-shot img { display: block; width: 100%; height: auto; }
+  .func-list { padding: 12px 18px; background: white; border: 1px solid #e8dfd0; font-family: monospace; font-size: 12px; }
+  .func-pass { color: #4a7c59; }
+  .func-fail { color: #a14242; font-weight: bold; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Auditoría final · Panna &amp; Pomodoro</h1>
+  <div class="meta">URL: https://frontend-oscarguevs-projects.vercel.app · Generado: 2026-07-10T21:32:43.725Z</div>
+</header>
+<section class="kpis">
+  <div class="kpi"><div class="v">48</div><div class="l">Páginas auditadas</div></div>
+  <div class="kpi"><div class="v">0</div><div class="l">HTTP ≠ 200</div></div>
+  <div class="kpi"><div class="v">0</div><div class="l">Overflow horizontal</div></div>
+  <div class="kpi"><div class="v">0</div><div class="l">Imgs rotas</div></div>
+  <div class="kpi"><div class="v">0</div><div class="l">Errores consola</div></div>
+  <div class="kpi"><div class="v">0</div><div class="l">Axe violaciones (subset)</div></div>
+</section>
+<section style="padding:24px 48px;background:#faf6ef;border-bottom:1px solid #e8dfd0">
+  <p style="margin:0;font-size:13px"><strong>Viewports probados:</strong> 8 (320×568, 375×667, 390×844, 430×932, 768×1024, 1024×768, 1280×720, 1440×900). <strong>Rutas:</strong> 6 (home, menu, market, events, club, reservar). <strong>Total:</strong> 48 ejecuciones. <strong>FCP mediana:</strong> 764ms.</p>
+  <p style="margin:8px 0 0;font-size:13px"><strong>Pruebas funcionales:</strong> 20/20 pasadas. <strong>Resultado:</strong> <span class="func-pass">todo verde</span>.</p>
+</section>
+<main>
+
+  <section class="vp-section">
+    <div class="vp-title">iPhone SE 1ª gen (320×568)</div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">20/20 imgs</span>
+          <span class="b b-ok">scrollW 320=320</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 1608ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">1499 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">1608 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">20/20</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">320px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/320x568_home.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/320x568_home_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Nuestra Carta — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/menu</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">8/8 imgs</span>
+          <span class="b b-ok">scrollW 320=320</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 748ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">704 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">748 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">8/8</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">320px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/320x568_menu.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/320x568_menu_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Tienda de Café — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/market</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">2/2 imgs</span>
+          <span class="b b-ok">scrollW 320=320</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 764ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">724 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">764 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">2/2</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">320px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/320x568_market.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/320x568_market_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Eventos &amp; Talleres — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/events</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">5/5 imgs</span>
+          <span class="b b-ok">scrollW 320=320</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 932ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">889 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">932 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">5/5</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">320px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/320x568_events.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/320x568_events_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Club PANNA Rewards — Programa de Fidelización</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/club</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">2/2 imgs</span>
+          <span class="b b-ok">scrollW 320=320</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 820ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">775 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">820 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">2/2</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">320px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/320x568_club.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/320x568_club_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Reservar una mesa.</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/reservar</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">3/3 imgs</span>
+          <span class="b b-ok">scrollW 320=320</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 820ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">778 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">820 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">3/3</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">320px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/320x568_reservar.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/320x568_reservar_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+  </section>
+
+  <section class="vp-section">
+    <div class="vp-title">iPhone 8 (375×667)</div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">20/20 imgs</span>
+          <span class="b b-ok">scrollW 375=375</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 732ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">678 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">732 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">20/20</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">375px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/375x667_home.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/375x667_home_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Nuestra Carta — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/menu</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">8/8 imgs</span>
+          <span class="b b-ok">scrollW 375=375</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 744ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">703 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">744 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">8/8</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">375px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/375x667_menu.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/375x667_menu_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Tienda de Café — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/market</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">6/6 imgs</span>
+          <span class="b b-ok">scrollW 375=375</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 764ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">723 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">764 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">6/6</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">375px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/375x667_market.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/375x667_market_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Eventos &amp; Talleres — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/events</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">5/5 imgs</span>
+          <span class="b b-ok">scrollW 375=375</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 720ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">674 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">720 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">5/5</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">375px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/375x667_events.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/375x667_events_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Club PANNA Rewards — Programa de Fidelización</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/club</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">2/2 imgs</span>
+          <span class="b b-ok">scrollW 375=375</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 756ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">716 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">756 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">2/2</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">375px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/375x667_club.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/375x667_club_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Reservar una mesa.</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/reservar</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">3/3 imgs</span>
+          <span class="b b-ok">scrollW 375=375</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 692ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">651 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">692 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">3/3</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">375px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/375x667_reservar.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/375x667_reservar_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+  </section>
+
+  <section class="vp-section">
+    <div class="vp-title">iPhone 12/13/14 (390×844)</div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">20/20 imgs</span>
+          <span class="b b-ok">scrollW 390=390</span>
+          <span class="b b-ok">a11y ok</span>
+          <span class="b b-info">FCP 956ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">895 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">956 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">20/20</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">390px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/390x844_home.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/390x844_home_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Nuestra Carta — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/menu</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">8/8 imgs</span>
+          <span class="b b-ok">scrollW 390=390</span>
+          <span class="b b-ok">a11y ok</span>
+          <span class="b b-info">FCP 764ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">719 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">764 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">8/8</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">390px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/390x844_menu.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/390x844_menu_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Tienda de Café — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/market</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">3/6 imgs</span>
+          <span class="b b-ok">scrollW 390=390</span>
+          <span class="b b-ok">a11y ok</span>
+          <span class="b b-info">FCP 800ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">754 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">800 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">3/6</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">390px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/390x844_market.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/390x844_market_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Eventos &amp; Talleres — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/events</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">5/5 imgs</span>
+          <span class="b b-ok">scrollW 390=390</span>
+          <span class="b b-ok">a11y ok</span>
+          <span class="b b-info">FCP 788ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">747 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">788 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">5/5</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">390px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/390x844_events.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/390x844_events_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Club PANNA Rewards — Programa de Fidelización</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/club</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">2/2 imgs</span>
+          <span class="b b-ok">scrollW 390=390</span>
+          <span class="b b-ok">a11y ok</span>
+          <span class="b b-info">FCP 836ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">790 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">836 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">2/2</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">390px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/390x844_club.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/390x844_club_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Reservar una mesa.</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/reservar</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">3/3 imgs</span>
+          <span class="b b-ok">scrollW 390=390</span>
+          <span class="b b-ok">a11y ok</span>
+          <span class="b b-info">FCP 732ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">690 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">732 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">3/3</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">390px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/390x844_reservar.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/390x844_reservar_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+  </section>
+
+  <section class="vp-section">
+    <div class="vp-title">iPhone 14 Pro Max (430×932)</div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">20/20 imgs</span>
+          <span class="b b-ok">scrollW 430=430</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 780ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">722 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">780 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">20/20</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">430px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/430x932_home.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/430x932_home_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Nuestra Carta — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/menu</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">8/8 imgs</span>
+          <span class="b b-ok">scrollW 430=430</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 756ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">703 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">756 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">8/8</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">430px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/430x932_menu.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/430x932_menu_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Tienda de Café — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/market</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">6/6 imgs</span>
+          <span class="b b-ok">scrollW 430=430</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 740ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">704 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">740 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">6/6</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">430px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/430x932_market.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/430x932_market_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Eventos &amp; Talleres — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/events</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">5/5 imgs</span>
+          <span class="b b-ok">scrollW 430=430</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 756ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">703 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">756 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">5/5</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">430px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/430x932_events.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/430x932_events_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Club PANNA Rewards — Programa de Fidelización</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/club</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">2/2 imgs</span>
+          <span class="b b-ok">scrollW 430=430</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 712ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">667 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">712 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">2/2</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">430px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/430x932_club.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/430x932_club_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Reservar una mesa.</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/reservar</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">3/3 imgs</span>
+          <span class="b b-ok">scrollW 430=430</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 772ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">729 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">772 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">3/3</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">430px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/430x932_reservar.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/430x932_reservar_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+  </section>
+
+  <section class="vp-section">
+    <div class="vp-title">iPad portrait (768×1024)</div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">20/20 imgs</span>
+          <span class="b b-ok">scrollW 768=768</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 812ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">750 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">812 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">20/20</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">768px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/768x1024_home.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/768x1024_home_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Nuestra Carta — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/menu</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">8/8 imgs</span>
+          <span class="b b-ok">scrollW 768=768</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 836ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">792 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">836 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">8/8</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">768px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/768x1024_menu.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/768x1024_menu_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Tienda de Café — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/market</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">5/6 imgs</span>
+          <span class="b b-ok">scrollW 768=768</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 780ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">731 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">780 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">5/6</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">768px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/768x1024_market.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/768x1024_market_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Eventos &amp; Talleres — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/events</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">5/5 imgs</span>
+          <span class="b b-ok">scrollW 768=768</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 760ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">715 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">760 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">5/5</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">768px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/768x1024_events.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/768x1024_events_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Club PANNA Rewards — Programa de Fidelización</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/club</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">2/2 imgs</span>
+          <span class="b b-ok">scrollW 768=768</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 728ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">684 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">728 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">2/2</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">768px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/768x1024_club.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/768x1024_club_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Reservar una mesa.</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/reservar</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">3/3 imgs</span>
+          <span class="b b-ok">scrollW 768=768</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 692ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">651 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">692 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">3/3</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">768px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/768x1024_reservar.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/768x1024_reservar_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+  </section>
+
+  <section class="vp-section">
+    <div class="vp-title">iPad landscape (1024×768)</div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">20/20 imgs</span>
+          <span class="b b-ok">scrollW 1024=1024</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 860ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">805 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">860 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">20/20</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1024px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1024x768_home.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1024x768_home_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Nuestra Carta — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/menu</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">8/8 imgs</span>
+          <span class="b b-ok">scrollW 1024=1024</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 716ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">660 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">716 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">8/8</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1024px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1024x768_menu.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1024x768_menu_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Tienda de Café — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/market</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">2/6 imgs</span>
+          <span class="b b-ok">scrollW 1024=1024</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 788ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">737 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">788 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">2/6</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1024px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1024x768_market.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1024x768_market_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Eventos &amp; Talleres — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/events</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">5/5 imgs</span>
+          <span class="b b-ok">scrollW 1024=1024</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 748ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">709 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">748 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">5/5</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1024px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1024x768_events.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1024x768_events_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Club PANNA Rewards — Programa de Fidelización</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/club</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">2/2 imgs</span>
+          <span class="b b-ok">scrollW 1024=1024</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 820ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">771 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">820 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">2/2</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1024px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1024x768_club.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1024x768_club_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Reservar una mesa.</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/reservar</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">3/3 imgs</span>
+          <span class="b b-ok">scrollW 1024=1024</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 708ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">669 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">708 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">3/3</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1024px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1024x768_reservar.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1024x768_reservar_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+  </section>
+
+  <section class="vp-section">
+    <div class="vp-title">Laptop HD (1280×720)</div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">20/20 imgs</span>
+          <span class="b b-ok">scrollW 1280=1280</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 804ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">744 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">804 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">20/20</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1280px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1280x720_home.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1280x720_home_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Nuestra Carta — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/menu</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">8/8 imgs</span>
+          <span class="b b-ok">scrollW 1280=1280</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 704ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">655 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">704 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">8/8</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1280px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1280x720_menu.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1280x720_menu_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Tienda de Café — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/market</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">2/6 imgs</span>
+          <span class="b b-ok">scrollW 1280=1280</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 832ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">792 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">832 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">2/6</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1280px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1280x720_market.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1280x720_market_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Eventos &amp; Talleres — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/events</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">5/5 imgs</span>
+          <span class="b b-ok">scrollW 1280=1280</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 792ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">752 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">792 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">5/5</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1280px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1280x720_events.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1280x720_events_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Club PANNA Rewards — Programa de Fidelización</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/club</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">2/2 imgs</span>
+          <span class="b b-ok">scrollW 1280=1280</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 784ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">744 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">784 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">2/2</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1280px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1280x720_club.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1280x720_club_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Reservar una mesa.</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/reservar</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">3/3 imgs</span>
+          <span class="b b-ok">scrollW 1280=1280</span>
+          <span class="b b-info">axe skip</span>
+          <span class="b b-info">FCP 776ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">731 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">776 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">3/3</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1280px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1280x720_reservar.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1280x720_reservar_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+  </section>
+
+  <section class="vp-section">
+    <div class="vp-title">Desktop (1440×900)</div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">20/20 imgs</span>
+          <span class="b b-ok">scrollW 1440=1440</span>
+          <span class="b b-ok">a11y ok</span>
+          <span class="b b-info">FCP 728ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">669 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">728 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">20/20</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1440px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1440x900_home.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1440x900_home_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Nuestra Carta — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/menu</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">8/8 imgs</span>
+          <span class="b b-ok">scrollW 1440=1440</span>
+          <span class="b b-ok">a11y ok</span>
+          <span class="b b-info">FCP 820ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">767 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">820 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">8/8</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1440px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1440x900_menu.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1440x900_menu_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Tienda de Café — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/market</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">6/6 imgs</span>
+          <span class="b b-ok">scrollW 1440=1440</span>
+          <span class="b b-ok">a11y ok</span>
+          <span class="b b-info">FCP 848ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">802 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">848 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">6/6</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1440px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1440x900_market.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1440x900_market_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Eventos &amp; Talleres — Panna &amp; Pomodoro</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/events</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">5/5 imgs</span>
+          <span class="b b-ok">scrollW 1440=1440</span>
+          <span class="b b-ok">a11y ok</span>
+          <span class="b b-info">FCP 760ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">713 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">760 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">5/5</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1440px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1440x900_events.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1440x900_events_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Club PANNA Rewards — Programa de Fidelización</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/club</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">2/2 imgs</span>
+          <span class="b b-ok">scrollW 1440=1440</span>
+          <span class="b b-ok">a11y ok</span>
+          <span class="b b-info">FCP 720ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">676 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">720 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">2/2</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1440px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1440x900_club.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1440x900_club_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+      <div class="route-card">
+        <div class="route-head">
+          <h2>Reservar una mesa.</h2>
+          <span style="font-size:11px;color:#7a6450;font-family:monospace">https://frontend-oscarguevs-projects.vercel.app/reservar</span>
+          <span class="b b-ok">200 OK</span>
+          <span class="b b-ok">3/3 imgs</span>
+          <span class="b b-ok">scrollW 1440=1440</span>
+          <span class="b b-ok">a11y ok</span>
+          <span class="b b-info">FCP 756ms</span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><div class="l">Load</div><div class="v">710 ms</div></div>
+          <div class="metric"><div class="l">FCP</div><div class="v">756 ms</div></div>
+          <div class="metric"><div class="l">Imgs</div><div class="v">3/3</div></div>
+          <div class="metric"><div class="l">Inner W</div><div class="v">1440px</div></div>
+        </div>
+        <div class="shots">
+          <div class="shot"><div class="lbl">Full page</div><img src="report-assets/1440x900_reservar.png" loading="lazy" /></div>
+          <div class="shot"><div class="lbl">Above the fold</div><img src="report-assets/1440x900_reservar_fold.png" loading="lazy" /></div>
+        </div>
+      </div>
+    
+  </section>
+
+<section class="vp-section">
+  <div class="vp-title">Pruebas funcionales (390×844)</div>
+  <div class="func-grid">
+    <div class="func-shot"><div class="lbl">Menú móvil abierto</div><img src="report-assets/func_menu_open.png" loading="lazy" /></div>
+    <div class="func-shot"><div class="lbl">Popup newsletter abierto</div><img src="report-assets/func_popup_open.png" loading="lazy" /></div>
+    <div class="func-shot"><div class="lbl">Form reservas con errores</div><img src="report-assets/func_form_errors.png" loading="lazy" /></div>
+    <div class="func-shot"><div class="lbl">Form reservas lleno</div><img src="report-assets/func_form_filled.png" loading="lazy" /></div>
+    <div class="func-shot"><div class="lbl">Add to bag — Agregado</div><img src="report-assets/func_added.png" loading="lazy" /></div>
+    <div class="func-shot"><div class="lbl">Footer mobile (3 grupos)</div><img src="report-assets/func_footer_mobile.png" loading="lazy" /></div>
+  </div>
+  <div class="func-list">
+    <strong>Resultados (20/20):</strong>
+    <div class="func-pass">✓ Mobile menu opens</div><div class="func-pass">✓ Mobile menu closes</div><div class="func-pass">✓ Menu closes on Escape</div><div class="func-pass">✓ Newsletter appears after delay</div><div class="func-pass">✓ WhatsApp hidden when popup open</div><div class="func-pass">✓ Popup closes via X</div><div class="func-pass">✓ WhatsApp reappears after popup close</div><div class="func-pass">✓ sessionStorage cleared (manual)</div><div class="func-pass">✓ Reservas: shows error on empty submit</div><div class="func-pass">✓ Reservas: marks required fields invalid — aria-invalid=true</div><div class="func-pass">✓ Reservas: notes is textarea — tag=textarea</div><div class="func-pass">✓ Reservas: zone radio switches</div><div class="func-pass">✓ Menu add-to-bag: text changes to Agregado — +Agregar a la bolsa -&gt; ✓Agregado</div><div class="func-pass">✓ CartToast appears after add</div><div class="func-pass">✓ Menu add-to-bag: resets after timeout</div><div class="func-pass">✓ Footer mobile: Explorar visible</div><div class="func-pass">✓ Footer mobile: Información visible</div><div class="func-pass">✓ Footer mobile: Contacto visible</div><div class="func-pass">✓ Footer mobile: footer rendered</div><div class="func-pass">✓ Footer area: no horizontal overflow — 390&lt;=390</div>
+  </div>
+</section>
+</main>
+</body>
+</html>

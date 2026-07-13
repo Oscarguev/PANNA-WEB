@@ -64,6 +64,9 @@ export default function MenuPreview() {
           <h2 className="h-section">
             Una carta que cambia según lo que llega del horno.
           </h2>
+          <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-brand-textSubtle/70 mt-3">
+            Precios con IVA incluido
+          </p>
         </m.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12">

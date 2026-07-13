@@ -1,0 +1,110 @@
+[
+  {
+    "vpName": "desktop",
+    "route": "",
+    "status": 200,
+    "finalUrl": "https://frontend-oscarguevs-projects.vercel.app/",
+    "title": "Panna & Pomodoro",
+    "h1": "Panna & Pomodoro",
+    "h2": "Somos un salón pequeño que se toma en serio lo que sirve."
+  },
+  {
+    "vpName": "desktop",
+    "route": "menu",
+    "status": 200,
+    "finalUrl": "https://frontend-oscarguevs-projects.vercel.app/menu",
+    "title": "Panna & Pomodoro",
+    "h1": "Nuestra Carta — Panna & Pomodoro",
+    "h2": "La carta es corta a propósito. Cada plato tiene a alguien detrás que lo cuida."
+  },
+  {
+    "vpName": "desktop",
+    "route": "market",
+    "status": 200,
+    "finalUrl": "https://frontend-oscarguevs-projects.vercel.app/market",
+    "title": "Panna & Pomodoro",
+    "h1": "Tienda de Café — Panna & Pomodoro",
+    "h2": "Specialty Coffee Market."
+  },
+  {
+    "vpName": "desktop",
+    "route": "events",
+    "status": 200,
+    "finalUrl": "https://frontend-oscarguevs-projects.vercel.app/events",
+    "title": "Panna & Pomodoro",
+    "h1": "Eventos & Talleres — Panna & Pomodoro",
+    "h2": "Lo que viene en la agenda."
+  },
+  {
+    "vpName": "desktop",
+    "route": "club",
+    "status": 200,
+    "finalUrl": "https://frontend-oscarguevs-projects.vercel.app/club",
+    "title": "Panna & Pomodoro",
+    "h1": "Club PANNA Rewards — Programa de Fidelización",
+    "h2": "Club PANNA. Por volver."
+  },
+  {
+    "vpName": "desktop",
+    "route": "reservar",
+    "status": 200,
+    "finalUrl": "https://frontend-oscarguevs-projects.vercel.app/reservar",
+    "title": "Panna & Pomodoro",
+    "h1": "Reservar una mesa.",
+    "h2": "Asegura tu mesa en el salón."
+  },
+  {
+    "vpName": "mobile",
+    "route": "",
+    "status": 200,
+    "finalUrl": "https://frontend-oscarguevs-projects.vercel.app/",
+    "title": "Panna & Pomodoro",
+    "h1": "Panna & Pomodoro",
+    "h2": "Somos un salón pequeño que se toma en serio lo que sirve."
+  },
+  {
+    "vpName": "mobile",
+    "route": "menu",
+    "status": 200,
+    "finalUrl": "https://frontend-oscarguevs-projects.vercel.app/menu",
+    "title": "Panna & Pomodoro",
+    "h1": "Nuestra Carta — Panna & Pomodoro",
+    "h2": "La carta es corta a propósito. Cada plato tiene a alguien detrás que lo cuida."
+  },
+  {
+    "vpName": "mobile",
+    "route": "market",
+    "status": 200,
+    "finalUrl": "https://frontend-oscarguevs-projects.vercel.app/market",
+    "title": "Panna & Pomodoro",
+    "h1": "Tienda de Café — Panna & Pomodoro",
+    "h2": "Specialty Coffee Market."
+  },
+  {
+    "vpName": "mobile",
+    "route": "events",
+    "status": 200,
+    "finalUrl": "https://frontend-oscarguevs-projects.vercel.app/events",
+    "title": "Panna & Pomodoro",
+    "h1": "Eventos & Talleres — Panna & Pomodoro",
+    "h2": "Lo que viene en la agenda."
+  },
+  {
+    "vpName": "mobile",
+    "route": "club",
+    "status": 200,
+    "finalUrl": "https://frontend-oscarguevs-projects.vercel.app/club",
+    "title": "Panna & Pomodoro",
+    "h1": "Club PANNA Rewards — Programa de Fidelización",
+    "h2": "Club PANNA. Por volver."
+  },
+  {
+    "vpName": "mobile",
+    "route": "reservar",
+    "status": 200,
+    "finalUrl": "https://frontend-oscarguevs-projects.vercel.app/reservar",
+    "title": "Panna & Pomodoro",
+    "h1": "Reservar una mesa.",
+    "h2": "Asegura tu mesa en el salón."
+  }
+]

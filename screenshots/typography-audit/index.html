@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Panna &amp; Pomodoro · Auditoría tipográfica v9</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Outfit,Inter,system-ui,sans-serif;margin:0;background:#F4F0E8;color:#1E1E1E;line-height:1.6}
+header{background:#1E1E1E;color:#F4F0E8;padding:48px 64px}
+header h1{font-family:Fraunces,Georgia,serif;margin:0 0 12px;font-size:42px;font-weight:300;letter-spacing:-0.02em;line-height:1.05}
+header h1 em{font-style:italic;color:#E1261C}
+header .meta{font-size:13px;color:#A8A096}
+section{padding:36px 64px;background:#FAF8F3;border-bottom:1px solid #D5CDBF}
+section h2{font-family:Fraunces,Georgia,serif;font-weight:300;font-size:26px;margin:0 0 16px;letter-spacing:-0.01em}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.kpi{padding:18px;border:1px solid #D5CDBF;background:#fff}
+.kpi .v{font-family:Fraunces,Georgia,serif;font-size:38px;font-weight:300;line-height:1}
+.kpi .l{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.12em;color:#353535;margin-top:10px;text-transform:uppercase}
+.token-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.token{padding:14px;border:1px solid #D5CDBF;background:#fff}
+.token .name{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:0.10em;text-transform:uppercase;color:#353535}
+.token .stack{font-size:13px;margin-top:6px}
+.token .role{font-size:12px;color:#6B6B6B;margin-top:6px;font-style:italic}
+.shot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+.shot{border:1px solid #D5CDBF;background:#fff;overflow:hidden}
+.shot .lbl{padding:10px 14px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:0.10em;text-transform:uppercase;color:#1E1E1E;background:#EFEADF;border-bottom:1px solid #D5CDBF;display:flex;justify-content:space-between;align-items:center}
+.shot .vp{color:#E1261C}
+.shot img{display:block;width:100%;height:auto}
+.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:18px}
+.compare-row .col{border:1px solid #D5CDBF;background:#fff}
+.compare-row h3{margin:0;padding:10px 14px;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:0.10em;text-transform:uppercase;background:#FAF8F3;border-bottom:1px solid #D5CDBF;color:#1E1E1E}
+.compare-row img{display:block;width:100%;height:auto}
+table.results{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px}
+table.results th,table.results td{padding:8px 12px;border:1px solid #D5CDBF;text-align:left}
+table.results th{background:#1E1E1E;color:#F4F0E8;font-family:'Bebas Neue',sans-serif;text-transform:uppercase;font-size:11px;letter-spacing:0.10em}
+.palette{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:16px}
+.swatch{aspect-ratio:1;border:1px solid #D5CDBF;padding:10px;display:flex;flex-direction:column;justify-content:flex-end;font-size:11px}
+.swatch .name{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.4)}
+.swatch.light .name{color:#1E1E1E;text-shadow:none}
+.diff-list{font-size:14px;line-height:1.7;color:#353535;padding-left:20px}
+.diff-list li{margin-bottom:8px}
+.code{font-family:'JetBrains Mono',monospace;background:#1E1E1E;color:#F4F0E8;padding:2px 6px;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Migración tipográfica · Bebas Neue + Outfit (Nexa) + Fraunces</h1>
+  <div class="meta">URL: <span style="color:#F4F0E8">https://frontend-p8htv0f30-oscarguevs-projects.vercel.app</span> · Generado: 2026-07-11T03:08:34.707Z · Viewports: 320, 375, 390, 430, 768, 1024, 1280, zoom 110%, zoom 125%</div>
+</header>
+
+<section>
+  <h2>KPIs de auditoría · 54 ejecuciones</h2>
+  <div class="kpis">
+    <div class="kpi"><div class="v">54</div><div class="l">Rutas × viewports</div></div>
+    <div class="kpi"><div class="v">0</div><div class="l">HTTP ≠ 200</div></div>
+    <div class="kpi"><div class="v">54/54</div><div class="l">Sin overflow</div></div>
+    <div class="kpi"><div class="v">0</div><div class="l">Imgs rotas</div></div>
+    <div class="kpi"><div class="v">0</div><div class="l">Violaciones axe</div></div>
+  </div>
+  <p style="margin-top:16px;font-size:13px;color:#353535">
+    9 viewports × 6 rutas = 54 ejecuciones. axe-core WCAG 2.1 AA validado en
+    <strong>desktop 1440</strong>, <strong>mobile 390</strong> y <strong>tablet 768</strong>.
+    <br><span style="color:#106D2E;font-weight:500">✓ Auditoría completamente limpia.</span>
+  </p>
+</section>
+
+<section>
+  <h2>Sistema tipográfico aplicado</h2>
+  <div class="token-grid">
+    <div class="token">
+      <div class="name">Display / Editorial</div>
+      <div class="stack"><strong>Fraunces</strong> light 300, regular 400</div>
+      <div class="role">Hero h1, h2, h3 narrativos. Light + italic decorativo.</div>
+    </div>
+    <div class="token">
+      <div class="name">Cuerpo / UI</div>
+      <div class="stack"><strong>Outfit</strong> (Nexa substitution) 300–700</div>
+      <div class="role">Body, párrafos, botones, formularios, navegación, cards.</div>
+    </div>
+    <div class="token">
+      <div class="name">Eyebrows / Categorías</div>
+      <div class="stack"><strong>Bebas Neue</strong> regular 400, tracking-luxury-wide</div>
+      <div class="role">Microetiquetas, eyebrows, fechas, numeración, categorías, MAYÚSCULAS.</div>
+    </div>
+  </div>
+  <p style="margin-top:16px;font-size:13px;color:#353535">
+    El manual de marca (PANTONE P 75-2 C, paleta corporativa) cita <em>Bebas Neue</em>, <em>ChunkFive</em> y <em>Nexa</em>.
+    Se aplica estrictamente <strong>Fraunces</strong> para el registro editorial (decisión aprobada por el cliente)
+    y se incorpora <strong>Bebas Neue</strong> con alcance limitado a microetiquetas y numeración.
+    <strong>Outfit</strong> sustituye a Nexa (de pago) por similitud geométrica; al obtener licencia de Nexa, basta
+    cambiar la primera entrada del stack en <span class="code">tailwind.config.js</span>.
+4  </p>
+</section>
+
+<section>
+  <h2>Paleta validada</h2>
+  <div class="palette">
+    <div class="swatch" style="background:#1E1E1E"><div class="name">ink<br>#1E1E1E</div></div>
+    <div class="swatch" style="background:#353535"><div class="name">charcoal<br>#353535</div></div>
+    <div class="swatch light" style="background:#F4F0E8"><div class="name">canvas<br>#F4F0E8</div></div>
+    <div class="swatch light" style="background:#FAF8F3"><div class="name">surface<br>#FAF8F3</div></div>
+    <div class="swatch" style="background:#E1261C"><div class="name">red UI<br>#E1261C</div></div>
+    <div class="swatch" style="background:#106D2E"><div class="name">green text<br>#106D2E</div></div>
+  </div>
+  <p style="margin-top:14px;font-size:12px;color:#6B6B6B">
+    Variantes digitales conservadas (decisión aprobada):
+    #E1261C (dark variant de #F81207), #B91E17 hover, #106D2E (dark variant de #00A82B para texto AA),
+    #168A3B solo decorativo. Distribución: 75-80% neutros · 15-18% ink/charcoal · 5-7% rojo · 2-4% verde.
+  </p>
+</section>
+
+<section>
+  <h2>Hero · antes (v3) vs después (v9)</h2>
+  <div class="compare-row">
+    <div class="col">
+      <h3>Antes · Inter sans + serif italic</h3>
+      <img src="before/d_1440_home_top.png" alt="Hero antes" />
+      <img src="before/m_390_home_top.png" alt="Hero mobile antes" />
+    </div>
+    <div class="col">
+      <h3>Después · Fraunces + Outfit + Bebas Neue</h3>
+      <img src="after/d_1440_home_top.png" alt="Hero después" />
+      <img src="after/m_390_home_top.png" alt="Hero mobile después" />
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Capturas antes/después por viewport</h2>
+  <div class="shot-grid">
+    
+      <div class="shot">
+        <div class="lbl"><span>Mobile 390 (iPhone 14)</span><span class="vp">m_390</span></div>
+        <img src="after/m_390_home_top.png" />
+      </div>
+    
+      <div class="shot">
+        <div class="lbl"><span>Mobile 430 (Pro Max)</span><span class="vp">m_430</span></div>
+        <img src="after/m_430_home_top.png" />
+      </div>
+    
+      <div class="shot">
+        <div class="lbl"><span>Mobile 375 (SE)</span><span class="vp">m_375</span></div>
+        <img src="after/m_375_home_top.png" />
+      </div>
+    
+      <div class="shot">
+        <div class="lbl"><span>Mobile 320 (small)</span><span class="vp">m_320</span></div>
+        <img src="after/m_320_home_top.png" />
+      </div>
+    
+      <div class="shot">
+        <div class="lbl"><span>Tablet 768 (iPad)</span><span class="vp">t_768</span></div>
+        <img src="after/t_768_home_top.png" />
+      </div>
+    
+      <div class="shot">
+        <div class="lbl"><span>Tablet 1024 (landscape)</span><span class="vp">t_1024</span></div>
+        <img src="after/t_1024_home_top.png" />
+      </div>
+    
+      <div class="shot">
+        <div class="lbl"><span>Desktop 1280</span><span class="vp">d_1280</span></div>
+        <img src="after/d_1280_home_top.png" />
+      </div>
+    
+      <div class="shot">
+        <div class="lbl"><span>Desktop 1440</span><span class="vp">d_1440</span></div>
+        <img src="after/d_1440_home_top.png" />
+      </div>
+    
+      <div class="shot">
+        <div class="lbl"><span>Desktop 1920</span><span class="vp">d_1920</span></div>
+        <img src="after/d_1920_home_top.png" />
+      </div>
+    
+  </div>
+</section>
+
+<section>
+  <h2>Cambios materiales</h2>
+  <ul class="diff-list">
+    <li><span class="code">index.html</span> — carga de Bebas Neue, Outfit y Fraunces desde Google Fonts. Retiro de Inter.</li>
+    <li><span class="code">tailwind.config.js</span> — fontFamily reordenado: sans=Outfit/Nexa, display=Fraunces, nueva familia eyebrow=Bebas Neue.</li>
+    <li><span class="code">src/index.css</span> — clase .eyebrow migrada a font-eyebrow (Bebas Neue uppercase + tracking). Body base ya consume Outfit vía Tailwind.</li>
+    <li><span class="code">Hero.jsx</span> — microetiqueta usa font-eyebrow; CTA sin uppercase (menos SaaS); overlay refinado (más ligero para recuperar detalle de foto); altura robusta 600-660px.</li>
+    <li><span class="code">Story.jsx</span> — figcaption y numeración "01/02/03" migradas a Bebas Neue.</li>
+    <li><span class="code">Footer.jsx</span> — eyebrows de columna (Explorar / Información / Contacto) migradas a Bebas Neue.</li>
+    <li><span class="code">Loyalty.jsx</span> — rango "0 – 499 puntos" migrado a Bebas Neue para uniformidad numeración.</li>
+    <li><span class="code">WhatsAppButton.jsx</span> — umbral corregido para aparecer solo cuando el hero está fuera del viewport (no al cargar).</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Tabla de migración tipográfica aplicada</h2>
+  <table class="results">
+    <thead>
+      <tr><th>Componente</th><th>Fuente anterior</th><th>Fuente aplicada</th><th>Tamaño</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Hero microetiqueta</td><td>Inter uppercase</td><td><strong>Bebas Neue</strong></td><td>13/14px tracking-luxury-wide</td></tr>
+      <tr><td>Story numerals 01/02/03</td><td>Inter</td><td><strong>Bebas Neue</strong></td><td>14px tabular-nums</td></tr>
+      <tr><td>Story figcaption</td><td>Inter uppercase</td><td><strong>Bebas Neue</strong></td><td>11px tracking-luxury-wide</td></tr>
+      <tr><td>Footer eyebrows</td><td>Inter</td><td><strong>Bebas Neue</strong></td><td>12px tracking 0.18em</td></tr>
+      <tr><td>Loyalty rangos</td><td>Inter</td><td><strong>Bebas Neue</strong></td><td>13px uppercase</td></tr>
+      <tr><td>Hero h1 / h2 / h3</td><td>Fraunces (sin cambio)</td><td><strong>Fraunces</strong></td><td>escalado</td></tr>
+      <tr><td>Body / párrafos / botones</td><td>Inter</td><td><strong>Outfit</strong> (Nexa substitute)</td><td>14–18px</td></tr>
+      <tr><td>Nav links / formularios</td><td>Inter</td><td><strong>Outfit</strong></td><td>13–14px</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>v11 · Adopción dinámicas escape.cafe</h2>
+  <ul class="diff-list">
+    <li><strong>Hero stagger por palabra.</strong> "Panna / &amp; / Pomodoro" entra palabra por palabra (delays 0.20/0.32/0.44s, EASE.silk, 0.6s).</li>
+    <li><strong>Hero parallax.</strong> Imagen se mueve -60px al hacer scroll sobre la sección (useTransform).</li>
+    <li><strong>PhilosophyMarquee.</strong> Tira horizontal animada entre Hero y CredibilityStrip. 8 frases, keyframe translateX(-50%) 40s linear infinite. <code>motion-safe:animate-marquee</code> + fallback <code>motion-reduce</code> lista estática.</li>
+    <li><strong>Navbar dropdown Carta.</strong> Submenú 2×2: Entrantes · Pasta · Pizza · Postre + "Ver toda la carta". aria-haspopup, aria-expanded, role=menu, Esc/click-outside close, hover + focus abierto.</li>
+    <li><strong>Animated underline.</strong> <code>.luxury-underline</code> aplicada a todos los NavLinks (scaleX 0→1 izquierda).</li>
+    <li><strong>Market cards hover.</strong> <code>hover:-translate-y-1.5</code> en article + <code>.image-zoom-slow</code> en imágenes (zoom 1.03 en 1.2s).</li>
+    <li><strong>Story figures zoom.</strong> <code>.image-zoom-slow</code> en pan.webp y bulldog.webp.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Restricciones respetadas</h2>
+  <ul class="diff-list">
+    <li>Logo no modificado. El asset <span class="code">src/assets/logo.png</span> es el isologo oficial del manual (variante principal). No se regenera.</li>
+    <li>ChunkFive NO incorporado.</li>
+    <li>Variantes digitales de color conservadas (#E1261C, #106D2E). No se sustituyen por tonos normativos que fallan AA.</li>
+    <li>Escala de espaciado: valores por defecto Tailwind ya cumplen 4·8·12·16·24·32·48·64·80·96·128 (rem×4 = px en base 16). No se migró ciegamente; excepciones documentadas: Hero altura (600-660px), tracking editorial, safe-area.</li>
+    <li>Foto del hero sin tocar (<span class="code">menu_dish.webp</span> mantiene prioridad alta).</li>
+    <li>Backend intacto: ningún cambio en <span class="code">src/lib/supabase.js</span>, <span class="code">src/stores/</span>, <span class="code">src/router.jsx</span>.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Confirmación de no-regresión</h2>
+  <p style="font-size:14px;line-height:1.7;color:#353535">
+    Auditoría Playwright: 54 ejecuciones, 0 imágenes rotas, 0 errores de consola,
+    0 overflow horizontal, 0 violaciones axe-core WCAG 2.1 AA (validado en
+    d_1440, m_390 y t_768). Navegación intacta. Carrito intacto. Reservas intactas.
+    Login intacto. Funcionalidad WA WhatsApp respeta visibilidad tras scroll.
+    Newsletter respeta visibilidad tras hero + scroll. Pop-up no aparece durante hero.
+  </p>
+</section>
+
+</body>
+</html>

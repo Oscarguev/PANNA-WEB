@@ -1,0 +1,14 @@
+import { chromium } from 'playwright';
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+const errors = [];
+const reqs = [];
+page.on('console', m => { if (m.type() === 'error' || m.type() === 'warning') errors.push(`[${m.type()}] ${m.text().slice(0, 250)}`); });
+page.on('pageerror', e => errors.push(`PAGEERROR: ${e.message.slice(0, 250)}`));
+page.on('requestfailed', r => reqs.push(`FAIL ${r.failure()?.errorText} ${r.url().slice(0, 120)}`));
+await page.goto('https://frontend-6qkfwpmzr-oscarguevs-projects.vercel.app/', { waitUntil: 'networkidle', timeout: 30000 }).catch(e => errors.push(`GOTO: ${e.message.slice(0, 200)}`));
+await page.waitForTimeout(2000);
+const root = await page.evaluate(() => ({ html: document.getElementById('root')?.innerHTML?.length || 0, title: document.title, body: document.body.innerText.slice(0, 200) }));
+await page.screenshot({ path: '/tmp/check.png', fullPage: false });
+await browser.close();
+console.log(JSON.stringify({ root, errors: errors.slice(0, 10), reqs: reqs.slice(0, 10) }, null, 2));

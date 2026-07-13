@@ -1,0 +1,1550 @@
+[
+  {
+    "route": "home",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/",
+    "viewport": "320x568",
+    "status": 200,
+    "loadMs": 1499,
+    "dims": {
+      "innerWidth": 320,
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 1495,
+      "firstContentfulPaint": 1608
+    },
+    "imgStats": {
+      "total": 20,
+      "loaded": 20,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/320x568_home.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/320x568_home_fold.png"
+    }
+  },
+  {
+    "route": "menu",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/menu",
+    "viewport": "320x568",
+    "status": 200,
+    "loadMs": 704,
+    "dims": {
+      "innerWidth": 320,
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 704,
+      "firstContentfulPaint": 748
+    },
+    "imgStats": {
+      "total": 8,
+      "loaded": 8,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Nuestra Carta — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/320x568_menu.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/320x568_menu_fold.png"
+    }
+  },
+  {
+    "route": "market",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/market",
+    "viewport": "320x568",
+    "status": 200,
+    "loadMs": 724,
+    "dims": {
+      "innerWidth": 320,
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 722,
+      "firstContentfulPaint": 764
+    },
+    "imgStats": {
+      "total": 2,
+      "loaded": 2,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Tienda de Café — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/320x568_market.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/320x568_market_fold.png"
+    }
+  },
+  {
+    "route": "events",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/events",
+    "viewport": "320x568",
+    "status": 200,
+    "loadMs": 889,
+    "dims": {
+      "innerWidth": 320,
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 888,
+      "firstContentfulPaint": 932
+    },
+    "imgStats": {
+      "total": 5,
+      "loaded": 5,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Eventos & Talleres — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/320x568_events.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/320x568_events_fold.png"
+    }
+  },
+  {
+    "route": "club",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/club",
+    "viewport": "320x568",
+    "status": 200,
+    "loadMs": 775,
+    "dims": {
+      "innerWidth": 320,
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 773,
+      "firstContentfulPaint": 820
+    },
+    "imgStats": {
+      "total": 2,
+      "loaded": 2,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Club PANNA Rewards — Programa de Fidelización",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/320x568_club.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/320x568_club_fold.png"
+    }
+  },
+  {
+    "route": "reservar",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/reservar",
+    "viewport": "320x568",
+    "status": 200,
+    "loadMs": 778,
+    "dims": {
+      "innerWidth": 320,
+      "clientWidth": 320,
+      "scrollWidth": 320,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 777,
+      "firstContentfulPaint": 820
+    },
+    "imgStats": {
+      "total": 3,
+      "loaded": 3,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Reservar una mesa.",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/320x568_reservar.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/320x568_reservar_fold.png"
+    }
+  },
+  {
+    "route": "home",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/",
+    "viewport": "375x667",
+    "status": 200,
+    "loadMs": 678,
+    "dims": {
+      "innerWidth": 375,
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 677,
+      "firstContentfulPaint": 732
+    },
+    "imgStats": {
+      "total": 20,
+      "loaded": 20,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/375x667_home.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/375x667_home_fold.png"
+    }
+  },
+  {
+    "route": "menu",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/menu",
+    "viewport": "375x667",
+    "status": 200,
+    "loadMs": 703,
+    "dims": {
+      "innerWidth": 375,
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 701,
+      "firstContentfulPaint": 744
+    },
+    "imgStats": {
+      "total": 8,
+      "loaded": 8,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Nuestra Carta — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/375x667_menu.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/375x667_menu_fold.png"
+    }
+  },
+  {
+    "route": "market",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/market",
+    "viewport": "375x667",
+    "status": 200,
+    "loadMs": 723,
+    "dims": {
+      "innerWidth": 375,
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 722,
+      "firstContentfulPaint": 764
+    },
+    "imgStats": {
+      "total": 6,
+      "loaded": 6,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Tienda de Café — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/375x667_market.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/375x667_market_fold.png"
+    }
+  },
+  {
+    "route": "events",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/events",
+    "viewport": "375x667",
+    "status": 200,
+    "loadMs": 674,
+    "dims": {
+      "innerWidth": 375,
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 673,
+      "firstContentfulPaint": 720
+    },
+    "imgStats": {
+      "total": 5,
+      "loaded": 5,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Eventos & Talleres — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/375x667_events.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/375x667_events_fold.png"
+    }
+  },
+  {
+    "route": "club",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/club",
+    "viewport": "375x667",
+    "status": 200,
+    "loadMs": 716,
+    "dims": {
+      "innerWidth": 375,
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 715,
+      "firstContentfulPaint": 756
+    },
+    "imgStats": {
+      "total": 2,
+      "loaded": 2,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Club PANNA Rewards — Programa de Fidelización",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/375x667_club.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/375x667_club_fold.png"
+    }
+  },
+  {
+    "route": "reservar",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/reservar",
+    "viewport": "375x667",
+    "status": 200,
+    "loadMs": 651,
+    "dims": {
+      "innerWidth": 375,
+      "clientWidth": 375,
+      "scrollWidth": 375,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 650,
+      "firstContentfulPaint": 692
+    },
+    "imgStats": {
+      "total": 3,
+      "loaded": 3,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Reservar una mesa.",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/375x667_reservar.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/375x667_reservar_fold.png"
+    }
+  },
+  {
+    "route": "home",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/",
+    "viewport": "390x844",
+    "status": 200,
+    "loadMs": 895,
+    "dims": {
+      "innerWidth": 390,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 892,
+      "firstContentfulPaint": 956
+    },
+    "imgStats": {
+      "total": 20,
+      "loaded": 20,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "violations": [],
+      "passes": 28
+    },
+    "h1": "Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/390x844_home.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/390x844_home_fold.png"
+    }
+  },
+  {
+    "route": "menu",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/menu",
+    "viewport": "390x844",
+    "status": 200,
+    "loadMs": 719,
+    "dims": {
+      "innerWidth": 390,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 718,
+      "firstContentfulPaint": 764
+    },
+    "imgStats": {
+      "total": 8,
+      "loaded": 8,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "violations": [],
+      "passes": 27
+    },
+    "h1": "Nuestra Carta — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/390x844_menu.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/390x844_menu_fold.png"
+    }
+  },
+  {
+    "route": "market",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/market",
+    "viewport": "390x844",
+    "status": 200,
+    "loadMs": 754,
+    "dims": {
+      "innerWidth": 390,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 752,
+      "firstContentfulPaint": 800
+    },
+    "imgStats": {
+      "total": 6,
+      "loaded": 3,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "violations": [],
+      "passes": 27
+    },
+    "h1": "Tienda de Café — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/390x844_market.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/390x844_market_fold.png"
+    }
+  },
+  {
+    "route": "events",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/events",
+    "viewport": "390x844",
+    "status": 200,
+    "loadMs": 747,
+    "dims": {
+      "innerWidth": 390,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 746,
+      "firstContentfulPaint": 788
+    },
+    "imgStats": {
+      "total": 5,
+      "loaded": 5,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "violations": [],
+      "passes": 27
+    },
+    "h1": "Eventos & Talleres — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/390x844_events.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/390x844_events_fold.png"
+    }
+  },
+  {
+    "route": "club",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/club",
+    "viewport": "390x844",
+    "status": 200,
+    "loadMs": 790,
+    "dims": {
+      "innerWidth": 390,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 789,
+      "firstContentfulPaint": 836
+    },
+    "imgStats": {
+      "total": 2,
+      "loaded": 2,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "violations": [],
+      "passes": 29
+    },
+    "h1": "Club PANNA Rewards — Programa de Fidelización",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/390x844_club.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/390x844_club_fold.png"
+    }
+  },
+  {
+    "route": "reservar",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/reservar",
+    "viewport": "390x844",
+    "status": 200,
+    "loadMs": 690,
+    "dims": {
+      "innerWidth": 390,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 689,
+      "firstContentfulPaint": 732
+    },
+    "imgStats": {
+      "total": 3,
+      "loaded": 3,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "violations": [],
+      "passes": 28
+    },
+    "h1": "Reservar una mesa.",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/390x844_reservar.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/390x844_reservar_fold.png"
+    }
+  },
+  {
+    "route": "home",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/",
+    "viewport": "430x932",
+    "status": 200,
+    "loadMs": 722,
+    "dims": {
+      "innerWidth": 430,
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 722,
+      "firstContentfulPaint": 780
+    },
+    "imgStats": {
+      "total": 20,
+      "loaded": 20,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/430x932_home.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/430x932_home_fold.png"
+    }
+  },
+  {
+    "route": "menu",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/menu",
+    "viewport": "430x932",
+    "status": 200,
+    "loadMs": 703,
+    "dims": {
+      "innerWidth": 430,
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 702,
+      "firstContentfulPaint": 756
+    },
+    "imgStats": {
+      "total": 8,
+      "loaded": 8,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Nuestra Carta — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/430x932_menu.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/430x932_menu_fold.png"
+    }
+  },
+  {
+    "route": "market",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/market",
+    "viewport": "430x932",
+    "status": 200,
+    "loadMs": 704,
+    "dims": {
+      "innerWidth": 430,
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 702,
+      "firstContentfulPaint": 740
+    },
+    "imgStats": {
+      "total": 6,
+      "loaded": 6,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Tienda de Café — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/430x932_market.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/430x932_market_fold.png"
+    }
+  },
+  {
+    "route": "events",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/events",
+    "viewport": "430x932",
+    "status": 200,
+    "loadMs": 703,
+    "dims": {
+      "innerWidth": 430,
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 702,
+      "firstContentfulPaint": 756
+    },
+    "imgStats": {
+      "total": 5,
+      "loaded": 5,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Eventos & Talleres — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/430x932_events.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/430x932_events_fold.png"
+    }
+  },
+  {
+    "route": "club",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/club",
+    "viewport": "430x932",
+    "status": 200,
+    "loadMs": 667,
+    "dims": {
+      "innerWidth": 430,
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 665,
+      "firstContentfulPaint": 712
+    },
+    "imgStats": {
+      "total": 2,
+      "loaded": 2,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Club PANNA Rewards — Programa de Fidelización",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/430x932_club.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/430x932_club_fold.png"
+    }
+  },
+  {
+    "route": "reservar",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/reservar",
+    "viewport": "430x932",
+    "status": 200,
+    "loadMs": 729,
+    "dims": {
+      "innerWidth": 430,
+      "clientWidth": 430,
+      "scrollWidth": 430,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 728,
+      "firstContentfulPaint": 772
+    },
+    "imgStats": {
+      "total": 3,
+      "loaded": 3,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Reservar una mesa.",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/430x932_reservar.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/430x932_reservar_fold.png"
+    }
+  },
+  {
+    "route": "home",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/",
+    "viewport": "768x1024",
+    "status": 200,
+    "loadMs": 750,
+    "dims": {
+      "innerWidth": 768,
+      "clientWidth": 768,
+      "scrollWidth": 768,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 749,
+      "firstContentfulPaint": 812
+    },
+    "imgStats": {
+      "total": 20,
+      "loaded": 20,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/768x1024_home.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/768x1024_home_fold.png"
+    }
+  },
+  {
+    "route": "menu",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/menu",
+    "viewport": "768x1024",
+    "status": 200,
+    "loadMs": 792,
+    "dims": {
+      "innerWidth": 768,
+      "clientWidth": 768,
+      "scrollWidth": 768,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 788,
+      "firstContentfulPaint": 836
+    },
+    "imgStats": {
+      "total": 8,
+      "loaded": 8,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Nuestra Carta — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/768x1024_menu.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/768x1024_menu_fold.png"
+    }
+  },
+  {
+    "route": "market",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/market",
+    "viewport": "768x1024",
+    "status": 200,
+    "loadMs": 731,
+    "dims": {
+      "innerWidth": 768,
+      "clientWidth": 768,
+      "scrollWidth": 768,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 730,
+      "firstContentfulPaint": 780
+    },
+    "imgStats": {
+      "total": 6,
+      "loaded": 5,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Tienda de Café — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/768x1024_market.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/768x1024_market_fold.png"
+    }
+  },
+  {
+    "route": "events",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/events",
+    "viewport": "768x1024",
+    "status": 200,
+    "loadMs": 715,
+    "dims": {
+      "innerWidth": 768,
+      "clientWidth": 768,
+      "scrollWidth": 768,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 713,
+      "firstContentfulPaint": 760
+    },
+    "imgStats": {
+      "total": 5,
+      "loaded": 5,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Eventos & Talleres — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/768x1024_events.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/768x1024_events_fold.png"
+    }
+  },
+  {
+    "route": "club",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/club",
+    "viewport": "768x1024",
+    "status": 200,
+    "loadMs": 684,
+    "dims": {
+      "innerWidth": 768,
+      "clientWidth": 768,
+      "scrollWidth": 768,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 684,
+      "firstContentfulPaint": 728
+    },
+    "imgStats": {
+      "total": 2,
+      "loaded": 2,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Club PANNA Rewards — Programa de Fidelización",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/768x1024_club.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/768x1024_club_fold.png"
+    }
+  },
+  {
+    "route": "reservar",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/reservar",
+    "viewport": "768x1024",
+    "status": 200,
+    "loadMs": 651,
+    "dims": {
+      "innerWidth": 768,
+      "clientWidth": 768,
+      "scrollWidth": 768,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 650,
+      "firstContentfulPaint": 692
+    },
+    "imgStats": {
+      "total": 3,
+      "loaded": 3,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Reservar una mesa.",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/768x1024_reservar.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/768x1024_reservar_fold.png"
+    }
+  },
+  {
+    "route": "home",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/",
+    "viewport": "1024x768",
+    "status": 200,
+    "loadMs": 805,
+    "dims": {
+      "innerWidth": 1024,
+      "clientWidth": 1024,
+      "scrollWidth": 1024,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 803,
+      "firstContentfulPaint": 860
+    },
+    "imgStats": {
+      "total": 20,
+      "loaded": 20,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1024x768_home.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1024x768_home_fold.png"
+    }
+  },
+  {
+    "route": "menu",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/menu",
+    "viewport": "1024x768",
+    "status": 200,
+    "loadMs": 660,
+    "dims": {
+      "innerWidth": 1024,
+      "clientWidth": 1024,
+      "scrollWidth": 1024,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 659,
+      "firstContentfulPaint": 716
+    },
+    "imgStats": {
+      "total": 8,
+      "loaded": 8,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Nuestra Carta — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1024x768_menu.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1024x768_menu_fold.png"
+    }
+  },
+  {
+    "route": "market",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/market",
+    "viewport": "1024x768",
+    "status": 200,
+    "loadMs": 737,
+    "dims": {
+      "innerWidth": 1024,
+      "clientWidth": 1024,
+      "scrollWidth": 1024,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 736,
+      "firstContentfulPaint": 788
+    },
+    "imgStats": {
+      "total": 6,
+      "loaded": 2,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Tienda de Café — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1024x768_market.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1024x768_market_fold.png"
+    }
+  },
+  {
+    "route": "events",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/events",
+    "viewport": "1024x768",
+    "status": 200,
+    "loadMs": 709,
+    "dims": {
+      "innerWidth": 1024,
+      "clientWidth": 1024,
+      "scrollWidth": 1024,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 708,
+      "firstContentfulPaint": 748
+    },
+    "imgStats": {
+      "total": 5,
+      "loaded": 5,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Eventos & Talleres — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1024x768_events.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1024x768_events_fold.png"
+    }
+  },
+  {
+    "route": "club",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/club",
+    "viewport": "1024x768",
+    "status": 200,
+    "loadMs": 771,
+    "dims": {
+      "innerWidth": 1024,
+      "clientWidth": 1024,
+      "scrollWidth": 1024,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 769,
+      "firstContentfulPaint": 820
+    },
+    "imgStats": {
+      "total": 2,
+      "loaded": 2,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Club PANNA Rewards — Programa de Fidelización",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1024x768_club.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1024x768_club_fold.png"
+    }
+  },
+  {
+    "route": "reservar",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/reservar",
+    "viewport": "1024x768",
+    "status": 200,
+    "loadMs": 669,
+    "dims": {
+      "innerWidth": 1024,
+      "clientWidth": 1024,
+      "scrollWidth": 1024,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 668,
+      "firstContentfulPaint": 708
+    },
+    "imgStats": {
+      "total": 3,
+      "loaded": 3,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Reservar una mesa.",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1024x768_reservar.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1024x768_reservar_fold.png"
+    }
+  },
+  {
+    "route": "home",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/",
+    "viewport": "1280x720",
+    "status": 200,
+    "loadMs": 744,
+    "dims": {
+      "innerWidth": 1280,
+      "clientWidth": 1280,
+      "scrollWidth": 1280,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 742,
+      "firstContentfulPaint": 804
+    },
+    "imgStats": {
+      "total": 20,
+      "loaded": 20,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1280x720_home.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1280x720_home_fold.png"
+    }
+  },
+  {
+    "route": "menu",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/menu",
+    "viewport": "1280x720",
+    "status": 200,
+    "loadMs": 655,
+    "dims": {
+      "innerWidth": 1280,
+      "clientWidth": 1280,
+      "scrollWidth": 1280,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 653,
+      "firstContentfulPaint": 704
+    },
+    "imgStats": {
+      "total": 8,
+      "loaded": 8,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Nuestra Carta — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1280x720_menu.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1280x720_menu_fold.png"
+    }
+  },
+  {
+    "route": "market",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/market",
+    "viewport": "1280x720",
+    "status": 200,
+    "loadMs": 792,
+    "dims": {
+      "innerWidth": 1280,
+      "clientWidth": 1280,
+      "scrollWidth": 1280,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 791,
+      "firstContentfulPaint": 832
+    },
+    "imgStats": {
+      "total": 6,
+      "loaded": 2,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Tienda de Café — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1280x720_market.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1280x720_market_fold.png"
+    }
+  },
+  {
+    "route": "events",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/events",
+    "viewport": "1280x720",
+    "status": 200,
+    "loadMs": 752,
+    "dims": {
+      "innerWidth": 1280,
+      "clientWidth": 1280,
+      "scrollWidth": 1280,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 751,
+      "firstContentfulPaint": 792
+    },
+    "imgStats": {
+      "total": 5,
+      "loaded": 5,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Eventos & Talleres — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1280x720_events.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1280x720_events_fold.png"
+    }
+  },
+  {
+    "route": "club",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/club",
+    "viewport": "1280x720",
+    "status": 200,
+    "loadMs": 744,
+    "dims": {
+      "innerWidth": 1280,
+      "clientWidth": 1280,
+      "scrollWidth": 1280,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 742,
+      "firstContentfulPaint": 784
+    },
+    "imgStats": {
+      "total": 2,
+      "loaded": 2,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Club PANNA Rewards — Programa de Fidelización",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1280x720_club.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1280x720_club_fold.png"
+    }
+  },
+  {
+    "route": "reservar",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/reservar",
+    "viewport": "1280x720",
+    "status": 200,
+    "loadMs": 731,
+    "dims": {
+      "innerWidth": 1280,
+      "clientWidth": 1280,
+      "scrollWidth": 1280,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 730,
+      "firstContentfulPaint": 776
+    },
+    "imgStats": {
+      "total": 3,
+      "loaded": 3,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "skipped": true
+    },
+    "h1": "Reservar una mesa.",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1280x720_reservar.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1280x720_reservar_fold.png"
+    }
+  },
+  {
+    "route": "home",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/",
+    "viewport": "1440x900",
+    "status": 200,
+    "loadMs": 669,
+    "dims": {
+      "innerWidth": 1440,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 668,
+      "firstContentfulPaint": 728
+    },
+    "imgStats": {
+      "total": 20,
+      "loaded": 20,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "violations": [],
+      "passes": 28
+    },
+    "h1": "Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1440x900_home.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1440x900_home_fold.png"
+    }
+  },
+  {
+    "route": "menu",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/menu",
+    "viewport": "1440x900",
+    "status": 200,
+    "loadMs": 767,
+    "dims": {
+      "innerWidth": 1440,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 766,
+      "firstContentfulPaint": 820
+    },
+    "imgStats": {
+      "total": 8,
+      "loaded": 8,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "violations": [],
+      "passes": 27
+    },
+    "h1": "Nuestra Carta — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1440x900_menu.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1440x900_menu_fold.png"
+    }
+  },
+  {
+    "route": "market",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/market",
+    "viewport": "1440x900",
+    "status": 200,
+    "loadMs": 802,
+    "dims": {
+      "innerWidth": 1440,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 801,
+      "firstContentfulPaint": 848
+    },
+    "imgStats": {
+      "total": 6,
+      "loaded": 6,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "violations": [],
+      "passes": 27
+    },
+    "h1": "Tienda de Café — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1440x900_market.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1440x900_market_fold.png"
+    }
+  },
+  {
+    "route": "events",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/events",
+    "viewport": "1440x900",
+    "status": 200,
+    "loadMs": 713,
+    "dims": {
+      "innerWidth": 1440,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 711,
+      "firstContentfulPaint": 760
+    },
+    "imgStats": {
+      "total": 5,
+      "loaded": 5,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "violations": [],
+      "passes": 27
+    },
+    "h1": "Eventos & Talleres — Panna & Pomodoro",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1440x900_events.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1440x900_events_fold.png"
+    }
+  },
+  {
+    "route": "club",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/club",
+    "viewport": "1440x900",
+    "status": 200,
+    "loadMs": 676,
+    "dims": {
+      "innerWidth": 1440,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 675,
+      "firstContentfulPaint": 720
+    },
+    "imgStats": {
+      "total": 2,
+      "loaded": 2,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "violations": [],
+      "passes": 29
+    },
+    "h1": "Club PANNA Rewards — Programa de Fidelización",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1440x900_club.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1440x900_club_fold.png"
+    }
+  },
+  {
+    "route": "reservar",
+    "url": "https://frontend-oscarguevs-projects.vercel.app/reservar",
+    "viewport": "1440x900",
+    "status": 200,
+    "loadMs": 710,
+    "dims": {
+      "innerWidth": 1440,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "dpr": 1
+    },
+    "noOverflow": true,
+    "perf": {
+      "load": 708,
+      "firstContentfulPaint": 756
+    },
+    "imgStats": {
+      "total": 3,
+      "loaded": 3,
+      "broken": []
+    },
+    "errors": [],
+    "axe": {
+      "violations": [],
+      "passes": 28
+    },
+    "h1": "Reservar una mesa.",
+    "screenshots": {
+      "full": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1440x900_reservar.png",
+      "aboveFold": "/Users/oscarguev/Public/Panna & Pomodoro/frontend/frontend/screenshots/full-audit/report-assets/1440x900_reservar_fold.png"
+    }
+  }
+]

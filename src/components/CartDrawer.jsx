@@ -61,9 +61,9 @@ export default function CartDrawer() {
   const drawerRef = useRef(null);
   useFocusTrap(isOpen, onClose, drawerRef);
 
-  const tax = subtotal * 0.13;
+  // Precios ya incluyen IVA (13%). No se cobra impuesto adicional.
   const shipping = deliveryMode === 'delivery' && subtotal > 0 ? 3.50 : 0.00;
-  const preDiscountTotal = subtotal + tax + shipping;
+  const preDiscountTotal = subtotal + shipping;
   const walletBalance    = userSession?.walletBalance ?? 0;
   const walletDiscount   = useWallet ? Math.min(walletBalance, preDiscountTotal) : 0;
   const alianzaDescuento = alianzaInfo
@@ -662,12 +662,8 @@ export default function CartDrawer() {
 
               <div className="space-y-2 text-[13px] text-brand-textMain">
                 <div className="flex items-center justify-between">
-                  <span className="text-brand-textSubtle">Subtotal</span>
+                  <span className="text-brand-textSubtle">Subtotal <span className="text-[11px] text-brand-textSubtle/70">(IVA incluido)</span></span>
                   <span className="tabular-nums">${subtotal.toFixed(2)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-brand-textSubtle">Impuestos (13% IVA)</span>
-                  <span className="tabular-nums">${tax.toFixed(2)}</span>
                 </div>
                 {deliveryMode === 'delivery' && (
                   <div className="flex items-center justify-between">
@@ -689,7 +685,7 @@ export default function CartDrawer() {
                 )}
                 <div className="h-px bg-brand-border my-2" />
                 <div className="flex items-center justify-between text-brand-textMain">
-                  <span>Total neto</span>
+                  <span>Total <span className="text-[11px] text-brand-textSubtle/70 font-normal">(IVA incluido)</span></span>
                   <span className="font-display text-2xl text-brand-accent tabular-nums">${total.toFixed(2)}</span>
                 </div>
               </div>

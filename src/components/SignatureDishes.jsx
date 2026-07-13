@@ -77,6 +77,9 @@ export default function SignatureDishes() {
           <p className="font-sans text-[14px] md:text-[15px] text-brand-textSubtle leading-relaxed mt-5 max-w-reading">
             Cuatro ítems que viven en la carta los siete días. La rotación de temporada y el resto del menú está en la sección del menú.
           </p>
+          <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-brand-textSubtle/70 mt-3">
+            Precios con IVA incluido
+          </p>
         </ScrollReveal>
 
         {/* Grid 2x2 con stagger editorial */}

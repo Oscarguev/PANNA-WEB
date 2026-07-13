@@ -44,6 +44,9 @@ export default function HorizontalShowcase() {
           <h2 className="font-display text-brand-textMain font-light text-2xl md:text-3xl tracking-tight">
             La Selección del Día
           </h2>
+          <span className="font-body text-[10px] tracking-[0.25em] uppercase text-brand-textMuted/80 block">
+            Precios con IVA incluido
+          </span>
         </div>
         <Link
           to="/menu"

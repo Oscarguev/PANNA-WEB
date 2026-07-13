@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Panna & Pomodoro · Auditoría paleta digital v6</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;margin:0;background:#F4F0E8;color:#1E1E1E}
+header{background:#1E1E1E;color:#F4F0E8;padding:32px 48px}
+header h1{margin:0 0 8px;font-size:28px;font-weight:400;letter-spacing:-0.02em}
+header .meta{font-size:13px;color:#A8A096}
+section{padding:32px 48px;background:#FAF8F3;border-bottom:1px solid #D5CDBF}
+section.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.kpi{padding:16px;border:1px solid #D5CDBF;background:#fff}
+.kpi .v{font-size:32px;font-weight:300;line-height:1}
+.kpi .l{font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:#6B6B6B;margin-top:8px}
+.palette{display:grid;grid-template-columns:repeat(8,1fr);gap:12px;margin-top:16px}
+.swatch{aspect-ratio:1;border:1px solid #D5CDBF;display:flex;flex-direction:column;justify-content:flex-end;padding:8px;font-size:10px}
+.swatch .name{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.swatch.light .name{color:#1E1E1E;text-shadow:none}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px}
+.compare .col{border:1px solid #D5CDBF;background:#fff}
+.compare h3{margin:0;padding:12px 16px;font-size:13px;text-transform:uppercase;letter-spacing:0.1em;background:#FAF8F3;border-bottom:1px solid #D5CDBF}
+.compare img{display:block;width:100%;height:auto}
+main{padding:32px 48px 64px}
+.shots{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.shot{border:1px solid #D5CDBF;background:#fff}
+.shot .lbl{padding:8px 12px;font-size:11px;background:#FAF8F3;border-bottom:1px solid #D5CDBF;text-transform:uppercase;letter-spacing:0.1em;color:#353535}
+.shot img{display:block;width:100%;height:auto}
+.axe-pass{display:inline-block;padding:4px 12px;background:#EAF2EC;color:#106D2E;font-size:12px;text-transform:uppercase;letter-spacing:0.1em}
+</style>
+</head>
+<body>
+<header>
+  <h1>Panna &amp; Pomodoro · Corrección paleta digital + hero</h1>
+  <div class="meta">URL: https://frontend-mavncljv3-oscarguevs-projects.vercel.app · Generado: 2026-07-10T23:10:02.885Z</div>
+</header>
+
+<section class="kpis">
+  <div class="kpi"><div class="v">30</div><div class="l">Páginas auditadas</div></div>
+  <div class="kpi"><div class="v">0</div><div class="l">HTTP ≠ 200</div></div>
+  <div class="kpi"><div class="v">0</div><div class="l">Overflow horizontal</div></div>
+  <div class="kpi"><div class="v">0</div><div class="l">Imgs rotas</div></div>
+  <div class="kpi"><div class="v">0</div><div class="l">Errores consola</div></div>
+</section>
+
+<section>
+  <p style="margin:0"><strong>Resultado axe-core WCAG 2.1 AA:</strong> <span class="axe-pass">0 violaciones en 5 viewports × 6 rutas = 30 ejecuciones</span></p>
+  <p style="margin:8px 0 0;font-size:13px">Viewports: 390×844 (iPhone 14), 430×932 (iPhone 14 Pro Max), 768×1024 (iPad portrait), 1280×720 (Laptop HD), 1440×900 (Desktop). Rutas: home, menu, market, club, events, reservar.</p>
+</section>
+
+<section>
+  <h2 style="margin:0 0 8px;font-size:18px;font-weight:500">Paleta digital aplicada</h2>
+  <p style="margin:0;font-size:13px;color:#353535">Eliminada #FFF0EE como fondo global. Nueva paleta cálida neutra con rojo/verde solo como acento contextual.</p>
+  <div class="palette">
+    <div class="swatch" style="background:#1E1E1E"><div class="name">ink</div><div>#1E1E1E</div></div>
+    <div class="swatch" style="background:#353535"><div class="name">charcoal</div><div>#353535</div></div>
+    <div class="swatch light" style="background:#F4F0E8"><div class="name">canvas</div><div>#F4F0E8</div></div>
+    <div class="swatch light" style="background:#FAF8F3"><div class="name">surface</div><div>#FAF8F3</div></div>
+    <div class="swatch light" style="background:#E6DFD3"><div class="name">stone</div><div>#E6DFD3</div></div>
+    <div class="swatch light" style="background:#D5CDBF"><div class="name">line</div><div>#D5CDBF</div></div>
+    <div class="swatch" style="background:#E1261C"><div class="name">red</div><div>#E1261C</div></div>
+    <div class="swatch" style="background:#168A3B"><div class="name">green-soft</div><div>#168A3B</div></div>
+  </div>
+  <p style="margin:8px 0 0;font-size:12px;color:#6B6B6B">Distribución: 75-80% neutros cálidos · 15-18% ink/charcoal · 5-7% rojo (CTA, bolsa, badge) · 2-4% verde (café/origen/disponibilidad)</p>
+</section>
+
+<section>
+  <h2 style="margin:0 0 8px;font-size:18px;font-weight:500">Hero — antes vs después</h2>
+  <p style="margin:0 0 16px;font-size:13px;color:#353535">Imagen del rótulo P&amp;P reemplazada por composición gastronómica editorial asimétrica.</p>
+  <div class="compare">
+    <div class="col">
+      <h3>Antes · FFF0EE + rótulo bulldog</h3>
+      <img src="before/d_home_top.png" alt="Hero antes" />
+    </div>
+    <div class="col">
+      <h3>Después · F4F0E8 + café V60 + pizza</h3>
+      <img src="after/d_1440_home_top.png" alt="Hero después" />
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2 style="margin:0 0 8px;font-size:18px;font-weight:500">Story · rótulo P&amp;P reubicado</h2>
+  <p style="margin:0 0 16px;font-size:13px;color:#353535">La fotografía del rótulo del Boulevard Las Palmeras (2018) ahora vive en la sección "Somos un salón pequeño…". Se conserva el asset, no se elimina.</p>
+  <img src="after/d_1440_home_full.png" style="display:block;width:100%;max-width:1200px;border:1px solid #D5CDBF" alt="Home full v6" />
+</section>
+
+<main>
+<h2 style="margin:0 0 8px;font-size:18px;font-weight:500">Capturas comparativas multi-viewport</h2>
+<p style="margin:0 0 16px;font-size:13px;color:#353535">Estado final sobre todas las rutas en 390, 768 y 1440.</p>
+<div class="shots">
+  <div class="shot"><div class="lbl">Móvil 390 — home</div><img src="after/m_390_home_top.png" /></div>
+  <div class="shot"><div class="lbl">Móvil 390 — home full</div><img src="after/m_390_home_full.png" /></div>
+  <div class="shot"><div class="lbl">Móvil 390 — menu</div><img src="after/m_390_menu_top.png" /></div>
+  <div class="shot"><div class="lbl">Móvil 390 — market</div><img src="after/m_390_market_top.png" /></div>
+  <div class="shot"><div class="lbl">Móvil 390 — reservar</div><img src="after/m_390_reservar_top.png" /></div>
+  <div class="shot"><div class="lbl">Móvil 390 — club</div><img src="after/m_390_club_top.png" /></div>
+  <div class="shot"><div class="lbl">Tablet 768 — home</div><img src="after/t_768_home_top.png" /></div>
+  <div class="shot"><div class="lbl">Tablet 768 — menu</div><img src="after/t_768_menu_top.png" /></div>
+  <div class="shot"><div class="lbl">Desktop 1440 — home</div><img src="after/d_1440_home_top.png" /></div>
+  <div class="shot"><div class="lbl">Desktop 1440 — menu</div><img src="after/d_1440_menu_top.png" /></div>
+  <div class="shot"><div class="lbl">Desktop 1440 — market</div><img src="after/d_1440_market_top.png" /></div>
+  <div class="shot"><div class="lbl">Desktop 1440 — reservar</div><img src="after/d_1440_reservar_top.png" /></div>
+</div>
+
+<h2 style="margin:32px 0 8px;font-size:18px;font-weight:500">Inventario de #FFF0EE eliminados</h2>
+<ul style="font-size:13px;line-height:1.8;color:#353535">
+  <li><code>tailwind.config.js</code>: brand-background #FFF0EE → #F4F0E8</li>
+  <li><code>tailwind.config.js</code>: brand-surfaceMuted #FFF0EE → #EFEADF</li>
+  <li><code>tailwind.config.js</code>: brand-paper #FFF0EE → #F4F0E8</li>
+  <li><code>tailwind.config.js</code>: borderOnDark rgba(255,240,238,*) → rgba(244,240,232,*)</li>
+  <li><code>src/index.css</code>: html bg-color #FFF0EE → #F4F0E8</li>
+  <li><code>src/index.css</code>: scrollbar-track #FFF0EE → #F4F0E8</li>
+</ul>
+
+<h2 style="margin:32px 0 8px;font-size:18px;font-weight:500">Archivos modificados</h2>
+<ul style="font-size:13px;line-height:1.8;color:#353535">
+  <li><code>tailwind.config.js</code> — tokens paleta digital completa</li>
+  <li><code>src/index.css</code> — html bg, scrollbar, selection, luxury-underline</li>
+  <li><code>src/components/Hero.jsx</code> — nueva imagen principal + secundaria + caption</li>
+  <li><code>src/components/Story.jsx</code> — rótulo P&amp;P reubicado a "Boulevard Las Palmeras · 2018"</li>
+  <li><code>src/components/CredibilityStrip.jsx</code> — separadores neutros, sin dots rojos repetidos</li>
+</ul>
+
+<h2 style="margin:32px 0 8px;font-size:18px;font-weight:500">Justificación de la nueva imagen del hero</h2>
+<p style="font-size:13px;line-height:1.7;color:#353535">Candidatos evaluados: <strong>chef_plating.webp</strong> (descartado: muestra logo "LUMINA Sarah Jen" de otro restaurante en el uniforme, no apropiado para la marca). <strong>sourdough_pizza.webp</strong> (seleccionado como secundario). <strong>coffee_pour.webp</strong> (seleccionado como principal). El café V60 vertido a mano comunica el signature product del local — café de especialidad con trazabilidad — y a la vez muestra el proceso artesanal y las manos del barista. Es fotografía gastronómica real, no stock, con peso ligero (58 KB) y encuadre vertical ideal para composición editorial asimétrica. La pizza refuerza la propuesta de cocina pequeña servida en barra.</p>
+
+<h2 style="margin:32px 0 8px;font-size:18px;font-weight:500">Confirmación de no-regresión</h2>
+<p style="font-size:13px;line-height:1.7;color:#353535">Backend intacto (sin cambios en <code>src/lib/supabase.js</code>, <code>src/stores/</code>, <code>src/router.jsx</code>). Rutas intactas (6 rutas existentes verificadas). Funcionalidades intactas (popup newsletter, WhatsApp contextual, formulario de reservas, carrito, multi-viewport responsive, accesibilidad axe). Solo se modificaron tokens visuales y composición del hero.</p>
+
+</main>
+</body>
+</html>

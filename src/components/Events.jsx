@@ -73,6 +73,9 @@ export default function Events() {
             Hacemos catas y talleres casi todos los sábados. No son eventos
             grandes — son grupos pequeños donde se aprende algo y se prueba café.
           </p>
+          <p className="text-[11px] uppercase tracking-[0.18em] text-brand-textSubtle/70">
+            Precios con IVA incluido
+          </p>
         </header>
 
         <ol className="space-y-16">
