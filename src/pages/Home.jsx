@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react'
 import Hero from '../components/Hero'
-import Manifesto from '../components/Manifesto'
 import InfoStrip from '../components/InfoStrip'
 import RestaurantIntro from '../components/RestaurantIntro'
 import SignatureDishes from '../components/SignatureDishes'
@@ -23,29 +22,27 @@ const ChefCTA         = lazy(() => import('../components/ChefCTA'))
 /**
  * Home — recorrido del restaurante.
  * 1.  Hero tipográfico (nombre + claim + CTAs)
- * 2.  Manifesto (claim editorial breve — line-mask reveal)
- * 3.  InfoStrip (ubicación · horario · teléfono · reservar)
- * 4.  RestaurantIntro (presentación + KPIs + foto cocina)
- * 5.  SignatureDishes (4 platos destacados read-only)
- * 6.  MenuPreview (3 categorías con precios)
- * 7.  Ambiente (cocina · barra · servicio)
- * 8.  CredibilityStrip (4 datos)
- * 9.  Story (masa madre + pilares)
- * 10. CoffeeAndMarket (café & tienda en bloque dark)
- * 11. PhilosophyMarquee (tira editorial de valores, una vez)
- * 12. SourdoughOrigin (bloque tipográfico sobre la masa madre)
- * 13. Gallery (galería con lightbox)
- * 14. Newsletter (inline, dark)
- * 15. Testimonios (lazy)
- * 16. ChefCTA (reservas — lazy)
- * 17. ReserveCTA (dark cierre conversión)
- * 18. Location (dirección + mapa antes del footer)
+ * 2.  InfoStrip (ubicación · horario · teléfono · reservar)
+ * 3.  RestaurantIntro (presentación + KPIs + foto cocina)
+ * 4.  SignatureDishes (4 platos destacados read-only)
+ * 5.  MenuPreview (3 categorías con precios)
+ * 6.  Ambiente (cocina · barra · servicio)
+ * 7.  CredibilityStrip (4 datos)
+ * 8.  Story (masa madre + pilares)
+ * 9.  CoffeeAndMarket (café & tienda en bloque dark)
+ * 10. PhilosophyMarquee (tira editorial de valores, una vez)
+ * 11. SourdoughOrigin (bloque tipográfico sobre la masa madre)
+ * 12. Gallery (galería con lightbox)
+ * 13. Newsletter (inline, dark)
+ * 14. Testimonios (lazy)
+ * 15. ChefCTA (reservas — lazy)
+ * 16. ReserveCTA (dark cierre conversión)
+ * 17. Location (dirección + mapa antes del footer)
  */
 export default function Home() {
   return (
     <main id="main" className="bg-brand-background min-h-screen overflow-x-hidden selection:bg-brand-primary/20 selection:text-brand-primary">
       <Hero />
-      <Manifesto />
       <InfoStrip />
       <RestaurantIntro />
       <SignatureDishes />
