@@ -45,7 +45,7 @@ export default function LuxuryMotionConfig({ children }) {
   return (
     <LazyMotion features={domAnimation}>
       <MotionConfig
-        reducedMotion={forceMotion ? false : 'user'}
+        reducedMotion="user"
         transition={{
           duration: 0.45,
           ease: [0.16, 1, 0.3, 1],

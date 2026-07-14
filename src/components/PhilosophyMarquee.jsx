@@ -1,12 +1,12 @@
 /**
  * PhilosophyMarquee — tira editorial de valores del restaurante.
- * Marquee continuo lento. Pausa en hover. Se reduce a estático si
- * prefers-reduced-motion está activo. No compite con el hero (una sola vez
- * en la página principal).
+ * Marquee continuo lento. Pausa en hover. La animación la gatea CSS
+ * (motion-safe:animate-marquee) que respeta prefers-reduced-motion
+ * automáticamente. Cuando ?motion=on está activo en la URL, MotionConfig
+ * inyecta un override CSS para forzar la animación.
  *
  * Velocidad: ~60s loop. translateX-only (GPU-accelerated).
  */
-import { useReducedMotion } from 'framer-motion';
 import { useMemo } from 'react';
 
 const VALUES = [
@@ -19,7 +19,6 @@ const VALUES = [
 ];
 
 export default function PhilosophyMarquee() {
-  const reduced = useReducedMotion();
   // Duplicamos la lista para crear loop continuo sin gaps visuales.
   const items = useMemo(() => [...VALUES, ...VALUES], []);
 
@@ -28,33 +27,19 @@ export default function PhilosophyMarquee() {
       aria-label="Valores del restaurante"
       className="bg-brand-background border-y border-brand-border py-6 overflow-hidden group"
     >
-      {reduced ? (
-        <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 px-6 font-sans text-[11px] uppercase tracking-[0.16em] text-brand-textMuted">
-          {VALUES.map((v, i) => (
-            <li key={v} className="flex items-center gap-8 whitespace-nowrap">
-              <span>{v}</span>
-              {i !== VALUES.length - 1 && (
-                <span className="text-brand-textMuted/40" aria-hidden="true">·</span>
-              )}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <div
-          className="flex w-max motion-safe:animate-marquee group-hover:[animation-play-state:paused]"
-          aria-hidden="false"
-        >
-          {items.map((v, i) => (
-            <span
-              key={`${v}-${i}`}
-              className="flex items-center gap-8 px-6 font-sans text-[11px] uppercase tracking-[0.16em] text-brand-textMuted whitespace-nowrap"
-            >
-              {v}
-              <span className="text-brand-textMuted/40" aria-hidden="true">·</span>
-            </span>
-          ))}
-        </div>
-      )}
+      <div
+        className="flex w-max motion-safe:animate-marquee group-hover:[animation-play-state:paused]"
+      >
+        {items.map((v, i) => (
+          <span
+            key={`${v}-${i}`}
+            className="flex items-center gap-8 px-6 font-sans text-[11px] uppercase tracking-[0.16em] text-brand-textMuted whitespace-nowrap"
+          >
+            {v}
+            <span className="text-brand-textMuted/40" aria-hidden="true">·</span>
+          </span>
+        ))}
+      </div>
     </section>
   );
 }
