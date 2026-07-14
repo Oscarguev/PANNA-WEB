@@ -28,30 +28,39 @@ export default function WhatsAppButton() {
   const newsletterOpen = useUIStore((s) => s.newsletterOpen);
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
   const isHome = pathname === '/';
+  // En rutas distintas a home, el botón debe mostrarse siempre. Esto se
+  // deriva — sin setState en el effect — para evitar cascading renders.
   const isVisible = !isHome || scrolledPastHero;
 
   useEffect(() => {
     if (!isHome) return;
 
-    // En home, mostrar solo cuando el hero ha salido completamente del viewport
-    const evaluate = () => {
-      const hero = document.getElementById('hero');
-      if (!hero) {
-        setScrolledPastHero(true);
-        return;
-      }
-      const rect = hero.getBoundingClientRect();
-      const heroFullyScrolled = rect.bottom <= 0;
-      const heroMostlyPassed = window.scrollY >= rect.height * 0.70;
-      setScrolledPastHero(heroFullyScrolled || heroMostlyPassed);
-    };
+    // En home, mostrar solo cuando el hero ha salido completamente del viewport.
+    // IntersectionObserver reemplaza el scroll listener (banned por
+    // taste-skill §5.D): un sentinel invisible en el hero bottom-togglea
+    // el estado una sola vez.
+    const hero = document.getElementById('hero');
+    if (!hero) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setScrolledPastHero(true);
+      return;
+    }
 
-    evaluate();
-    window.addEventListener('scroll', evaluate, { passive: true });
-    window.addEventListener('resize', evaluate);
+    const sentinel = document.createElement('div');
+    sentinel.style.cssText = 'position:absolute;left:0;width:1px;height:1px;pointer-events:none;';
+    sentinel.style.top = '70%';
+    hero.appendChild(sentinel);
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        setScrolledPastHero(!entry.isIntersecting);
+      },
+      { threshold: 0 },
+    );
+    io.observe(sentinel);
     return () => {
-      window.removeEventListener('scroll', evaluate);
-      window.removeEventListener('resize', evaluate);
+      io.disconnect();
+      sentinel.remove();
     };
   }, [isHome]);
 

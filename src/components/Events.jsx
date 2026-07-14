@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useCartStore } from '../stores/useCartStore';
 import { useUIStore } from '../stores/useUIStore';
 import { track, EVENTS } from '../analytics';
@@ -38,6 +38,16 @@ export default function Events() {
   const showCartToast = useUIStore((state) => state.showCartToast);
   const [boughtIds, setBoughtIds] = useState({});
   const timersRef = useRef({});
+
+  // Cleanup: cancelar todos los timers pendientes al desmontar para
+  // evitar setState sobre componentes desmontados si el usuario navega.
+  useEffect(() => {
+    const timers = timersRef.current;
+    return () => {
+      Object.values(timers).forEach((t) => clearTimeout(t));
+      timersRef.current = {};
+    };
+  }, []);
 
   const handleBuy = (ev) => {
     if (boughtIds[ev.id]) return;

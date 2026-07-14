@@ -9,7 +9,6 @@ import { EASE } from '../motion/variants';
 const STORAGE_KEY = 'panna_newsletter_dismissed';
 const COOLDOWN_DAYS = 7;
 const SHOW_DELAY_MS = 22000;          // primera visita: 22s
-const SCROLL_THRESHOLD = 0.60;        // solo tras 60% del doc
 const SKIP_PATHNAMES = new Set(['/market', '/club', '/reservar', '/admin']);
 
 function Spinner() {
@@ -19,13 +18,6 @@ function Spinner() {
       <path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
     </svg>
   );
-}
-
-function heroOutOfView() {
-  const hero = document.getElementById('hero');
-  if (!hero) return true;
-  const rect = hero.getBoundingClientRect();
-  return rect.bottom <= window.innerHeight * 0.6 || window.scrollY > 500;
 }
 
 export default function Newsletter() {
@@ -62,60 +54,77 @@ export default function Newsletter() {
     } catch (_) { return false; }
   }, []);
 
-  // Decide when to show: timer OR scroll + hero out OR exit-intent (desktop), whichever first
+  // Decide when to show: timer OR scroll threshold OR exit-intent (desktop),
+  // whichever first. Scroll progress y hero-out se observan vía
+  // IntersectionObserver sobre sentinels (sin scroll listeners globales,
+  // banned por taste-skill §5.D).
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (SKIP_PATHNAMES.has(pathname)) return;
     if (isDismissed()) return;
 
     let triggered = false;
-    let unsubscribeScroll = () => {};
+    let scrollIO = null;
+    let heroIO = null;
     let timerId = null;
+    const cleanups = [];
 
     const fire = () => {
       if (triggered) return;
-      // No mostrar mientras el hero siga visible en home
-      if (isHome && !heroOutOfView()) {
-        const retry = () => {
-          if (heroOutOfView()) {
-            fire();
-            window.removeEventListener('scroll', retry);
-          }
-        };
-        window.addEventListener('scroll', retry, { passive: true });
-        return;
-      }
       triggered = true;
       setVisible(true);
       setNewsletterOpen(true);
-      unsubscribeScroll();
-      if (timerId) clearTimeout(timerId);
-      document.removeEventListener('mouseout', onExitIntent);
+      cleanups.forEach((fn) => { try { fn(); } catch { /* */ } });
     };
 
-    const onScroll = () => {
-      const max = document.body.scrollHeight - window.innerHeight;
-      if (max <= 0) return;
-      const pct = window.scrollY / max;
-      if (pct >= SCROLL_THRESHOLD) fire();
-    };
-    unsubscribeScroll = () => window.removeEventListener('scroll', onScroll);
-
-    // Exit-intent (desktop only): cursor leaves viewport through top edge
+    // Exit-intent (desktop only): cursor leaves viewport through top edge.
     const onExitIntent = (e) => {
       if (!e.relatedTarget && e.clientY <= 0) fire();
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
+    // Sentinel de scroll: 60% del documento.
+    const scrollSentinel = document.createElement('div');
+    scrollSentinel.style.cssText = 'position:absolute;left:0;width:1px;pointer-events:none;';
+    // bottom de la página - 1 viewport (cuando el sentinel entra, scrollY ≈ 60%).
+    scrollSentinel.style.bottom = '40%';
+    document.body.appendChild(scrollSentinel);
+    scrollIO = new IntersectionObserver(
+      ([entry]) => { if (!entry.isIntersecting) fire(); },
+      { threshold: 0 },
+    );
+    scrollIO.observe(scrollSentinel);
+    cleanups.push(() => { scrollIO.disconnect(); scrollSentinel.remove(); });
+
+    // En home, además gateamos para que NO aparezca mientras el hero sea
+    // visible. Otro sentinel en el bottom del hero.
+    if (isHome) {
+      const hero = document.getElementById('hero');
+      if (hero) {
+        const heroSentinel = document.createElement('div');
+        heroSentinel.style.cssText = 'position:absolute;left:0;width:1px;height:1px;pointer-events:none;';
+        heroSentinel.style.top = '40%';
+        hero.appendChild(heroSentinel);
+        heroIO = new IntersectionObserver(
+          ([entry]) => { if (!entry.isIntersecting) fire(); },
+          { threshold: 0 },
+        );
+        heroIO.observe(heroSentinel);
+        cleanups.push(() => { heroIO.disconnect(); heroSentinel.remove(); });
+      } else {
+        // Sin hero, dispara.
+        fire();
+      }
+    }
+
     if (window.matchMedia('(pointer: fine)').matches && window.innerWidth >= 1024) {
       document.addEventListener('mouseout', onExitIntent);
+      cleanups.push(() => document.removeEventListener('mouseout', onExitIntent));
     }
     timerId = setTimeout(fire, SHOW_DELAY_MS);
+    cleanups.push(() => clearTimeout(timerId));
 
     return () => {
-      if (timerId) clearTimeout(timerId);
-      window.removeEventListener('scroll', onScroll);
-      document.removeEventListener('mouseout', onExitIntent);
+      cleanups.forEach((fn) => { try { fn(); } catch { /* */ } });
     };
   }, [setNewsletterOpen, isHome, pathname, isDismissed]);
 

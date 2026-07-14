@@ -54,12 +54,24 @@ export default function Navbar() {
     }
   }, [cartCount]);
 
+  // isScrolled: en lugar de un scroll listener global (banned por perf +
+  // banned por taste-skill §5.D), usamos un IntersectionObserver con un
+  // sentinel de 40px en el top del documento. Cuando el sentinel deja de
+  // estar visible, marcamos scrolled.
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+    if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') return;
+    const sentinel = document.createElement('div');
+    sentinel.style.cssText = 'position:absolute;top:0;left:0;width:1px;height:40px;pointer-events:none;';
+    document.body.prepend(sentinel);
+    const io = new IntersectionObserver(
+      ([entry]) => setIsScrolled(!entry.isIntersecting),
+      { threshold: 0 },
+    );
+    io.observe(sentinel);
+    return () => {
+      io.disconnect();
+      sentinel.remove();
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -71,12 +83,14 @@ export default function Navbar() {
   useEffect(() => {
     if (!mobileMenuOpen) return;
     const prev = document.body.style.overflow;
-    const prevLenisStopped = window.lenis?.classList?.contains?.('lenis-stopped');
+    // Lenis expone `isStopped` (getter), NO `classList.contains('lenis-stopped')`.
+    // Capturamos el estado real para restaurarlo igual al cerrar.
+    const wasStopped = Boolean(window.lenis?.isStopped);
     document.body.style.overflow = 'hidden';
     window.lenis?.stop?.();
     return () => {
       document.body.style.overflow = prev;
-      if (!prevLenisStopped) window.lenis?.start?.();
+      if (!wasStopped) window.lenis?.start?.();
     };
   }, [mobileMenuOpen]);
 
@@ -136,7 +150,7 @@ export default function Navbar() {
               className="object-contain h-9 md:h-10 w-auto"
               style={{ width: 'auto', filter: 'brightness(0) saturate(100%)', opacity: 0.95 }}
             />
-            <span className="sr-only">Panna &amp; Pomodoro — Inicio</span>
+            <span className="sr-only">Ir al inicio — Panna y Pomodoro</span>
             <span aria-hidden="true" className="hidden sm:inline font-wordmark uppercase text-[13px] leading-none tracking-[0.02em] text-brand-textMain whitespace-nowrap">
               Panna &amp; Pomodoro
             </span>
@@ -255,10 +269,10 @@ export default function Navbar() {
               {loggedIn ? 'Cuenta' : 'Entrar'}
             </button>
 
-            {/* Primario destacado */}
+            {/* Primario destacado — focus ring instantáneo (no transition en ring). */}
             <Link
               to="/reservar"
-              className="inline-flex items-center min-h-[40px] md:min-h-[44px] text-[12px] md:text-[13px] font-semibold tracking-wide uppercase px-4 md:px-5 py-2 transition-all duration-base bg-brand-cta text-white hover:bg-brand-ctaHover border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cta focus-visible:ring-offset-2 focus-visible:ring-offset-brand-background"
+              className="inline-flex items-center min-h-[40px] md:min-h-[44px] text-[12px] md:text-[13px] font-semibold tracking-wide uppercase px-4 md:px-5 py-2 transition-colors duration-base bg-brand-cta text-white hover:bg-brand-ctaHover border border-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-cta focus-visible:ring-offset-2 focus-visible:ring-offset-brand-background"
             >
               Reservar
             </Link>

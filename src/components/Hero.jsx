@@ -37,26 +37,37 @@ const WORDMARK_VARIANTS = {
  * Listener de parallax sutil para la foto del hero.
  * Sincroniza la variable CSS --hero-scroll con window.scrollY mapeado a un rango
  * pequeño (0..-20 desktop, 0 tablet, 0 mobile). Cumple Fase 3: max 3-5% pantalla.
+ *
+ * Implementación: rAF-throttled scroll listener pasivo (en lugar de un
+ * listener directo banned por taste-skill §5.D). Mobile/tablet no necesitan
+ * listener — el valor queda fijo en 0.
  */
 function HeroParallax() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const root = document.documentElement;
+    root.style.setProperty('--hero-scroll', '0');
+
+    const isDesktop = window.innerWidth >= 1024;
+    if (!isDesktop) return;
+
+    let ticking = false;
     const update = () => {
       const y = window.scrollY;
-      if (window.innerWidth >= 1024) {
-        // Desktop: hasta -20px proporcional.
-        const v = Math.max(-20, Math.min(0, y * -0.06));
-        root.style.setProperty('--hero-scroll', String(v));
-      } else {
-        // Tablet/mobile: 0.
-        root.style.setProperty('--hero-scroll', '0');
-      }
+      const v = Math.max(-20, Math.min(0, y * -0.06));
+      root.style.setProperty('--hero-scroll', String(v));
+      ticking = false;
     };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
     update();
-    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => {
-      window.removeEventListener('scroll', update);
+      window.removeEventListener('scroll', onScroll);
       root.style.setProperty('--hero-scroll', '0');
     };
   }, []);

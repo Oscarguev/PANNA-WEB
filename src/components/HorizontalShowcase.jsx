@@ -1,3 +1,17 @@
+// ⚠️ UNUSED — NO IMPORTAR ⚠️
+//
+// Este componente quedó huérfano tras la migración a `/menu` solo-lectura.
+// No aparece en Home.jsx ni en ninguna página. Sigue usando useCartStore
+// + handleAdd, lo que violaría la regla "/market es el único con carrito"
+// si alguien lo reactiva.
+//
+// Acción de cleanup pendiente: confirmar con producto si la sección
+// "Selección del Día" se quiere re-exponer (en ese caso, mover el código
+// a un nuevo componente read-only y/o eliminar este archivo).
+//
+// Mantenido solo como referencia visual — no se compila en ningún bundle
+// activo del sitio mientras no se importe.
+//
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCartStore } from '../stores/useCartStore';

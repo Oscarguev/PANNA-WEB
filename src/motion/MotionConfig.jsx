@@ -1,19 +1,20 @@
 /**
  * MotionConfig.jsx
  * Global Framer Motion configuration wrapper.
- * Respects prefers-reduced-motion automatically.
+ * Respects prefers-reduced-motion automáticamente.
  *
  * Override de QA: añadir `?motion=on` o `?motion=force` a la URL
  * para forzar TODAS las animaciones aunque el OS tenga reduced-motion
  * activo. Esto afecta:
  *  - framer-motion primitives (via MotionConfig.reducedMotion="never"
- *    + patch de window.matchMedia al module-load)
- *  - Tailwind motion-safe: variant (via <style> override)
+ *    + patch de window.matchMedia montado y desmontado según URL)
+ *  - Tailwind motion-safe: variant (vía <style> inyectado)
  *
- * El patch de matchMedia se ejecuta al import de este módulo, antes
- * de que cualquier componente llame useReducedMotion().
+ * El patch de matchMedia se monta en useEffect cuando forceMotion=true
+ * y se desmonta cuando la URL cambia / componente se desmonta,
+ * evitando fugas entre rutas.
  */
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useRef } from 'react';
 import { LazyMotion, domAnimation, MotionConfig } from 'framer-motion';
 
 function getMotionOverride() {
@@ -23,44 +24,35 @@ function getMotionOverride() {
   return v === 'on' || v === 'force';
 }
 
-function injectMotionOverride(forceOn) {
-  if (typeof document === 'undefined') return;
-  const id = 'motion-override-style';
-  let el = document.getElementById(id);
-  if (!forceOn) {
-    if (el) el.remove();
-    return;
-  }
-  if (el) return;
-  el = document.createElement('style');
-  el.id = id;
-  // Override Tailwind motion-safe: variant cuando reduced-motion está activo en OS.
-  el.textContent = `
-    [class~="motion-safe:animate-marquee"] {
-      animation: marquee 60s linear infinite !important;
-    }
-  `;
-  document.head.appendChild(el);
+const MOTION_OVERRIDE_STYLE_ID = 'motion-override-style';
+
+// ── Module-singletons: capturamos matchMedia original UNA sola vez. ──────
+// Antes el patch era side-effect al cargar el módulo; eso filtraba el
+// override entre rutas (si entrabas con ?motion=on y luego navegabas sin
+// el param, useReducedMotion seguía devolviendo false el resto del SPA).
+// Ahora montamos/desmontamos el patch vía useEffect con [forceMotion] dep.
+let originalMatchMedia = null;
+function getOriginalMatchMedia() {
+  if (typeof window === 'undefined' || !window.matchMedia) return null;
+  if (originalMatchMedia) return originalMatchMedia;
+  originalMatchMedia = window.matchMedia.bind(window);
+  return originalMatchMedia;
 }
 
 function patchMatchMedia(forceOn) {
-  // useReducedMotion() de framer-motion lee window.matchMedia directamente.
-  // Patcheamos la función para devolver matches:false cuando el query
-  // es de prefers-reduced-motion y el override está activo.
-  if (typeof window === 'undefined') return;
-  if (!window.matchMedia) return;
-  if (window.__motionMatchMediaPatched) return;
-  window.__motionMatchMediaPatched = true;
-  const original = window.matchMedia.bind(window);
+  if (typeof window === 'undefined') return () => {};
+  if (!window.matchMedia) return () => {};
+  const original = getOriginalMatchMedia();
+  if (!original) return () => {};
   window.matchMedia = function patchedMatchMedia(query) {
     if (forceOn && query.includes('prefers-reduced-motion')) {
       const mql = original.call(window, query);
-      // Override .matches con getter que siempre devuelve false.
       try {
-        Object.defineProperty(mql, 'matches', { value: false, configurable: true });
+        Object.defineProperty(mql, 'matches', {
+          get: () => false,
+          configurable: true,
+        });
       } catch {
-        // algunos browsers bloquean redefine de propiedad no-configurable;
-        // en ese caso devolvemos un objeto MQL-shaped con matches:false.
         return {
           matches: false,
           media: mql.media,
@@ -76,30 +68,60 @@ function patchMatchMedia(forceOn) {
     }
     return original.call(window, query);
   };
+  return () => {
+    window.matchMedia = original;
+  };
 }
 
-// Side-effect: ejecuta el patch al import del módulo (antes de mount).
-// Solo si override activo; si no, no tocamos matchMedia.
-if (typeof window !== 'undefined') {
-  // useMemo defer la decisión a render; pero podemos leer la URL aquí mismo.
-  try {
-    const params = new URLSearchParams(window.location.search);
-    const v = params.get('motion');
-    if (v === 'on' || v === 'force') {
-      patchMatchMedia(true);
-      injectMotionOverride(true);
+function injectMotionOverride(forceOn) {
+  if (typeof document === 'undefined') return () => {};
+  const remove = () => {
+    const el = document.getElementById(MOTION_OVERRIDE_STYLE_ID);
+    if (el) el.remove();
+  };
+  if (!forceOn) {
+    remove();
+    return remove;
+  }
+  let el = document.getElementById(MOTION_OVERRIDE_STYLE_ID);
+  if (el) return remove;
+  el = document.createElement('style');
+  el.id = MOTION_OVERRIDE_STYLE_ID;
+  // Override Tailwind motion-safe: variant cuando reduced-motion está activo en OS.
+  el.textContent = `
+    [class~="motion-safe:animate-marquee"] {
+      animation: marquee 60s linear infinite !important;
     }
-  } catch { /* SSR-safe */ }
+  `;
+  document.head.appendChild(el);
+  return remove;
 }
 
 export default function LuxuryMotionConfig({ children }) {
   const forceMotion = useMemo(() => getMotionOverride(), []);
+  // Cleanup refs: el último useEffect gana. Si forceMotion cambia entre
+  // mount → unmount, los cleanups corren en orden inverso.
+  const cleanupRef = useRef([]);
+
   useEffect(() => {
+    // Reset cleanups de runs anteriores antes de instalar nuevos.
+    cleanupRef.current.forEach((fn) => { try { fn(); } catch { /* */ } });
+    cleanupRef.current = [];
+
     if (forceMotion) {
-      patchMatchMedia(true);
-      injectMotionOverride(true);
+      cleanupRef.current.push(patchMatchMedia(true));
+      cleanupRef.current.push(injectMotionOverride(true));
+    } else {
+      // Asegurar estado limpio incluso si la URL cambió.
+      cleanupRef.current.push(injectMotionOverride(false));
     }
+
+    return () => {
+      cleanupRef.current.forEach((fn) => { try { fn(); } catch { /* */ } });
+      cleanupRef.current = [];
+    };
   }, [forceMotion]);
+
   return (
     <LazyMotion features={domAnimation}>
       <MotionConfig
