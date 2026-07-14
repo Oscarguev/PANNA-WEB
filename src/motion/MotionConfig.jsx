@@ -30,11 +30,10 @@ function injectMotionOverride(forceOn) {
   el = document.createElement('style');
   el.id = id;
   // Override Tailwind motion-safe: variant cuando reduced-motion está activo en OS.
-  // También desactiva la detección CSS de parallax/sticky dentro de @media.
+  // Usamos selector por atributo [class~="…"] para evitar el escape del colon.
   el.textContent = `
-    @media (prefers-reduced-motion: reduce) {
-      .motion-safe\\:animate-marquee { animation: marquee 60s linear infinite !important; }
-      .motion-safe\\:animate-[var(--spin-slow)] { animation: var(--spin-slow) !important; }
+    [class~="motion-safe:animate-marquee"] {
+      animation: marquee 60s linear infinite !important;
     }
   `;
   document.head.appendChild(el);
