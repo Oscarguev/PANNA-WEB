@@ -1,16 +1,21 @@
 import { Link } from 'react-router-dom';
 import { m, useReducedMotion } from 'framer-motion';
-import { useEffect } from 'react';
 import heroBackground from '../assets/bulldog.webp';
 import { EASE } from '../motion/variants';
 
 /**
- * Hero v5 — solo marca protagonista.
+ * Hero v6 — sin parallax, sin scale de entrada.
  *
  * Unica pieza textual con voz: "Panna & Pomodoro" en Fraunces.
  * Eyebrow pequeno y discreto. Un enlace secundario "Ver carta".
  * No descripcion, no boton de reservar (vive en la navbar),
  * no datos praticos (viven en InfoStrip debajo).
+ *
+ * Cambios v6 (por feedback visual: el parallax + scale provocaban efecto
+ * "cortina" al cargar la pagina, ya resuelto):
+ * - Sin parallax de la foto.
+ * - Foto: solo fade-in. Sin scale de entrada.
+ * - Wordmark: fade + slide suave, sin cortina.
  *
  * Comportamiento esperado por el brief:
  * 1. PANNA & POMODORO es el unico texto fuerte del hero.
@@ -18,10 +23,11 @@ import { EASE } from '../motion/variants';
  * 3. La franja informativa debajo resuelve todo lo demas.
  */
 
-// Foto: fade + scale entry; parallax sutil manejado por ParallaxMedia wrapper.
+// Foto: solo fade-in. Sin scale de entrada (provocaba efecto "cortina"
+// al cargar) y sin parallax (eliminado por feedback visual del usuario).
 const PHOTO_VARIANTS = {
-  hidden: { opacity: 0, scale: 1.04 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.9, ease: EASE.silk } },
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.7, ease: EASE.silk } },
 };
 
 const WORDMARK_VARIANTS = {
@@ -33,47 +39,6 @@ const WORDMARK_VARIANTS = {
   }),
 };
 
-/**
- * Listener de parallax sutil para la foto del hero.
- * Sincroniza la variable CSS --hero-scroll con window.scrollY mapeado a un rango
- * pequeño (0..-20 desktop, 0 tablet, 0 mobile). Cumple Fase 3: max 3-5% pantalla.
- *
- * Implementación: rAF-throttled scroll listener pasivo (en lugar de un
- * listener directo banned por taste-skill §5.D). Mobile/tablet no necesitan
- * listener — el valor queda fijo en 0.
- */
-function HeroParallax() {
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const root = document.documentElement;
-    root.style.setProperty('--hero-scroll', '0');
-
-    const isDesktop = window.innerWidth >= 1024;
-    if (!isDesktop) return;
-
-    let ticking = false;
-    const update = () => {
-      const y = window.scrollY;
-      const v = Math.max(-20, Math.min(0, y * -0.06));
-      root.style.setProperty('--hero-scroll', String(v));
-      ticking = false;
-    };
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      root.style.setProperty('--hero-scroll', '0');
-    };
-  }, []);
-  return null;
-}
-
 export default function Hero() {
   const reduced = useReducedMotion();
 
@@ -84,19 +49,13 @@ export default function Hero() {
       className="relative bg-black"
       style={{ minHeight: '76svh', height: 'min(720px, 76svh)' }}
     >
-      {/* Fotografia a sangre — fade + scale entry + parallax sutil via CSS transform.
-          Parallax se aplica al contenedor para mantener GPU-accelerated transform. */}
+      {/* Fotografia a sangre — solo fade-in, sin transform de entrada. */}
       <m.div
         initial="hidden"
         animate="visible"
         variants={PHOTO_VARIANTS}
-        className="absolute inset-0 will-change-transform"
+        className="absolute inset-0"
         aria-hidden="true"
-        style={{
-          transform: typeof window !== 'undefined' && window.innerWidth >= 1024
-            ? 'translate3d(0, calc(var(--hero-scroll, 0) * 1px), 0)'
-            : undefined,
-        }}
       >
         <img
           src={heroBackground}
@@ -110,22 +69,6 @@ export default function Hero() {
           style={{ objectPosition: '42% center' }}
         />
       </m.div>
-
-      {/* Listener parallax: actualiza --hero-scroll entre 0 y -20 (desktop) / 0 (mobile).
-          Skip en prefers-reduced-motion. */}
-      {!reduced && (
-        <HeroParallax />
-      )}
-
-      {/* Overlay superior — soporta la navbar fija */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-32 md:h-36"
-        style={{
-          background:
-            'linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.20) 60%, rgba(10,10,10,0) 100%)',
-        }}
-      />
 
       {/* Gradiente principal detras del wordmark — concentrado en el centro */}
       <div
